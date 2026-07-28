@@ -169,6 +169,20 @@ things:
 
 ---
 
+## Contributing
+
+Screenshots in this README are captured from a real unit. To refresh them after a
+UI change, connect the head unit (or an emulator) with USB debugging on and run:
+
+```bash
+./tools/capture-screenshots.sh
+```
+
+Read the **Compatibility notes** above before upgrading any dependency — several
+are pinned deliberately to keep Android 4.4 support.
+
+---
+
 ## Roadmap
 
 - Reorderable favourites dock (drag and drop)
