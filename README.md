@@ -8,19 +8,24 @@ it runs all the way back to **Android 4.4 (KitKat)** so it works on old units to
 
 ---
 
-## Interface
+## Screenshots
 
-| Dashboard | App drawer |
-|---|---|
-| ![Home dashboard](docs/screenshots/dashboard.png) | ![App drawer](docs/screenshots/drawer.png) |
+### Dashboard
+
+Clock, date, current conditions and a three-day forecast on the left; media and
+phone on the right; quick-launch favourites along the top.
+
+![Home dashboard](docs/screenshots/dashboard.png)
+
+### App drawer
+
+Search, a frequently-used strip, and the full app grid.
+
+![App drawer](docs/screenshots/drawer.png)
 
 | Settings | Colour themes |
 |---|---|
 | ![Settings](docs/screenshots/settings.png) | ![Colour theme picker](docs/screenshots/gradients.png) |
-
-> These are 1024×600 renders of the interface, matching the shipped layouts and
-> colour values. Device captures will replace them once the app is running on
-> hardware — see [Contributing](#contributing).
 
 ---
 
