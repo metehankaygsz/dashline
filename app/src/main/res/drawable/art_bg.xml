@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Backing tile behind album art (also the placeholder when there's no art). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/art_bg" />
+    <corners android:radius="8dp" />
+</shape>

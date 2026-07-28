@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DARK theme (SYNC-style navy). Light variant lives in values/colors.xml. -->
+    <!-- bg is only the pre-draw fallback; the real background is the gradient
+         applied at runtime. Bars/surfaces are translucent so it shows through. -->
+    <color name="bg">#071B2C</color>
+    <color name="bar">#5C000000</color>
+    <color name="surface">#24FFFFFF</color>
+    <color name="surface_light">#1E6DA8</color>
+    <color name="divider">#2EFFFFFF</color>
+
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B8D4E8</color>
+    <color name="icon_tint">#CFE6F5</color>
+    <color name="accent">#3B9EE5</color>
+
+    <color name="tile">#24FFFFFF</color>
+
+    <!-- media widget -->
+    <color name="on_accent">#FFFFFF</color>
+    <color name="art_bg">#0A2E4A</color>
+    <color name="seek_track">#14507D</color>
+    <color name="seek_fill">#FFFFFF</color>
+</resources>

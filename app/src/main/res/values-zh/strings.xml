@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Launcher</string>
+
+    <string name="tab_audio">音频</string>
+    <string name="tab_phone">电话</string>
+    <string name="tab_nav">导航</string>
+    <string name="tab_apps">应用</string>
+    <string name="tab_settings">设置</string>
+
+    <string name="all_apps">所有应用</string>
+    <string name="no_apps">未找到可启动的应用</string>
+    <string name="app_icon">应用图标</string>
+    <string name="search_apps">搜索应用</string>
+    <string name="frequent">常用</string>
+    <string name="hide_app">从抽屉隐藏</string>
+    <string name="settings_reset_hidden">重置隐藏的应用</string>
+    <string name="couldnt_launch">无法打开 %1$s</string>
+    <string name="hidden_count">已隐藏 %1$d 个</string>
+
+    <string name="audio_radio">收音机</string>
+
+    <string name="media_previous">上一首</string>
+    <string name="media_play_pause">播放或暂停</string>
+    <string name="media_next">下一首</string>
+    <string name="media_nothing_playing">没有正在播放的内容</string>
+    <string name="media_tap_to_open">点按打开</string>
+
+    <string name="setup_title">欢迎</string>
+    <string name="setup_subtitle">让我们来设置您的启动器。</string>
+    <string name="setup_choose_phone">选择您的电话应用</string>
+    <string name="setup_choose_nav">选择您的导航应用</string>
+    <string name="setup_choose_media">选择您的媒体应用</string>
+    <string name="setup_done">完成</string>
+    <string name="not_set">未设置</string>
+
+    <string name="settings_title">启动器设置</string>
+    <string name="settings_phone_app">电话应用</string>
+    <string name="settings_nav_app">导航应用</string>
+    <string name="settings_radio_app">收音机应用</string>
+    <string name="settings_media_app">媒体应用（无播放时）</string>
+    <string name="settings_notification_access">媒体信息访问权限</string>
+    <string name="access_enabled">已启用</string>
+    <string name="access_disabled">已禁用 — 点按开启</string>
+    <string name="settings_temp_unit">温度单位</string>
+    <string name="unit_celsius">摄氏度 (°C)</string>
+    <string name="unit_fahrenheit">华氏度 (°F)</string>
+    <string name="settings_theme">主题</string>
+    <string name="theme_auto">自动（按时间）</string>
+    <string name="theme_light">浅色</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_system">跟随系统</string>
+    <string name="settings_keep_on">保持屏幕常亮</string>
+    <string name="settings_default_launcher">默认启动器</string>
+    <string name="on">开</string>
+    <string name="off">关</string>
+    <string name="yes">是</string>
+    <string name="set_now">未设置 — 点按设置</string>
+
+    <string name="weather_unavailable">天气不可用</string>
+    <string name="weather_loading">正在加载天气…</string>
+    <string name="wx_clear">晴</string>
+    <string name="wx_mainly_clear">大致晴朗</string>
+    <string name="wx_partly_cloudy">局部多云</string>
+    <string name="wx_overcast">阴</string>
+    <string name="wx_fog">雾</string>
+    <string name="wx_drizzle">毛毛雨</string>
+    <string name="wx_rain">雨</string>
+    <string name="wx_snow">雪</string>
+    <string name="wx_showers">阵雨</string>
+    <string name="wx_thunderstorm">雷暴</string>
+
+    <string name="pick_favorite">选择收藏应用</string>
+    <string name="fav_change">更换应用</string>
+    <string name="fav_remove">移除</string>
+
+    <string name="pick_an_app">选择应用</string>
+    <string name="app_not_found">未找到应用 — 请在设置中选择</string>
+    <string name="now_playing">正在播放</string>
+    <string name="settings_language">语言</string>
+    <string name="language_system">系统默认</string>
+    <string name="setup_choose_language">语言</string>
+    <string name="media_enable_access">点按启用媒体信息</string>
+    <string name="forecast_high_low">%1$s / %2$s</string>
+    <string name="nav_back">返回</string>
+    <string name="nav_home">主页</string>
+    <string name="setup_permissions">权限</string>
+    <string name="setup_permissions_hint">用于显示天气和正在播放的内容。</string>
+    <string name="settings_location_access">位置权限</string>
+    <string name="access_granted">已授予</string>
+    <string name="access_needed">点按授予</string>
+    <string name="section_general">通用</string>
+    <string name="section_apps">默认应用</string>
+    <string name="section_access">权限</string>
+    <string name="section_drawer">应用抽屉</string>
+    <string name="settings_gradient">配色主题</string>
+    <string name="section_appearance">外观</string>
+    <string name="gradient_preview_hint">所选配色预览</string>
+    <string name="gradient_midnight">午夜</string>
+    <string name="gradient_ocean">海洋</string>
+    <string name="gradient_sunset">日落</string>
+    <string name="gradient_forest">森林</string>
+    <string name="gradient_violet">紫罗兰</string>
+    <string name="gradient_crimson">绯红</string>
+    <string name="gradient_graphite">石墨</string>
+</resources>

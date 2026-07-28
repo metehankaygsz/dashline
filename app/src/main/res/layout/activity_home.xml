@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <!-- ===== Top status bar: home | favorites dock | wifi ===== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/bar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/homeButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/tab_apps"
+            app:srcCompat="@drawable/ic_home" />
+
+        <!-- Favorite-apps dock (quick launch). Slots are bound in code. -->
+        <LinearLayout
+            android:id="@+id/favoritesDock"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot0" style="@style/FavSlot" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot1" style="@style/FavSlot" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot2" style="@style/FavSlot" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot3" style="@style/FavSlot" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot4" style="@style/FavSlot" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/wifiIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="@string/tab_settings"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_wifi" />
+    </LinearLayout>
+
+    <!-- ===== Middle: map (left) + panel (right) ===== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:padding="8dp">
+
+        <!-- Clock + weather dashboard -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.35"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:background="@drawable/card_dark">
+
+            <TextView
+                android:id="@+id/bigClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/text_primary"
+                android:textSize="72sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bigDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:text=""
+                android:textColor="@color/text_secondary"
+                android:textSize="18sp" />
+
+            <!-- Weather row: icon + temperature + description -->
+            <LinearLayout
+                android:id="@+id/weatherRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/weatherIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="14dp"
+                    android:contentDescription="@string/settings_temp_unit"
+                    app:srcCompat="@drawable/ic_wx_cloudy" />
+
+                <TextView
+                    android:id="@+id/weatherTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text=""
+                    android:textColor="@color/text_primary"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/weatherDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weather_loading"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- Upcoming-days forecast strip -->
+            <LinearLayout
+                android:id="@+id/forecastRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:visibility="gone">
+
+                <LinearLayout style="@style/FcCell">
+                    <TextView android:id="@+id/fc0Day" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+                    <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc0Icon"
+                        android:layout_width="30dp" android:layout_height="30dp"
+                        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+                        android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
+                    <TextView android:id="@+id/fc0Temp" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/FcCell">
+                    <TextView android:id="@+id/fc1Day" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+                    <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc1Icon"
+                        android:layout_width="30dp" android:layout_height="30dp"
+                        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+                        android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
+                    <TextView android:id="@+id/fc1Temp" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/FcCell">
+                    <TextView android:id="@+id/fc2Day" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+                    <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc2Icon"
+                        android:layout_width="30dp" android:layout_height="30dp"
+                        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+                        android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
+                    <TextView android:id="@+id/fc2Temp" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Right column: media widget + phone card -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Media player widget (real now-playing when available) -->
+            <LinearLayout
+                android:id="@+id/mediaCard"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:padding="14dp"
+                android:background="@drawable/card_blue"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Album art: rounded bitmap set in code, on a rounded tile -->
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/mediaArt"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/art_bg"
+                        android:padding="12dp"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/tab_audio"
+                        app:srcCompat="@drawable/ic_audio" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/mediaTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:text="@string/now_playing"
+                            android:textColor="@color/text_primary"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/mediaArtist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text=""
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Seek row: elapsed | bar | total (hidden when no duration) -->
+                <LinearLayout
+                    android:id="@+id/mediaSeekRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/mediaElapsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="34dp"
+                        android:text="0:00"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <SeekBar
+                        android:id="@+id/mediaProgress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxHeight="4dp"
+                        android:minHeight="4dp"
+                        android:progressDrawable="@drawable/seek_progress"
+                        android:thumb="@drawable/seek_thumb"
+                        android:thumbOffset="0dp" />
+
+                    <TextView
+                        android:id="@+id/mediaTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="34dp"
+                        android:gravity="end"
+                        android:text="0:00"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Transport controls (hidden when nothing is playing) -->
+                <LinearLayout
+                    android:id="@+id/mediaControls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btnPrev"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:padding="9dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/media_previous"
+                        app:srcCompat="@drawable/ic_skip_previous" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btnPlayPause"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginEnd="18dp"
+                        android:padding="12dp"
+                        android:background="@drawable/btn_circle"
+                        android:contentDescription="@string/media_play_pause"
+                        app:srcCompat="@drawable/ic_play" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btnNext"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:padding="9dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/media_next"
+                        app:srcCompat="@drawable/ic_skip_next" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Phone -->
+            <LinearLayout
+                android:id="@+id/phoneCard"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:background="@drawable/card_dark"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/tab_phone"
+                    app:srcCompat="@drawable/ic_phone" />
+
+                <TextView
+                    android:id="@+id/phoneLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_phone"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ===== Bottom tab bar ===== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:background="@color/bar"
+        android:baselineAligned="false">
+
+        <include layout="@layout/item_tab" android:id="@+id/tabAudio"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <include layout="@layout/item_tab" android:id="@+id/tabRadio"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <include layout="@layout/item_tab" android:id="@+id/tabPhone"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <include layout="@layout/item_tab" android:id="@+id/tabNav"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <include layout="@layout/item_tab" android:id="@+id/tabApps"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <include layout="@layout/item_tab" android:id="@+id/tabSettings"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

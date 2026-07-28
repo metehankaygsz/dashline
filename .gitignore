@@ -1,0 +1,40 @@
+# Gradle / build output
+.gradle/
+/build/
+/app/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# Local machine config (paths, SDK location) — never commit
+/local.properties
+*.iml
+
+# IDE
+/.idea/
+/.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local notes, assistant/tooling config — keep out of the repo
+CLAUDE.md
+AGENTS.md
+.claude/
+.cursor/
+.cursorrules
+.aider*
+NOTES.md
+TODO.local.md
+scratch/
+*.local
+*.local.md
+
+# Signing — never commit keys
+*.jks
+*.keystore
+keystore.properties
+signing.properties

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Launcher</string>
+
+    <string name="tab_audio">الصوت</string>
+    <string name="tab_phone">الهاتف</string>
+    <string name="tab_nav">الملاحة</string>
+    <string name="tab_apps">التطبيقات</string>
+    <string name="tab_settings">الإعدادات</string>
+
+    <string name="all_apps">كل التطبيقات</string>
+    <string name="no_apps">لم يتم العثور على تطبيقات</string>
+    <string name="app_icon">أيقونة التطبيق</string>
+    <string name="search_apps">البحث في التطبيقات</string>
+    <string name="frequent">الأكثر استخدامًا</string>
+    <string name="hide_app">إخفاء من القائمة</string>
+    <string name="settings_reset_hidden">إعادة تعيين التطبيقات المخفية</string>
+    <string name="couldnt_launch">تعذّر فتح %1$s</string>
+    <string name="hidden_count">%1$d مخفية</string>
+
+    <string name="audio_radio">الراديو</string>
+
+    <string name="media_previous">السابق</string>
+    <string name="media_play_pause">تشغيل أو إيقاف مؤقت</string>
+    <string name="media_next">التالي</string>
+    <string name="media_nothing_playing">لا يوجد تشغيل</string>
+    <string name="media_tap_to_open">اضغط للفتح</string>
+
+    <string name="setup_title">مرحبًا</string>
+    <string name="setup_subtitle">لنقم بإعداد المشغّل الخاص بك.</string>
+    <string name="setup_choose_phone">اختر تطبيق الهاتف</string>
+    <string name="setup_choose_nav">اختر تطبيق الملاحة</string>
+    <string name="setup_choose_media">اختر تطبيق الوسائط</string>
+    <string name="setup_done">تم</string>
+    <string name="not_set">غير مضبوط</string>
+
+    <string name="settings_title">إعدادات المشغّل</string>
+    <string name="settings_phone_app">تطبيق الهاتف</string>
+    <string name="settings_nav_app">تطبيق الملاحة</string>
+    <string name="settings_radio_app">تطبيق الراديو</string>
+    <string name="settings_media_app">تطبيق الوسائط (عند عدم التشغيل)</string>
+    <string name="settings_notification_access">الوصول إلى معلومات الوسائط</string>
+    <string name="access_enabled">مُفعّل</string>
+    <string name="access_disabled">مُعطّل — اضغط للتفعيل</string>
+    <string name="settings_temp_unit">وحدة الحرارة</string>
+    <string name="unit_celsius">مئوية (°C)</string>
+    <string name="unit_fahrenheit">فهرنهايت (°F)</string>
+    <string name="settings_theme">المظهر</string>
+    <string name="theme_auto">تلقائي (حسب الوقت)</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+    <string name="theme_system">حسب النظام</string>
+    <string name="settings_keep_on">إبقاء الشاشة مضاءة</string>
+    <string name="settings_default_launcher">المشغّل الافتراضي</string>
+    <string name="on">تشغيل</string>
+    <string name="off">إيقاف</string>
+    <string name="yes">نعم</string>
+    <string name="set_now">غير مضبوط — اضغط للضبط</string>
+
+    <string name="weather_unavailable">الطقس غير متاح</string>
+    <string name="weather_loading">جارٍ تحميل الطقس…</string>
+    <string name="wx_clear">صافٍ</string>
+    <string name="wx_mainly_clear">صافٍ غالبًا</string>
+    <string name="wx_partly_cloudy">غائم جزئيًا</string>
+    <string name="wx_overcast">غائم</string>
+    <string name="wx_fog">ضباب</string>
+    <string name="wx_drizzle">رذاذ</string>
+    <string name="wx_rain">مطر</string>
+    <string name="wx_snow">ثلج</string>
+    <string name="wx_showers">زخات مطر</string>
+    <string name="wx_thunderstorm">عاصفة رعدية</string>
+
+    <string name="pick_favorite">اختر تطبيقًا مفضّلاً</string>
+    <string name="fav_change">تغيير التطبيق</string>
+    <string name="fav_remove">إزالة</string>
+
+    <string name="pick_an_app">اختر تطبيقًا</string>
+    <string name="app_not_found">التطبيق غير موجود — اختر واحدًا من الإعدادات</string>
+    <string name="now_playing">قيد التشغيل الآن</string>
+    <string name="settings_language">اللغة</string>
+    <string name="language_system">إعداد النظام الافتراضي</string>
+    <string name="setup_choose_language">اللغة</string>
+    <string name="media_enable_access">اضغط لتفعيل معلومات الوسائط</string>
+    <string name="forecast_high_low">%1$s / %2$s</string>
+    <string name="nav_back">رجوع</string>
+    <string name="nav_home">الرئيسية</string>
+    <string name="setup_permissions">الأذونات</string>
+    <string name="setup_permissions_hint">تتيح عرض الطقس وما يتم تشغيله حاليًا.</string>
+    <string name="settings_location_access">الوصول إلى الموقع</string>
+    <string name="access_granted">ممنوح</string>
+    <string name="access_needed">اضغط للمنح</string>
+    <string name="section_general">عام</string>
+    <string name="section_apps">التطبيقات الافتراضية</string>
+    <string name="section_access">الأذونات</string>
+    <string name="section_drawer">قائمة التطبيقات</string>
+    <string name="settings_gradient">نسق الألوان</string>
+    <string name="section_appearance">المظهر</string>
+    <string name="gradient_preview_hint">معاينة الألوان المحددة</string>
+    <string name="gradient_midnight">منتصف الليل</string>
+    <string name="gradient_ocean">محيط</string>
+    <string name="gradient_sunset">غروب</string>
+    <string name="gradient_forest">غابة</string>
+    <string name="gradient_violet">بنفسجي</string>
+    <string name="gradient_crimson">قرمزي</string>
+    <string name="gradient_graphite">جرافيت</string>
+</resources>

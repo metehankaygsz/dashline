@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Launcher</string>
+
+    <string name="tab_audio">Audio</string>
+    <string name="tab_phone">Teléfono</string>
+    <string name="tab_nav">Navegación</string>
+    <string name="tab_apps">Aplicaciones</string>
+    <string name="tab_settings">Ajustes</string>
+
+    <string name="all_apps">Todas las apps</string>
+    <string name="no_apps">No se encontraron apps</string>
+    <string name="app_icon">Icono de la app</string>
+    <string name="search_apps">Buscar apps</string>
+    <string name="frequent">Usadas con frecuencia</string>
+    <string name="hide_app">Ocultar del cajón</string>
+    <string name="settings_reset_hidden">Restablecer apps ocultas</string>
+    <string name="couldnt_launch">No se pudo abrir %1$s</string>
+    <string name="hidden_count">%1$d ocultas</string>
+
+    <string name="audio_radio">Radio</string>
+
+    <string name="media_previous">Anterior</string>
+    <string name="media_play_pause">Reproducir o pausar</string>
+    <string name="media_next">Siguiente</string>
+    <string name="media_nothing_playing">Nada en reproducción</string>
+    <string name="media_tap_to_open">Toca para abrir</string>
+
+    <string name="setup_title">Bienvenido</string>
+    <string name="setup_subtitle">Vamos a configurar tu launcher.</string>
+    <string name="setup_choose_phone">Elige tu app de Teléfono</string>
+    <string name="setup_choose_nav">Elige tu app de Navegación</string>
+    <string name="setup_choose_media">Elige tu app de Multimedia</string>
+    <string name="setup_done">Listo</string>
+    <string name="not_set">Sin configurar</string>
+
+    <string name="settings_title">Ajustes del launcher</string>
+    <string name="settings_phone_app">App de Teléfono</string>
+    <string name="settings_nav_app">App de Navegación</string>
+    <string name="settings_radio_app">App de Radio</string>
+    <string name="settings_media_app">App de Multimedia (cuando no hay reproducción)</string>
+    <string name="settings_notification_access">Acceso a info multimedia</string>
+    <string name="access_enabled">Activado</string>
+    <string name="access_disabled">Desactivado — toca para activar</string>
+    <string name="settings_temp_unit">Unidad de temperatura</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_auto">Automático (según la hora)</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="theme_system">Seguir al sistema</string>
+    <string name="settings_keep_on">Mantener pantalla encendida</string>
+    <string name="settings_default_launcher">Launcher predeterminado</string>
+    <string name="on">Activado</string>
+    <string name="off">Desactivado</string>
+    <string name="yes">Sí</string>
+    <string name="set_now">Sin configurar — toca para configurar</string>
+
+    <string name="weather_unavailable">Clima no disponible</string>
+    <string name="weather_loading">Cargando clima…</string>
+    <string name="wx_clear">Despejado</string>
+    <string name="wx_mainly_clear">Mayormente despejado</string>
+    <string name="wx_partly_cloudy">Parcialmente nublado</string>
+    <string name="wx_overcast">Nublado</string>
+    <string name="wx_fog">Niebla</string>
+    <string name="wx_drizzle">Llovizna</string>
+    <string name="wx_rain">Lluvia</string>
+    <string name="wx_snow">Nieve</string>
+    <string name="wx_showers">Chubascos</string>
+    <string name="wx_thunderstorm">Tormenta</string>
+
+    <string name="pick_favorite">Elige una app favorita</string>
+    <string name="fav_change">Cambiar app</string>
+    <string name="fav_remove">Quitar</string>
+
+    <string name="pick_an_app">Elige una app</string>
+    <string name="app_not_found">App no encontrada — elige una en Ajustes</string>
+    <string name="now_playing">Reproduciendo</string>
+    <string name="settings_language">Idioma</string>
+    <string name="language_system">Predeterminado del sistema</string>
+    <string name="setup_choose_language">Idioma</string>
+    <string name="media_enable_access">Toca para activar la info multimedia</string>
+    <string name="forecast_high_low">%1$s / %2$s</string>
+    <string name="nav_back">Atrás</string>
+    <string name="nav_home">Inicio</string>
+    <string name="setup_permissions">Permisos</string>
+    <string name="setup_permissions_hint">Permiten mostrar el clima y lo que se reproduce.</string>
+    <string name="settings_location_access">Acceso a ubicación</string>
+    <string name="access_granted">Concedido</string>
+    <string name="access_needed">Toca para conceder</string>
+    <string name="section_general">GENERAL</string>
+    <string name="section_apps">APLICACIONES PREDETERMINADAS</string>
+    <string name="section_access">PERMISOS</string>
+    <string name="section_drawer">CAJÓN DE APPS</string>
+    <string name="settings_gradient">Tema de color</string>
+    <string name="section_appearance">APARIENCIA</string>
+    <string name="gradient_preview_hint">Vista previa de los colores</string>
+    <string name="gradient_midnight">Medianoche</string>
+    <string name="gradient_ocean">Océano</string>
+    <string name="gradient_sunset">Atardecer</string>
+    <string name="gradient_forest">Bosque</string>
+    <string name="gradient_violet">Violeta</string>
+    <string name="gradient_crimson">Carmesí</string>
+    <string name="gradient_graphite">Grafito</string>
+</resources>

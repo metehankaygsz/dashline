@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Launcher</string>
+
+    <!-- alt sekmeler -->
+    <string name="tab_audio">Ses</string>
+    <string name="tab_phone">Telefon</string>
+    <string name="tab_nav">Navigasyon</string>
+    <string name="tab_apps">Uygulamalar</string>
+    <string name="tab_settings">Ayarlar</string>
+
+    <!-- uygulama çekmecesi -->
+    <string name="all_apps">Tüm uygulamalar</string>
+    <string name="no_apps">Açılabilir uygulama bulunamadı</string>
+    <string name="app_icon">Uygulama simgesi</string>
+    <string name="search_apps">Uygulama ara</string>
+    <string name="frequent">Sık kullanılanlar</string>
+    <string name="hide_app">Çekmeceden gizle</string>
+    <string name="settings_reset_hidden">Gizli uygulamaları sıfırla</string>
+    <string name="couldnt_launch">%1$s açılamadı</string>
+    <string name="hidden_count">%1$d gizli</string>
+
+    <!-- ses kaynağı -->
+    <string name="audio_radio">Radyo</string>
+
+    <!-- medya widget\'ı -->
+    <string name="media_previous">Önceki</string>
+    <string name="media_play_pause">Oynat veya duraklat</string>
+    <string name="media_next">Sonraki</string>
+    <string name="media_nothing_playing">Çalan bir şey yok</string>
+    <string name="media_tap_to_open">Açmak için dokunun</string>
+
+    <!-- kurulum -->
+    <string name="setup_title">Hoş geldiniz</string>
+    <string name="setup_subtitle">Başlatıcınızı ayarlayalım.</string>
+    <string name="setup_choose_phone">Telefon uygulamanızı seçin</string>
+    <string name="setup_choose_nav">Navigasyon uygulamanızı seçin</string>
+    <string name="setup_choose_media">Medya uygulamanızı seçin</string>
+    <string name="setup_done">Bitti</string>
+    <string name="not_set">Ayarlanmadı</string>
+
+    <!-- ayarlar -->
+    <string name="settings_title">Başlatıcı Ayarları</string>
+    <string name="settings_phone_app">Telefon uygulaması</string>
+    <string name="settings_nav_app">Navigasyon uygulaması</string>
+    <string name="settings_radio_app">Radyo uygulaması</string>
+    <string name="settings_media_app">Medya uygulaması (çalan bir şey yokken)</string>
+    <string name="settings_notification_access">Medya bilgisi erişimi</string>
+    <string name="access_enabled">Etkin</string>
+    <string name="access_disabled">Devre dışı — açmak için dokunun</string>
+    <string name="settings_temp_unit">Sıcaklık birimi</string>
+    <string name="unit_celsius">Santigrat (°C)</string>
+    <string name="unit_fahrenheit">Fahrenhayt (°F)</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_auto">Otomatik (saate göre)</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_dark">Koyu</string>
+    <string name="theme_system">Sistemi izle</string>
+    <string name="settings_keep_on">Ekranı açık tut</string>
+    <string name="settings_default_launcher">Varsayılan başlatıcı</string>
+    <string name="on">Açık</string>
+    <string name="off">Kapalı</string>
+    <string name="yes">Evet</string>
+    <string name="set_now">Ayarlanmadı — ayarlamak için dokunun</string>
+
+    <!-- hava durumu -->
+    <string name="weather_unavailable">Hava durumu yok</string>
+    <string name="weather_loading">Hava durumu yükleniyor…</string>
+    <string name="wx_clear">Açık</string>
+    <string name="wx_mainly_clear">Çoğunlukla açık</string>
+    <string name="wx_partly_cloudy">Parçalı bulutlu</string>
+    <string name="wx_overcast">Kapalı</string>
+    <string name="wx_fog">Sisli</string>
+    <string name="wx_drizzle">Çiseleme</string>
+    <string name="wx_rain">Yağmurlu</string>
+    <string name="wx_snow">Karlı</string>
+    <string name="wx_showers">Sağanak</string>
+    <string name="wx_thunderstorm">Gök gürültülü fırtına</string>
+
+    <!-- favori uygulamalar -->
+    <string name="pick_favorite">Favori uygulama seçin</string>
+    <string name="fav_change">Uygulamayı değiştir</string>
+    <string name="fav_remove">Kaldır</string>
+
+    <!-- çeşitli -->
+    <string name="pick_an_app">Uygulama seçin</string>
+    <string name="app_not_found">Uygulama bulunamadı — Ayarlar\'dan birini seçin</string>
+    <string name="now_playing">Şimdi çalıyor</string>
+    <string name="settings_language">Dil</string>
+    <string name="language_system">Sistem varsayılanı</string>
+    <string name="setup_choose_language">Dil</string>
+    <string name="media_enable_access">Medya bilgisi için dokunun</string>
+    <string name="forecast_high_low">%1$s / %2$s</string>
+    <string name="nav_back">Geri</string>
+    <string name="nav_home">Ana ekran</string>
+    <string name="setup_permissions">İzinler</string>
+    <string name="setup_permissions_hint">Bunlar hava durumunu ve çalan müziği göstermek için gerekli.</string>
+    <string name="settings_location_access">Konum erişimi</string>
+    <string name="access_granted">Verildi</string>
+    <string name="access_needed">Vermek için dokunun</string>
+    <string name="section_general">GENEL</string>
+    <string name="section_apps">VARSAYILAN UYGULAMALAR</string>
+    <string name="section_access">İZİNLER</string>
+    <string name="section_drawer">UYGULAMA ÇEKMECESİ</string>
+    <string name="settings_gradient">Renk teması</string>
+    <string name="section_appearance">GÖRÜNÜM</string>
+    <string name="gradient_preview_hint">Seçilen renklerin önizlemesi</string>
+    <string name="gradient_midnight">Gece Yarısı</string>
+    <string name="gradient_ocean">Okyanus</string>
+    <string name="gradient_sunset">Gün Batımı</string>
+    <string name="gradient_forest">Orman</string>
+    <string name="gradient_violet">Menekşe</string>
+    <string name="gradient_crimson">Kızıl</string>
+    <string name="gradient_graphite">Grafit</string>
+</resources>

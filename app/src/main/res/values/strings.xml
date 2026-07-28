@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Launcher</string>
+
+    <!-- bottom tabs -->
+    <string name="tab_audio">Audio</string>
+    <string name="tab_phone">Phone</string>
+    <string name="tab_nav">Nav</string>
+    <string name="tab_apps">Apps</string>
+    <string name="tab_settings">Settings</string>
+
+    <!-- app drawer -->
+    <string name="all_apps">All Apps</string>
+    <string name="no_apps">No launchable apps found</string>
+    <string name="app_icon">App icon</string>
+    <string name="search_apps">Search apps</string>
+    <string name="frequent">Frequently used</string>
+    <string name="hide_app">Hide from drawer</string>
+    <string name="settings_reset_hidden">Reset hidden apps</string>
+    <string name="couldnt_launch">Couldn\'t launch %1$s</string>
+    <string name="hidden_count">%1$d hidden</string>
+
+    <!-- audio chooser -->
+    <string name="audio_radio">Radio</string>
+
+    <!-- media widget -->
+    <string name="media_previous">Previous</string>
+    <string name="media_play_pause">Play or pause</string>
+    <string name="media_next">Next</string>
+    <string name="media_nothing_playing">Nothing playing</string>
+    <string name="media_tap_to_open">Tap to open</string>
+    <string name="media_enable_access">Tap to enable media info</string>
+
+    <!-- weather forecast -->
+    <string name="forecast_high_low">%1$s / %2$s</string>
+
+    <!-- setup -->
+    <string name="setup_title">Welcome</string>
+    <string name="setup_subtitle">Let\'s set up your launcher.</string>
+    <string name="setup_choose_phone">Choose your Phone app</string>
+    <string name="setup_choose_nav">Choose your Navigation app</string>
+    <string name="setup_choose_media">Choose your Media app</string>
+    <string name="setup_choose_language">Language</string>
+    <string name="setup_done">Done</string>
+    <string name="not_set">Not set</string>
+    <string name="setup_permissions">Permissions</string>
+    <string name="setup_permissions_hint">These let the launcher show weather and what\'s playing.</string>
+    <string name="settings_location_access">Location access</string>
+    <string name="access_granted">Granted</string>
+    <string name="access_needed">Tap to grant</string>
+
+    <!-- settings -->
+    <string name="settings_title">Launcher Settings</string>
+    <string name="section_general">GENERAL</string>
+    <string name="section_apps">DEFAULT APPS</string>
+    <string name="section_access">PERMISSIONS</string>
+    <string name="section_drawer">APP DRAWER</string>
+    <string name="settings_language">Language</string>
+    <string name="language_system">System default</string>
+    <string name="settings_phone_app">Phone app</string>
+    <string name="settings_nav_app">Navigation app</string>
+    <string name="settings_radio_app">Radio app</string>
+    <string name="settings_media_app">Media app (when nothing is playing)</string>
+    <string name="settings_notification_access">Media info access</string>
+    <string name="access_enabled">Enabled</string>
+    <string name="access_disabled">Disabled — tap to turn on</string>
+    <string name="settings_temp_unit">Temperature unit</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_gradient">Colour theme</string>
+    <string name="section_appearance">APPEARANCE</string>
+    <string name="gradient_preview_hint">Preview of the selected colours</string>
+    <string name="gradient_midnight">Midnight</string>
+    <string name="gradient_ocean">Ocean</string>
+    <string name="gradient_sunset">Sunset</string>
+    <string name="gradient_forest">Forest</string>
+    <string name="gradient_violet">Violet</string>
+    <string name="gradient_crimson">Crimson</string>
+    <string name="gradient_graphite">Graphite</string>
+    <string name="theme_auto">Auto (by time of day)</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">Follow system</string>
+    <string name="settings_keep_on">Keep screen on</string>
+    <string name="settings_default_launcher">Default launcher</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="yes">Yes</string>
+    <string name="set_now">Not set — tap to set</string>
+
+    <!-- weather -->
+    <string name="weather_unavailable">Weather unavailable</string>
+    <string name="weather_loading">Loading weather…</string>
+    <string name="wx_clear">Clear</string>
+    <string name="wx_mainly_clear">Mainly clear</string>
+    <string name="wx_partly_cloudy">Partly cloudy</string>
+    <string name="wx_overcast">Overcast</string>
+    <string name="wx_fog">Fog</string>
+    <string name="wx_drizzle">Drizzle</string>
+    <string name="wx_rain">Rain</string>
+    <string name="wx_snow">Snow</string>
+    <string name="wx_showers">Showers</string>
+    <string name="wx_thunderstorm">Thunderstorm</string>
+
+    <!-- favorites dock -->
+    <string name="pick_favorite">Pick a favorite app</string>
+    <string name="fav_change">Change app</string>
+    <string name="fav_remove">Remove</string>
+
+    <!-- in-app navigation -->
+    <string name="nav_back">Back</string>
+    <string name="nav_home">Home</string>
+
+    <!-- misc -->
+    <string name="pick_an_app">Pick an app</string>
+    <string name="app_not_found">App not found — choose one in Settings</string>
+    <string name="now_playing">Now Playing</string>
+</resources>

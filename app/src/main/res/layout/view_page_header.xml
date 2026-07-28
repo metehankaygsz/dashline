@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared header for secondary pages: in-app Back / Home controls plus a title.
+  The launcher runs fullscreen with the system bars hidden, so these are the only
+  navigation the user has on these screens.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/bar"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/navBack"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/nav_back"
+        app:srcCompat="@drawable/ic_back" />
+
+    <TextView
+        android:id="@+id/pageTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/app_name"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/navHome"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/nav_home"
+        app:srcCompat="@drawable/ic_home" />
+
+</LinearLayout>

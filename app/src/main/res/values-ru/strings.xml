@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Launcher</string>
+
+    <string name="tab_audio">Аудио</string>
+    <string name="tab_phone">Телефон</string>
+    <string name="tab_nav">Навигация</string>
+    <string name="tab_apps">Приложения</string>
+    <string name="tab_settings">Настройки</string>
+
+    <string name="all_apps">Все приложения</string>
+    <string name="no_apps">Приложения не найдены</string>
+    <string name="app_icon">Значок приложения</string>
+    <string name="search_apps">Поиск приложений</string>
+    <string name="frequent">Часто используемые</string>
+    <string name="hide_app">Скрыть из списка</string>
+    <string name="settings_reset_hidden">Сбросить скрытые приложения</string>
+    <string name="couldnt_launch">Не удалось открыть %1$s</string>
+    <string name="hidden_count">Скрыто: %1$d</string>
+
+    <string name="audio_radio">Радио</string>
+
+    <string name="media_previous">Назад</string>
+    <string name="media_play_pause">Воспроизвести или пауза</string>
+    <string name="media_next">Вперёд</string>
+    <string name="media_nothing_playing">Ничего не воспроизводится</string>
+    <string name="media_tap_to_open">Нажмите, чтобы открыть</string>
+
+    <string name="setup_title">Добро пожаловать</string>
+    <string name="setup_subtitle">Давайте настроим ваш лаунчер.</string>
+    <string name="setup_choose_phone">Выберите приложение Телефон</string>
+    <string name="setup_choose_nav">Выберите приложение Навигация</string>
+    <string name="setup_choose_media">Выберите медиа-приложение</string>
+    <string name="setup_done">Готово</string>
+    <string name="not_set">Не задано</string>
+
+    <string name="settings_title">Настройки лаунчера</string>
+    <string name="settings_phone_app">Приложение Телефон</string>
+    <string name="settings_nav_app">Приложение Навигация</string>
+    <string name="settings_radio_app">Приложение Радио</string>
+    <string name="settings_media_app">Медиа-приложение (когда ничего не играет)</string>
+    <string name="settings_notification_access">Доступ к медиаданным</string>
+    <string name="access_enabled">Включено</string>
+    <string name="access_disabled">Выключено — нажмите, чтобы включить</string>
+    <string name="settings_temp_unit">Единица температуры</string>
+    <string name="unit_celsius">Цельсий (°C)</string>
+    <string name="unit_fahrenheit">Фаренгейт (°F)</string>
+    <string name="settings_theme">Тема</string>
+    <string name="theme_auto">Авто (по времени суток)</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_system">Как в системе</string>
+    <string name="settings_keep_on">Не выключать экран</string>
+    <string name="settings_default_launcher">Лаунчер по умолчанию</string>
+    <string name="on">Вкл.</string>
+    <string name="off">Выкл.</string>
+    <string name="yes">Да</string>
+    <string name="set_now">Не задано — нажмите, чтобы задать</string>
+
+    <string name="weather_unavailable">Погода недоступна</string>
+    <string name="weather_loading">Загрузка погоды…</string>
+    <string name="wx_clear">Ясно</string>
+    <string name="wx_mainly_clear">В основном ясно</string>
+    <string name="wx_partly_cloudy">Переменная облачность</string>
+    <string name="wx_overcast">Пасмурно</string>
+    <string name="wx_fog">Туман</string>
+    <string name="wx_drizzle">Морось</string>
+    <string name="wx_rain">Дождь</string>
+    <string name="wx_snow">Снег</string>
+    <string name="wx_showers">Ливни</string>
+    <string name="wx_thunderstorm">Гроза</string>
+
+    <string name="pick_favorite">Выберите избранное приложение</string>
+    <string name="fav_change">Изменить приложение</string>
+    <string name="fav_remove">Убрать</string>
+
+    <string name="pick_an_app">Выберите приложение</string>
+    <string name="app_not_found">Приложение не найдено — выберите в настройках</string>
+    <string name="now_playing">Сейчас играет</string>
+    <string name="settings_language">Язык</string>
+    <string name="language_system">Системный по умолчанию</string>
+    <string name="setup_choose_language">Язык</string>
+    <string name="media_enable_access">Нажмите, чтобы включить медиаданные</string>
+    <string name="forecast_high_low">%1$s / %2$s</string>
+    <string name="nav_back">Назад</string>
+    <string name="nav_home">Главная</string>
+    <string name="setup_permissions">Разрешения</string>
+    <string name="setup_permissions_hint">Нужны для показа погоды и текущего воспроизведения.</string>
+    <string name="settings_location_access">Доступ к геолокации</string>
+    <string name="access_granted">Предоставлено</string>
+    <string name="access_needed">Нажмите, чтобы предоставить</string>
+    <string name="section_general">ОСНОВНОЕ</string>
+    <string name="section_apps">ПРИЛОЖЕНИЯ ПО УМОЛЧАНИЮ</string>
+    <string name="section_access">РАЗРЕШЕНИЯ</string>
+    <string name="section_drawer">СПИСОК ПРИЛОЖЕНИЙ</string>
+    <string name="settings_gradient">Цветовая тема</string>
+    <string name="section_appearance">ОФОРМЛЕНИЕ</string>
+    <string name="gradient_preview_hint">Предпросмотр выбранных цветов</string>
+    <string name="gradient_midnight">Полночь</string>
+    <string name="gradient_ocean">Океан</string>
+    <string name="gradient_sunset">Закат</string>
+    <string name="gradient_forest">Лес</string>
+    <string name="gradient_violet">Фиолетовый</string>
+    <string name="gradient_crimson">Багровый</string>
+    <string name="gradient_graphite">Графит</string>
+</resources>
