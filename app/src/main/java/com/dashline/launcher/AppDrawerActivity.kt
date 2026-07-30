@@ -1,4 +1,4 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.radiolauncher.databinding.ActivityAppDrawerBinding
+import com.dashline.launcher.databinding.ActivityAppDrawerBinding
 
 /** Grid of every launchable app, with search, a frequently-used strip, and hiding. */
 class AppDrawerActivity : BaseActivity() {

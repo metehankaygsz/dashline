@@ -1,9 +1,9 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.radiolauncher.databinding.ItemAppBinding
+import com.dashline.launcher.databinding.ItemAppBinding
 
 /**
  * RecyclerView adapter for app grids (drawer, frequent strip, picker).

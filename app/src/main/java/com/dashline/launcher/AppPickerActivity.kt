@@ -1,4 +1,4 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.app.Activity
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.radiolauncher.databinding.ActivityAppPickerBinding
+import com.dashline.launcher.databinding.ActivityAppPickerBinding
 
 /**
  * Full-screen app chooser for a given "role" (phone / nav / radio / bluetooth).

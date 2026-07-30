@@ -13,11 +13,11 @@
 
 # The notification listener is bound by the system by name; keep it intact so
 # enabling "Notification access" keeps working in release builds.
--keep class com.radiolauncher.MediaNotificationListener { *; }
+-keep class com.dashline.launcher.MediaNotificationListener { *; }
 
 # Keep the app entry points referenced from AndroidManifest.xml.
--keep class com.radiolauncher.App
--keep class com.radiolauncher.** extends android.app.Activity
+-keep class com.dashline.launcher.App
+-keep class com.dashline.launcher.** extends android.app.Activity
 
 # org.json is part of the platform.
 -dontwarn org.json.**

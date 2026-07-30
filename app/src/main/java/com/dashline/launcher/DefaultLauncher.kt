@@ -1,4 +1,4 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.app.Activity
 import android.app.role.RoleManager

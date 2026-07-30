@@ -1,10 +1,10 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.radiolauncher.databinding.ActivitySettingsBinding
+import com.dashline.launcher.databinding.ActivitySettingsBinding
 
 /** Launcher settings: change which app each role uses. */
 class SettingsActivity : BaseActivity() {

@@ -93,7 +93,7 @@ Designed for common head-unit resolutions — 1024×600 and 800×480 both work.
 Grab the APK from the [latest release](../../releases/latest) and sideload it:
 
 ```bash
-adb install -r dashline-v0.1.1.apk
+adb install -r dashline-v0.1.4.apk
 ```
 
 Or copy the APK to a USB stick, plug it into the head unit, and open it with the
@@ -157,7 +157,7 @@ it up somewhere safe.
 Tagging a version builds and publishes a signed APK automatically:
 
 ```bash
-git tag v0.1.0 && git push origin v0.1.0
+git tag v0.1.4 && git push origin v0.1.4
 ```
 
 This needs four repository secrets under **Settings → Secrets and variables →
@@ -170,7 +170,7 @@ After installing, press the unit's Home button and choose this launcher, then
 select "Always". To reset the default while developing:
 
 ```bash
-adb shell cmd package set-home-activity com.radiolauncher/.HomeActivity
+adb shell cmd package set-home-activity com.dashline.launcher/.HomeActivity
 ```
 
 ---
@@ -205,7 +205,7 @@ and you can switch between °C and °F in Settings.
 ```
 app/src/main/
 ├── AndroidManifest.xml              # HOME intent-filter, notification listener
-├── java/com/radiolauncher/
+├── java/com/dashline/launcher/
 │   ├── App.kt                       # applies saved language + theme at startup
 │   ├── BaseActivity.kt              # locale, fullscreen, gradient, in-app nav
 │   ├── HomeActivity.kt              # the dashboard

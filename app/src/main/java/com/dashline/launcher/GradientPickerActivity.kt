@@ -1,10 +1,10 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import com.radiolauncher.databinding.ActivityGradientPickerBinding
-import com.radiolauncher.databinding.ItemGradientBinding
+import com.dashline.launcher.databinding.ActivityGradientPickerBinding
+import com.dashline.launcher.databinding.ItemGradientBinding
 
 /**
  * Picker for the UI colour gradient. Rows are built from GradientThemes.PRESETS

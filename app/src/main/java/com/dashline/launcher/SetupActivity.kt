@@ -1,10 +1,10 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.radiolauncher.databinding.ActivitySetupBinding
+import com.dashline.launcher.databinding.ActivitySetupBinding
 
 /**
  * First-run setup. The user picks their Phone app (required by product spec) and

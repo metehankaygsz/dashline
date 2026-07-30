@@ -1,4 +1,4 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.content.Context
 import android.content.Intent

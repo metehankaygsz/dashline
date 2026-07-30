@@ -30,12 +30,12 @@ val appVersionName = (project.findProperty("appVersionName") as String?) ?: "0.1
 val appVersionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 1
 
 android {
-    namespace = "com.radiolauncher"
+    namespace = "com.dashline.launcher"
     // Google Play requires targeting API 35 now and API 36 from 31 Aug 2026.
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.radiolauncher"
+        applicationId = "com.dashline.launcher"
         // Per-flavour minSdk below. A low minSdk doesn't conflict with a high
         // targetSdk — the app still installs on old devices.
         minSdk = 19

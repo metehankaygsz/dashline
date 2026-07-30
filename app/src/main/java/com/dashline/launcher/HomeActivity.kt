@@ -1,4 +1,4 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.radiolauncher.databinding.ActivityHomeBinding
+import com.dashline.launcher.databinding.ActivityHomeBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -127,7 +127,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun bindTab(
-        tab: com.radiolauncher.databinding.ItemTabBinding,
+        tab: com.dashline.launcher.databinding.ItemTabBinding,
         iconRes: Int,
         labelRes: Int,
         onClick: () -> Unit

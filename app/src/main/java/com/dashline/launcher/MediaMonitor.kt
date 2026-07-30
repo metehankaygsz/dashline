@@ -1,4 +1,4 @@
-package com.radiolauncher
+package com.dashline.launcher
 
 import android.annotation.TargetApi
 import android.content.ComponentName
