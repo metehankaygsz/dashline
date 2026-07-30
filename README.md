@@ -1,6 +1,6 @@
 <img src="docs/logo.png" alt="" width="88" align="left" hspace="16" vspace="4">
 
-# minimal-headunit-launcher
+# Dashline
 
 [![Build](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml/badge.svg)](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -79,7 +79,7 @@ Search, a frequently-used strip, and the full app grid.
 | | |
 |---|---|
 | Min Android | 4.4 KitKat (API 19) |
-| Target Android | 14 (API 34) |
+| Target Android | 16 (API 36) |
 | Orientation | Landscape |
 | Google Play Services | Not required |
 | API keys | None |
@@ -93,7 +93,7 @@ Designed for common head-unit resolutions — 1024×600 and 800×480 both work.
 Grab the APK from the [latest release](../../releases/latest) and sideload it:
 
 ```bash
-adb install -r minimal-headunit-launcher-v0.1.0.apk
+adb install -r dashline-v0.1.1.apk
 ```
 
 Or copy the APK to a USB stick, plug it into the head unit, and open it with the

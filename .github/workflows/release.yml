@@ -84,9 +84,9 @@ jobs:
         run: |
           mkdir -p dist
           cp app/build/outputs/apk/release/*.apk \
-             "dist/minimal-headunit-launcher-${GITHUB_REF_NAME}.apk"
+             "dist/dashline-${GITHUB_REF_NAME}.apk"
           cp app/build/outputs/bundle/release/*.aab \
-             "dist/minimal-headunit-launcher-${GITHUB_REF_NAME}.aab"
+             "dist/dashline-${GITHUB_REF_NAME}.aab"
 
       # The .aab is uploaded to Play, not installed by users, so it stays a build
       # artifact rather than going on the public release page.
@@ -106,6 +106,6 @@ jobs:
           body: |
             Install on a head unit with:
 
-                adb install -r minimal-headunit-launcher-${{ github.ref_name }}.apk
+                adb install -r dashline-${{ github.ref_name }}.apk
 
             Then press Home and choose this launcher.

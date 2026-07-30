@@ -16,5 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Radio Launcher"
+rootProject.name = "Dashline"
 include(":app")

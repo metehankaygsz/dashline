@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Minimal Head-Unit Launcher**
+**Dashline**
 
 Last updated: 30 July 2026
 
