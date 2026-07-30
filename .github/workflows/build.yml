@@ -31,6 +31,11 @@ jobs:
       - name: Build debug APK
         run: gradle assembleDebug --no-daemon --stacktrace
 
+      # Catches broken R8 / ProGuard rules here rather than at release time.
+      # Unsigned is fine — this only needs to prove the build succeeds.
+      - name: Build release APK (unsigned, verifies R8)
+        run: gradle assembleRelease --no-daemon --stacktrace
+
       - name: Lint
         run: gradle lintDebug --no-daemon
 
