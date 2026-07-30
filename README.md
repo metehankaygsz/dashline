@@ -1,5 +1,9 @@
 # minimal-headunit-launcher
 
+[![Build](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml/badge.svg)](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Min API](https://img.shields.io/badge/API-19%2B-brightgreen.svg)](https://developer.android.com/about/versions/android-4.4)
+
 A clean, minimal Android home-screen launcher for car head units — the cheap
 aftermarket "Android radio" double-DIN units, not Android Auto.
 
@@ -80,7 +84,18 @@ Designed for common head-unit resolutions — 1024×600 and 800×480 both work.
 
 ---
 
-## Build and install
+## Install
+
+Grab the APK from the [latest release](../../releases/latest) and sideload it:
+
+```bash
+adb install -r minimal-headunit-launcher-v0.1.0.apk
+```
+
+Or copy the APK to a USB stick, plug it into the head unit, and open it with the
+unit's file manager.
+
+## Build from source
 
 Open the project in **Android Studio** (Giraffe or newer). It will fetch the
 right Gradle and SDK versions and generate the Gradle wrapper on first sync.
@@ -95,11 +110,37 @@ Then, from the command line:
 ./gradlew installDebug
 ```
 
-To install a prebuilt APK directly on the unit over ADB:
+### Building a release
+
+Release builds are minified with R8 and must be signed. Create a key once —
+choose your own passwords when prompted:
 
 ```bash
-adb install -r app-debug.apk
+keytool -genkey -v -keystore release.jks -alias release -keyalg RSA -keysize 2048 -validity 10000
 ```
+
+Copy `keystore.properties.example` to `keystore.properties` and fill in your
+values, then:
+
+```bash
+./gradlew assembleRelease
+```
+
+`keystore.properties` and `*.jks` are gitignored — **never commit them**. Losing
+the key means you can't publish updates that upgrade an existing install, so back
+it up somewhere safe.
+
+### Publishing a release
+
+Tagging a version builds and publishes a signed APK automatically:
+
+```bash
+git tag v0.1.0 && git push origin v0.1.0
+```
+
+This needs four repository secrets under **Settings → Secrets and variables →
+Actions**: `KEYSTORE_BASE64` (`base64 -i release.jks`), `KEYSTORE_PASSWORD`,
+`KEY_ALIAS` and `KEY_PASSWORD`.
 
 ### Setting it as the launcher
 
