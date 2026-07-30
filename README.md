@@ -78,7 +78,7 @@ Search, a frequently-used strip, and the full app grid.
 
 | | |
 |---|---|
-| Min Android | 4.4 KitKat (API 19) |
+| Min Android | 4.4 KitKat (API 19) sideloaded · 5.0 (API 21) via Play |
 | Target Android | 16 (API 36) |
 | Orientation | Landscape |
 | Google Play Services | Not required |
@@ -113,6 +113,24 @@ Then, from the command line:
 ```bash
 ./gradlew installDebug
 ```
+
+### Build flavours
+
+Google Play's installer refuses anything below API 21, but many cheap head units
+still run Android 4.4. The project therefore ships two flavours of the same app:
+
+| Flavour | minSdk | Where it goes |
+|---|---|---|
+| `legacy` | 19 | The sideloadable APK on GitHub Releases — works on KitKat |
+| `play` | 21 | The App Bundle uploaded to the Play Store |
+
+```bash
+./gradlew assembleLegacyRelease   # APK for sideloading
+./gradlew bundlePlayRelease       # AAB for the Play Console
+```
+
+Both share the same `applicationId`, so any given device only ever sees one of
+them as "the app".
 
 ### Building a release
 

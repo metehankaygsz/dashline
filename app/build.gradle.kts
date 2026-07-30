@@ -36,11 +36,8 @@ android {
 
     defaultConfig {
         applicationId = "com.radiolauncher"
-        // Old head units can run Android 4.4 (KitKat). API 19 is also the lowest
-        // minSdk that the current Android Gradle Plugin (8.x) supports, so this is
-        // as backwards-compatible as this toolchain allows. Covers ~99% of Android
-        // head units in the wild. A low minSdk doesn't conflict with a high
-        // targetSdk — the app still installs on KitKat.
+        // Per-flavour minSdk below. A low minSdk doesn't conflict with a high
+        // targetSdk — the app still installs on old devices.
         minSdk = 19
         targetSdk = 36
         versionCode = appVersionCode
@@ -48,6 +45,23 @@ android {
 
         // Let the support library render vector drawables on pre-Lollipop devices.
         vectorDrawables.useSupportLibrary = true
+    }
+
+    // Google Play's installer requires minSdk 21+, but plenty of cheap head units
+    // still run Android 4.4. Two flavours keep both audiences:
+    //   legacy -> sideloaded APK on GitHub Releases, supports KitKat
+    //   play   -> App Bundle for the Play Store, minSdk 21
+    // Same applicationId, so a device only ever sees one of them as "the app".
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("legacy") {
+            dimension = "distribution"
+            minSdk = 19
+        }
+        create("play") {
+            dimension = "distribution"
+            minSdk = 21
+        }
     }
 
     signingConfigs {

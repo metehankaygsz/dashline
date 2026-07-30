@@ -64,7 +64,7 @@ jobs:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
 
-      # APK for sideloading (GitHub Release) and AAB for the Play Console.
+      # legacy APK (KitKat-capable) for sideloading, play AAB for the Play Console.
       - name: Build signed APK and App Bundle
         env:
           KEYSTORE_FILE: ${{ runner.temp }}/release.jks
@@ -72,7 +72,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          gradle assembleRelease bundleRelease --no-daemon --stacktrace \
+          gradle assembleLegacyRelease bundlePlayRelease --no-daemon --stacktrace \
             -PappVersionName="$APP_VERSION_NAME" \
             -PappVersionCode="$APP_VERSION_CODE"
 
@@ -83,9 +83,9 @@ jobs:
       - name: Collect artifacts
         run: |
           mkdir -p dist
-          cp app/build/outputs/apk/release/*.apk \
+          cp app/build/outputs/apk/legacy/release/*.apk \
              "dist/dashline-${GITHUB_REF_NAME}.apk"
-          cp app/build/outputs/bundle/release/*.aab \
+          cp app/build/outputs/bundle/playRelease/*.aab \
              "dist/dashline-${GITHUB_REF_NAME}.aab"
 
       # The .aab is uploaded to Play, not installed by users, so it stays a build
