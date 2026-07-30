@@ -1,3 +1,5 @@
+<img src="docs/logo.png" alt="" width="88" align="left" hspace="16" vspace="4">
+
 # minimal-headunit-launcher
 
 [![Build](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml/badge.svg)](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml)
@@ -9,6 +11,8 @@ aftermarket "Android radio" double-DIN units, not Android Auto.
 
 Kotlin, classic Views, landscape-first, **no Google Play Services required**, and
 it runs all the way back to **Android 4.4 (KitKat)** so it works on old units too.
+
+<br clear="left">
 
 ---
 

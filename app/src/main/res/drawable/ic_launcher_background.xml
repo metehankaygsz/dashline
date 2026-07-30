@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive-icon background: the app's Midnight gradient, corner to corner. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#061726"
+        android:endColor="#0D3A5E"
+        android:angle="315"
+        android:type="linear" />
+</shape>
