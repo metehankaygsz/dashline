@@ -36,8 +36,10 @@ jobs:
       - name: Build release APK (unsigned, verifies R8)
         run: gradle assembleRelease --no-daemon --stacktrace
 
+      # Flavour-qualified task names: lintDebug no longer exists once flavours
+      # are declared. Both variants are checked.
       - name: Lint
-        run: gradle lintDebug --no-daemon
+        run: gradle lintLegacyDebug lintPlayDebug --no-daemon
 
       # assembleDebug/assembleRelease build every flavour, so both the KitKat
       # (legacy) and Play (minSdk 21) variants are verified on each push.
@@ -48,10 +50,10 @@ jobs:
           path: app/build/outputs/apk/*/debug/*.apk
           if-no-files-found: error
 
-      - name: Upload lint report
+      - name: Upload lint reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lint-report
-          path: app/build/reports/lint-results-debug.html
+          name: lint-reports
+          path: app/build/reports/lint-results-*.html
           if-no-files-found: ignore
