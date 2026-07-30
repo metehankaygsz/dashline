@@ -2,7 +2,7 @@
 
 # Dashline
 
-[![Build](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml/badge.svg)](https://github.com/metehankaygsz/minimal-headunit-launcher/actions/workflows/build.yml)
+[![Build](https://github.com/metehankaygsz/dashline/actions/workflows/build.yml/badge.svg)](https://github.com/metehankaygsz/dashline/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Min API](https://img.shields.io/badge/API-19%2B-brightgreen.svg)](https://developer.android.com/about/versions/android-4.4)
 

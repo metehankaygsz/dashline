@@ -74,7 +74,7 @@ anyone.
 ## Open source
 
 This app is open source under the MIT licence. You can review exactly what it
-does at https://github.com/metehankaygsz/minimal-headunit-launcher.
+does at https://github.com/metehankaygsz/dashline.
 
 ## Changes
 
@@ -83,4 +83,4 @@ Any changes to this policy will be published on this page with an updated date.
 ## Contact
 
 Questions about this policy: open an issue at
-https://github.com/metehankaygsz/minimal-headunit-launcher/issues
+https://github.com/metehankaygsz/dashline/issues
