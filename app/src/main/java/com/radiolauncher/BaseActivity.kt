@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 /**
  * Base for all activities:
@@ -43,20 +46,20 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     /**
-     * Immersive-sticky fullscreen. These flags are deprecated on API 30+ but still
-     * work, and unlike WindowInsetsController they're available from API 19 — which
-     * matters for the old head units this launcher targets.
+     * Immersive fullscreen — the launcher supplies its own navigation.
+     *
+     * Uses the AndroidX compat controller rather than the raw systemUiVisibility
+     * flags: from targetSdk 35 Android enforces edge-to-edge and the legacy flags
+     * stop behaving predictably. The compat layer maps to those same flags on old
+     * devices, so KitKat still works.
      */
-    @Suppress("DEPRECATION")
     private fun enterImmersive() {
-        window.decorView.systemUiVisibility = (
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            )
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.systemBars())
+            systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     // ---- UI colour gradient -------------------------------------------------

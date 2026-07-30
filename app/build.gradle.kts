@@ -24,20 +24,27 @@ val releaseKeyPassword = signingValue("keyPassword", "KEY_PASSWORD")
 val hasReleaseSigning = releaseStoreFile != null && releaseStorePassword != null &&
     releaseKeyAlias != null && releaseKeyPassword != null
 
+// Release builds get their version from the git tag (see .github/workflows/release.yml);
+// local builds fall back to these defaults.
+val appVersionName = (project.findProperty("appVersionName") as String?) ?: "0.1.0"
+val appVersionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 1
+
 android {
     namespace = "com.radiolauncher"
-    compileSdk = 34
+    // Google Play requires targeting API 35 now and API 36 from 31 Aug 2026.
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.radiolauncher"
         // Old head units can run Android 4.4 (KitKat). API 19 is also the lowest
         // minSdk that the current Android Gradle Plugin (8.x) supports, so this is
         // as backwards-compatible as this toolchain allows. Covers ~99% of Android
-        // head units in the wild.
+        // head units in the wild. A low minSdk doesn't conflict with a high
+        // targetSdk — the app still installs on KitKat.
         minSdk = 19
-        targetSdk = 34
-        versionCode = 1
-        versionName = "0.1.0"
+        targetSdk = 36
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         // Let the support library render vector drawables on pre-Lollipop devices.
         vectorDrawables.useSupportLibrary = true

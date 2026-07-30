@@ -47,33 +47,61 @@ jobs:
         with:
           gradle-version: '8.13'
 
+      # v1.2.3 -> versionName 1.2.3, versionCode 10203. Monotonic across releases,
+      # which Google Play requires for every upload.
+      - name: Derive version from tag
+        run: |
+          NAME="${GITHUB_REF_NAME#v}"
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$NAME"
+          MAJOR=${MAJOR:-0}; MINOR=${MINOR:-0}; PATCH=${PATCH:-0}
+          CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+          echo "APP_VERSION_NAME=$NAME" >> "$GITHUB_ENV"
+          echo "APP_VERSION_CODE=$CODE" >> "$GITHUB_ENV"
+          echo "versionName=$NAME  versionCode=$CODE"
+
       - name: Decode keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
 
-      - name: Build signed release APK
+      # APK for sideloading (GitHub Release) and AAB for the Play Console.
+      - name: Build signed APK and App Bundle
         env:
           KEYSTORE_FILE: ${{ runner.temp }}/release.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle assembleRelease --no-daemon --stacktrace
+        run: |
+          gradle assembleRelease bundleRelease --no-daemon --stacktrace \
+            -PappVersionName="$APP_VERSION_NAME" \
+            -PappVersionCode="$APP_VERSION_CODE"
 
       - name: Remove keystore
         if: always()
         run: rm -f "$RUNNER_TEMP/release.jks"
 
-      - name: Rename APK
+      - name: Collect artifacts
         run: |
           mkdir -p dist
           cp app/build/outputs/apk/release/*.apk \
              "dist/minimal-headunit-launcher-${GITHUB_REF_NAME}.apk"
+          cp app/build/outputs/bundle/release/*.aab \
+             "dist/minimal-headunit-launcher-${GITHUB_REF_NAME}.aab"
+
+      # The .aab is uploaded to Play, not installed by users, so it stays a build
+      # artifact rather than going on the public release page.
+      - name: Upload App Bundle for Play Console
+        uses: actions/upload-artifact@v4
+        with:
+          name: play-bundle-${{ github.ref_name }}
+          path: dist/*.aab
+          if-no-files-found: error
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.apk
+          fail_on_unmatched_files: true
           generate_release_notes: true
           body: |
             Install on a head unit with:
