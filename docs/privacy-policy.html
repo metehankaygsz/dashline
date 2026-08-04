@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Dashline</title>
+<meta name="description" content="Dashline collects no personal data. No accounts, no analytics, no advertising, no tracking.">
+<link rel="icon" href="logo.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="doc-head">
+    <a class="back" href="./">&larr; Dashline</a>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated 30 July 2026</p>
+  </header>
+
+  <main class="doc">
+
+    <div class="callout">
+      <p>
+        <strong>The short version.</strong> Dashline collects no personal data, has
+        no accounts, no analytics, no advertising and no tracking. The only data
+        that ever leaves your device is an approximate location sent to a weather
+        service so the app can show local weather — and that is optional.
+      </p>
+    </div>
+
+    <h2>Information the app uses</h2>
+
+    <h3>Location</h3>
+    <ul>
+      <li><strong>What:</strong> your device's approximate or precise coordinates, from the Android location service.</li>
+      <li><strong>Why:</strong> solely to fetch the current weather and forecast for where you are.</li>
+      <li><strong>Where it goes:</strong> to <a href="https://open-meteo.com">Open-Meteo</a>, a free weather API, as part of a weather request. Nothing else is sent with it — no device identifiers, no account information.</li>
+      <li><strong>Retention:</strong> the app does not store your location. Coordinates are used for the request and discarded.</li>
+      <li><strong>Optional:</strong> you may decline the location permission. The weather panel then shows "Weather unavailable" and every other feature continues to work.</li>
+    </ul>
+    <p>Open-Meteo's own terms are at <a href="https://open-meteo.com/en/terms">open-meteo.com/en/terms</a>.</p>
+
+    <h3>Media playback information</h3>
+    <p>
+      If you enable Notification access, the app reads the currently playing track's
+      title, artist and artwork from whichever media app is playing, so it can
+      display them and offer playback controls.
+    </p>
+    <ul>
+      <li>This information is read on the device and displayed on screen only.</li>
+      <li>It is never transmitted anywhere and never stored.</li>
+      <li>This access is optional and off by default. You can revoke it at any time in your device's system settings.</li>
+    </ul>
+
+    <h3>Installed applications</h3>
+    <p>
+      The app lists the applications installed on your device so it can show them in
+      the app drawer and let you launch them. This is inherent to being a launcher.
+      The list is read on the device, is never transmitted, and is never stored.
+    </p>
+
+    <h2>Information stored on your device</h2>
+    <p>
+      Your settings — chosen language, theme, colour scheme, default apps,
+      favourites, hidden apps, and how often you open each app — are saved locally
+      in the app's private storage. They never leave your device and are deleted
+      when you uninstall the app.
+    </p>
+
+    <h2>Data sharing</h2>
+    <p>
+      No personal data is sold, rented or shared with third parties. The only
+      outbound network request the app makes is the weather lookup described above.
+    </p>
+
+    <h2>Children's privacy</h2>
+    <p>
+      The app is not directed at children and collects no personal information from
+      anyone.
+    </p>
+
+    <h2>Permissions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Permission</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>ACCESS_COARSE_LOCATION</code><br><code>ACCESS_FINE_LOCATION</code></td>
+            <td>Fetch local weather. Optional.</td>
+          </tr>
+          <tr>
+            <td><code>INTERNET</code><br><code>ACCESS_NETWORK_STATE</code></td>
+            <td>Request weather data; show the Wi-Fi indicator.</td>
+          </tr>
+          <tr>
+            <td><code>QUERY_ALL_PACKAGES</code></td>
+            <td>List installed apps for the app drawer. Required for a launcher.</td>
+          </tr>
+          <tr>
+            <td><code>BIND_NOTIFICATION_LISTENER_SERVICE</code></td>
+            <td>Read now-playing media info. Optional, off by default.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Open source</h2>
+    <p>
+      Dashline is open source under the MIT licence. You can review exactly what it
+      does at
+      <a href="https://github.com/metehankaygsz/dashline">github.com/metehankaygsz/dashline</a>.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      Any changes to this policy will be published on this page with an updated date.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about this policy: open an issue at
+      <a href="https://github.com/metehankaygsz/dashline/issues">github.com/metehankaygsz/dashline/issues</a>.
+    </p>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="./">Home</a>
+    <a href="https://github.com/metehankaygsz/dashline">GitHub</a>
+    <a href="https://github.com/metehankaygsz/dashline/releases/latest">Releases</a>
+    <a href="https://github.com/metehankaygsz/dashline/issues">Report a bug</a>
+    <p class="copy">Open source under the MIT licence.</p>
+  </div>
+</footer>
+
+</body>
+</html>
