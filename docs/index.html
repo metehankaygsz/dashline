@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashline — a minimal launcher for car head units</title>
+<meta name="description" content="A clean, minimal Android home-screen launcher for aftermarket car head units. Free, open source, no Google Play Services required, works back to Android 4.4.">
+<link rel="icon" href="logo.png">
+
+<meta property="og:title" content="Dashline">
+<meta property="og:description" content="A minimal launcher for car head units. Free and open source.">
+<meta property="og:image" content="https://metehankaygsz.github.io/dashline/play-feature-graphic.png">
+<meta property="og:url" content="https://metehankaygsz.github.io/dashline/">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --bg-a:#061726; --bg-b:#0D3A5E;
+    --text:#ffffff; --muted:#b8d4e8; --dim:#8fb0cc;
+    --accent:#3b9ee5; --accent-soft:#5cb8f0;
+    --card:rgba(255,255,255,.055);
+    --line:rgba(255,255,255,.12);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(150deg,var(--bg-a) 0%,var(--bg-b) 100%);
+    background-attachment:fixed;
+    color:var(--text);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  section{padding:72px 0}
+
+  /* hero */
+  .hero{text-align:center;padding:96px 0 64px}
+  .hero img.mark{width:88px;height:88px;border-radius:20px;display:block;margin:0 auto 26px}
+  .hero h1{font-size:clamp(2.6rem,7vw,3.8rem);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+  .tagline{color:var(--muted);font-size:clamp(1.02rem,2.4vw,1.2rem);margin-top:14px}
+  .sub{color:var(--dim);font-size:.96rem;margin-top:10px}
+
+  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .btn{
+    display:inline-block;padding:13px 26px;border-radius:10px;
+    font-size:.97rem;font-weight:600;text-decoration:none;
+    transition:transform .15s ease,background .15s ease,border-color .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--accent);color:#04121f}
+  .btn-primary:hover{background:var(--accent-soft)}
+  .btn-ghost{border:1px solid var(--line);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--accent);background:rgba(59,158,229,.09)}
+
+  .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+  .pill{
+    font-size:.8rem;color:var(--muted);border:1px solid var(--line);
+    border-radius:999px;padding:5px 13px;
+  }
+
+  /* shots */
+  .shot{
+    width:100%;border-radius:var(--radius);display:block;
+    border:1px solid var(--line);
+  }
+  .shot-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  .cap{color:var(--dim);font-size:.85rem;text-align:center;margin-top:10px}
+
+  h2{
+    font-size:1.5rem;font-weight:600;letter-spacing:-.01em;
+    margin-bottom:8px;
+  }
+  .lede{color:var(--muted);margin-bottom:30px;max-width:62ch}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 24px;
+  }
+  .card h3{font-size:1rem;font-weight:600;margin-bottom:7px}
+  .card p{color:var(--muted);font-size:.92rem}
+
+  /* beta */
+  .beta{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:32px;
+  }
+  .beta ol{margin:16px 0 0 20px;color:var(--muted)}
+  .beta li{margin-bottom:9px}
+  .beta a{color:var(--accent-soft)}
+  .note{color:var(--dim);font-size:.88rem;margin-top:18px}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:36px 0 56px;text-align:center}
+  footer a{color:var(--muted);text-decoration:none;margin:0 12px;font-size:.92rem}
+  footer a:hover{color:var(--accent-soft)}
+  .copy{color:var(--dim);font-size:.83rem;margin-top:18px}
+
+  code{
+    background:rgba(0,0,0,.32);border:1px solid var(--line);
+    padding:2px 7px;border-radius:6px;font-size:.87em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+
+  @media(max-width:640px){
+    section{padding:52px 0}
+    .hero{padding:66px 0 44px}
+    .shot-grid{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .btn{transition:none}
+    .btn:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="mark" src="logo.png" alt="Dashline logo">
+    <h1>Dashline</h1>
+    <p class="tagline">A minimal launcher for Android car head units.</p>
+    <p class="sub">Free, open source, and it works on units nobody else supports.</p>
+
+    <div class="btns">
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.dashline.launcher">Get it on Google Play</a>
+      <a class="btn btn-ghost" href="https://github.com/metehankaygsz/dashline/releases/latest">Download APK</a>
+      <a class="btn btn-ghost" href="https://github.com/metehankaygsz/dashline">View source</a>
+    </div>
+
+    <div class="pills">
+      <span class="pill">Android 4.4+</span>
+      <span class="pill">No Play Services needed</span>
+      <span class="pill">No ads or tracking</span>
+      <span class="pill">~1.2 MB</span>
+      <span class="pill">MIT licensed</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <img class="shot" src="screenshots/dashboard.png" alt="Dashline home screen showing a large clock, current weather with a three-day forecast, a media panel and a phone shortcut">
+    <p class="cap">The whole launcher is one glanceable screen.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Built for the units, not for phones</h2>
+    <p class="lede">
+      Most head-unit launchers are phone launchers stretched sideways. Dashline is
+      landscape-first, readable at a glance, and light enough for a slow SoC.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Clock &amp; weather</h3>
+        <p>Large clock and date, current conditions and a three-day forecast. No API key, no account.</p>
+      </div>
+      <div class="card">
+        <h3>Real media controls</h3>
+        <p>Reads whatever is playing — album art, title and artist — with play, skip and a seek bar.</p>
+      </div>
+      <div class="card">
+        <h3>Your apps, your tabs</h3>
+        <p>Audio, Radio, Phone, Nav, Apps and Settings, each mapped to an app you choose.</p>
+      </div>
+      <div class="card">
+        <h3>Drawer that stays tidy</h3>
+        <p>Search as you type, a frequently-used row, and long-press to hide vendor bloat.</p>
+      </div>
+      <div class="card">
+        <h3>Seven colour schemes</h3>
+        <p>Each recolours the whole interface. Light and dark, or automatic by time of day.</p>
+      </div>
+      <div class="card">
+        <h3>Ten languages</h3>
+        <p>Including Turkish, Russian, Chinese and Arabic, with full right-to-left support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Make it yours</h2>
+    <p class="lede">Pick a colour scheme, choose your default apps, and set it once.</p>
+    <div class="shot-grid">
+      <div>
+        <img class="shot" src="screenshots/gradients.png" alt="Colour theme picker showing Midnight, Ocean, Sunset, Forest, Violet, Crimson and Graphite schemes">
+        <p class="cap">Seven schemes, applied across the whole UI.</p>
+      </div>
+      <div>
+        <img class="shot" src="screenshots/settings.png" alt="Settings screen with sections for general options, default apps and permissions">
+        <p class="cap">Everything configurable, nothing buried.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Every app, one search away</h2>
+    <p class="lede">
+      The drawer learns what you actually open and puts it first.
+    </p>
+    <img class="shot" src="screenshots/drawer.png" alt="App drawer with a search field, a frequently used row and a grid of installed apps">
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Join the beta</h2>
+    <div class="beta">
+      <p style="color:var(--muted)">
+        Dashline is in open beta on Google Play. Google requires 12 testers opted in
+        for 14 days before a new app can go public — joining genuinely helps.
+      </p>
+      <ol>
+        <li>Join the group: <a href="https://groups.google.com/g/dashline-testers">dashline-testers</a></li>
+        <li>Opt in: <a href="https://play.google.com/apps/testing/com.dashline.launcher">become a tester</a></li>
+        <li>Install from <a href="https://play.google.com/store/apps/details?id=com.dashline.launcher">Google Play</a></li>
+      </ol>
+      <p class="note">
+        Use the same Google account your head unit is signed into, or the build won't
+        appear. No Play Store on your unit? Plenty don't have one — grab the
+        <a href="https://github.com/metehankaygsz/dashline/releases/latest" style="color:var(--accent-soft)">APK</a>
+        instead. That build runs on Android 4.4 and up.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Nothing leaves your device</h2>
+    <p class="lede">
+      No accounts, no analytics, no advertising, no tracking. The only outbound
+      request is a weather lookup, and location is optional — decline it and
+      everything else still works. The source is public, so you can check.
+    </p>
+    <p style="color:var(--muted)">
+      Install with <code>adb install -r dashline.apk</code>, or copy it to a USB
+      stick and open it with your unit's file manager.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="https://github.com/metehankaygsz/dashline">GitHub</a>
+    <a href="https://github.com/metehankaygsz/dashline/releases/latest">Releases</a>
+    <a href="privacy-policy">Privacy</a>
+    <a href="https://github.com/metehankaygsz/dashline/issues">Report a bug</a>
+    <p class="copy">Open source under the MIT licence.</p>
+  </div>
+</footer>
+
+</body>
+</html>
