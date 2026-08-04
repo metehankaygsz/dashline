@@ -1,18 +1,24 @@
-<img src="docs/logo.png" alt="" width="88" align="left" hspace="16" vspace="4">
+<p align="center">
+  <img src="docs/logo.png" alt="Dashline" width="96">
+</p>
 
-# Dashline
+<h1 align="center">Dashline</h1>
 
-[![Build](https://github.com/metehankaygsz/dashline/actions/workflows/build.yml/badge.svg)](https://github.com/metehankaygsz/dashline/actions/workflows/build.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Min API](https://img.shields.io/badge/API-19%2B-brightgreen.svg)](https://developer.android.com/about/versions/android-4.4)
+<p align="center">
+  <a href="https://github.com/metehankaygsz/dashline/actions/workflows/build.yml"><img src="https://github.com/metehankaygsz/dashline/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="https://developer.android.com/about/versions/android-4.4"><img src="https://img.shields.io/badge/API-19%2B-brightgreen.svg" alt="Min API 19+"></a>
+</p>
 
-A clean, minimal Android home-screen launcher for car head units — the cheap
-aftermarket "Android radio" double-DIN units, not Android Auto.
+<p align="center">
+  A clean, minimal Android home-screen launcher for car head units — the cheap<br>
+  aftermarket "Android radio" double-DIN units, not Android Auto.
+</p>
 
-Kotlin, classic Views, landscape-first, **no Google Play Services required**, and
-it runs all the way back to **Android 4.4 (KitKat)** so it works on old units too.
-
-<br clear="left">
+<p align="center">
+  Kotlin, classic Views, landscape-first, <b>no Google Play Services required</b>,<br>
+  and it runs all the way back to <b>Android 4.4 (KitKat)</b> so it works on old units too.
+</p>
 
 ---
 
