@@ -112,4 +112,8 @@
     <string name="gradient_violet">Menekşe</string>
     <string name="gradient_crimson">Kızıl</string>
     <string name="gradient_graphite">Grafit</string>
+    <string name="settings_android_auto_app">Android Auto uygulaması</string>
+    <string name="settings_carplay_app">CarPlay uygulaması</string>
+    <string name="shortcut_android_auto">Android Auto</string>
+    <string name="shortcut_carplay">CarPlay</string>
 </resources>

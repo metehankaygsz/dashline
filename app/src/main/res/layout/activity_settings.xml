@@ -97,6 +97,20 @@
                     <TextView style="@style/SettingsRowTitle" android:text="@string/settings_media_app" />
                     <TextView android:id="@+id/mediaValue" style="@style/SettingsRowValue" />
                 </LinearLayout>
+
+                <View style="@style/SettingsDivider" />
+
+                <LinearLayout android:id="@+id/rowAndroidAuto" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_android_auto_app" />
+                    <TextView android:id="@+id/androidAutoValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
+
+                <View style="@style/SettingsDivider" />
+
+                <LinearLayout android:id="@+id/rowCarPlay" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_carplay_app" />
+                    <TextView android:id="@+id/carPlayValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- ===== Permissions ===== -->

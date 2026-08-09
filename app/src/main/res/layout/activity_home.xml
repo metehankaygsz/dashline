@@ -128,7 +128,7 @@
                 android:id="@+id/forecastRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="12dp"
                 android:orientation="horizontal"
                 android:baselineAligned="false"
                 android:visibility="gone">
@@ -169,6 +169,57 @@
                         android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
                     <TextView android:id="@+id/fc2Temp" android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Phone-projection shortcuts -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/shortcutAndroidAuto"
+                    style="@style/ProjectionTile">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_android_auto" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@string/shortcut_android_auto"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/shortcutCarPlay"
+                    style="@style/ProjectionTile">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_carplay" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@string/shortcut_carplay"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>

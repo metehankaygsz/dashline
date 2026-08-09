@@ -1,0 +1,18 @@
+<!-- Generic car silhouette for the phone-projection shortcut. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="@color/icon_tint">
+
+    <!-- cabin + body -->
+    <path android:fillColor="@android:color/white"
+        android:pathData="M5.6,10.2l1.5,-3.6A2.2,2.2 0 0 1 9.1,5.2h5.8a2.2,2.2 0 0 1 2,1.4l1.5,3.6h0.5a1.6,1.6 0 0 1 1.6,1.6v3.6a1.2,1.2 0 0 1 -1.2,1.2h-0.6v0.9a1.2,1.2 0 0 1 -1.2,1.2h-0.7a1.2,1.2 0 0 1 -1.2,-1.2v-0.9H8.4v0.9a1.2,1.2 0 0 1 -1.2,1.2h-0.7a1.2,1.2 0 0 1 -1.2,-1.2v-0.9h-0.6a1.2,1.2 0 0 1 -1.2,-1.2v-3.6a1.6,1.6 0 0 1 1.6,-1.6z" />
+
+    <!-- windscreen -->
+    <path android:fillColor="@color/bg"
+        android:pathData="M8.2,9.9l1,-2.5a0.8,0.8 0 0 1 0.75,-0.5h4.1a0.8,0.8 0 0 1 0.75,0.5l1,2.5z" />
+
+    <!-- headlights -->
+    <path android:fillColor="@color/bg"
+        android:pathData="M6,12.4h1.8v1.3H6z M16.2,12.4H18v1.3h-1.8z" />
+</vector>

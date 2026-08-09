@@ -1,0 +1,25 @@
+<!-- Android-style robot head: rounded dome, two antennae, two eyes. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="@color/icon_tint">
+
+    <!-- antennae -->
+    <path android:strokeColor="@android:color/white" android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M7.5,5.2L6.1,3.1 M16.5,5.2l1.4,-2.1" />
+
+    <!-- dome -->
+    <path android:fillColor="@android:color/white"
+        android:pathData="M4.5,12.4a7.5,7.5 0 0 1 15,0z" />
+
+    <!-- eyes (cut out of the dome) -->
+    <path android:fillColor="@color/bg"
+        android:pathData="M9,8.6m-0.95,0a0.95,0.95 0 1,0 1.9,0a0.95,0.95 0 1,0 -1.9,0" />
+    <path android:fillColor="@color/bg"
+        android:pathData="M15,8.6m-0.95,0a0.95,0.95 0 1,0 1.9,0a0.95,0.95 0 1,0 -1.9,0" />
+
+    <!-- body -->
+    <path android:fillColor="@android:color/white"
+        android:pathData="M4.5,13.6h15v5.2a1.3,1.3 0 0 1 -1.3,1.3h-12.4a1.3,1.3 0 0 1 -1.3,-1.3z" />
+</vector>

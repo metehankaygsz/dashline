@@ -140,6 +140,10 @@ class HomeActivity : BaseActivity() {
     private fun setupCardsAndBar() {
         binding.mediaCard.setOnClickListener { openMedia() }
         binding.phoneCard.setOnClickListener { openPhone() }
+        // Phone projection is usually a third-party link app (ZLink, EasyConnected…),
+        // so these fall through to the picker when nothing known is installed.
+        binding.shortcutAndroidAuto.setOnClickListener { launchRole(Prefs.ROLE_ANDROID_AUTO) }
+        binding.shortcutCarPlay.setOnClickListener { launchRole(Prefs.ROLE_CARPLAY) }
         // Home button: we're already on the dashboard — force a weather refresh.
         binding.homeButton.setOnClickListener { loadWeather() }
 

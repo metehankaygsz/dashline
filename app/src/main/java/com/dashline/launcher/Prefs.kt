@@ -33,6 +33,15 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_MEDIA, null)
         set(v) = sp.edit().putString(KEY_MEDIA, v).apply()
 
+    /** Phone-projection apps behind the Android Auto / CarPlay shortcuts. */
+    var androidAutoApp: String?
+        get() = sp.getString(KEY_AUTO, null)
+        set(v) = sp.edit().putString(KEY_AUTO, v).apply()
+
+    var carPlayApp: String?
+        get() = sp.getString(KEY_CARPLAY, null)
+        set(v) = sp.edit().putString(KEY_CARPLAY, v).apply()
+
     /** true = Fahrenheit, false = Celsius (default). */
     var useFahrenheit: Boolean
         get() = sp.getBoolean(KEY_FAHRENHEIT, false)
@@ -99,6 +108,8 @@ class Prefs(context: Context) {
         ROLE_NAV -> listOf(navApp) + Defaults.NAV
         ROLE_RADIO -> listOfNotNull(radioApp) + Defaults.RADIO
         ROLE_MEDIA -> listOfNotNull(mediaApp) + Defaults.MEDIA
+        ROLE_ANDROID_AUTO -> listOfNotNull(androidAutoApp) + Defaults.ANDROID_AUTO
+        ROLE_CARPLAY -> listOfNotNull(carPlayApp) + Defaults.CARPLAY
         else -> emptyList()
     }
 
@@ -108,6 +119,8 @@ class Prefs(context: Context) {
             ROLE_NAV -> navApp = pkg
             ROLE_RADIO -> radioApp = pkg
             ROLE_MEDIA -> mediaApp = pkg
+            ROLE_ANDROID_AUTO -> androidAutoApp = pkg
+            ROLE_CARPLAY -> carPlayApp = pkg
         }
     }
 
@@ -119,6 +132,8 @@ class Prefs(context: Context) {
         private const val KEY_NAV = "nav_app"
         private const val KEY_RADIO = "radio_app"
         private const val KEY_MEDIA = "media_app"
+        private const val KEY_AUTO = "android_auto_app"
+        private const val KEY_CARPLAY = "carplay_app"
         private const val KEY_FAHRENHEIT = "use_fahrenheit"
         private const val KEY_THEME = "theme_mode"
         private const val KEY_KEEP_ON = "keep_screen_on"
@@ -136,6 +151,8 @@ class Prefs(context: Context) {
         const val ROLE_NAV = "nav"
         const val ROLE_RADIO = "radio"
         const val ROLE_MEDIA = "media"
+        const val ROLE_ANDROID_AUTO = "android_auto"
+        const val ROLE_CARPLAY = "carplay"
         const val ROLE_FAVORITE = "favorite"
 
         /** Number of quick-launch slots in the top-bar dock. */
@@ -167,5 +184,26 @@ object Defaults {
         "com.google.android.music",
         "com.maxmpz.audioplayer",
         "com.android.music"
+    )
+
+    /**
+     * Phone projection. On head units this is usually a third-party "link" app
+     * (ZLink, EasyConnected, AutoKit, Carbit) that provides both Android Auto and
+     * CarPlay, rather than Google's own Android Auto — which most units can't run.
+     * These are best-guess defaults; the user can pick their own in Settings.
+     */
+    val ANDROID_AUTO = listOf(
+        "com.google.android.projection.gearhead",
+        "com.zjinnova.zlink",
+        "net.easyconn",
+        "com.autokit.carlink",
+        "com.carbit.link"
+    )
+    val CARPLAY = listOf(
+        "com.zjinnova.zlink",
+        "net.easyconn",
+        "com.autokit.carlink",
+        "com.carbit.link",
+        "com.hzbhd.carplay"
     )
 }

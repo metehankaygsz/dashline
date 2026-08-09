@@ -39,6 +39,12 @@ class SettingsActivity : BaseActivity() {
         binding.rowMedia.setOnClickListener {
             AppPickerActivity.start(this, Prefs.ROLE_MEDIA, 5)
         }
+        binding.rowAndroidAuto.setOnClickListener {
+            AppPickerActivity.start(this, Prefs.ROLE_ANDROID_AUTO, 6)
+        }
+        binding.rowCarPlay.setOnClickListener {
+            AppPickerActivity.start(this, Prefs.ROLE_CARPLAY, 7)
+        }
         binding.rowLocationAccess.setOnClickListener {
             when {
                 Permissions.hasLocation(this) -> Unit
@@ -118,6 +124,8 @@ class SettingsActivity : BaseActivity() {
         binding.navValue.text = label(prefs.navApp)
         binding.radioValue.text = label(prefs.radioApp)
         binding.mediaValue.text = label(prefs.mediaApp)
+        binding.androidAutoValue.text = label(prefs.androidAutoApp)
+        binding.carPlayValue.text = label(prefs.carPlayApp)
         binding.locationAccessValue.text = getString(
             if (Permissions.hasLocation(this)) R.string.access_granted
             else R.string.access_needed

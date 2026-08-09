@@ -31,6 +31,10 @@
     <string name="media_tap_to_open">Tap to open</string>
     <string name="media_enable_access">Tap to enable media info</string>
 
+    <!-- phone projection shortcuts (brand names, not translated) -->
+    <string name="shortcut_android_auto">Android Auto</string>
+    <string name="shortcut_carplay">CarPlay</string>
+
     <!-- weather forecast -->
     <string name="forecast_high_low">%1$s / %2$s</string>
 
@@ -61,6 +65,8 @@
     <string name="settings_nav_app">Navigation app</string>
     <string name="settings_radio_app">Radio app</string>
     <string name="settings_media_app">Media app (when nothing is playing)</string>
+    <string name="settings_android_auto_app">Android Auto app</string>
+    <string name="settings_carplay_app">CarPlay app</string>
     <string name="settings_notification_access">Media info access</string>
     <string name="access_enabled">Enabled</string>
     <string name="access_disabled">Disabled — tap to turn on</string>

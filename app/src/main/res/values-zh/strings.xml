@@ -103,4 +103,8 @@
     <string name="gradient_violet">紫罗兰</string>
     <string name="gradient_crimson">绯红</string>
     <string name="gradient_graphite">石墨</string>
+    <string name="settings_android_auto_app">Android Auto 应用</string>
+    <string name="settings_carplay_app">CarPlay 应用</string>
+    <string name="shortcut_android_auto">Android Auto</string>
+    <string name="shortcut_carplay">CarPlay</string>
 </resources>

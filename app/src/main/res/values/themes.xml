@@ -6,6 +6,23 @@
         <item name="android:windowBackground">@color/bg</item>
     </style>
 
+    <!-- Android Auto / CarPlay shortcut tile under the weather. -->
+    <style name="ProjectionTile">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:background">@drawable/card_dark</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
     <!-- One day in the weather forecast strip. -->
     <style name="FcCell">
         <item name="android:layout_width">0dp</item>

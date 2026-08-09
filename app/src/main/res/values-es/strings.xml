@@ -103,4 +103,8 @@
     <string name="gradient_violet">Violeta</string>
     <string name="gradient_crimson">Carmesí</string>
     <string name="gradient_graphite">Grafito</string>
+    <string name="settings_android_auto_app">App de Android Auto</string>
+    <string name="settings_carplay_app">App de CarPlay</string>
+    <string name="shortcut_android_auto">Android Auto</string>
+    <string name="shortcut_carplay">CarPlay</string>
 </resources>
