@@ -35,6 +35,9 @@ class HomeActivity : BaseActivity() {
     private var draggingMedia = false
     private var needsMediaAccess = false
 
+    private lateinit var audioManager: android.media.AudioManager
+    private var draggingVolume = false
+
     private lateinit var favSlots: List<AppCompatImageView>
 
     // Built from the current locale in onCreate, so they follow the chosen language.
@@ -48,6 +51,7 @@ class HomeActivity : BaseActivity() {
             updateClock()
             updateWifi()
             updateMediaProgress()
+            syncVolume()
             maybeRefreshWeather()
             handler.postDelayed(this, 1000)
         }
@@ -64,9 +68,12 @@ class HomeActivity : BaseActivity() {
         dateFormat = SimpleDateFormat("EEEE, d MMMM", loc)
         dayFormat = SimpleDateFormat("EEE", loc)
 
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+
         setupTabs()
         setupCardsAndBar()
         setupMedia()
+        setupVolume()
         setupFavorites()
         applyAccent()
         ensureLocationPermission()
@@ -159,11 +166,9 @@ class HomeActivity : BaseActivity() {
         val density = resources.displayMetrics.density
         val night = GradientThemes.isNight(this)
 
-        // Card reads as a solid accent panel at night, a pale wash in daylight.
-        val cardColor =
-            if (night) GradientThemes.darken(accent, 0.30f)
-            else GradientThemes.withAlpha(accent, 0x33)
-        binding.mediaCard.background = GradientThemes.roundedRect(cardColor, 8f * density)
+        // The card colour itself is owned by tintMediaCard, which prefers the
+        // album art and falls back to this accent.
+        tintMediaCard(currentMedia?.art?.let { ArtColor.dominant(it) })
 
         binding.btnPlayPause.background = GradientThemes.roundedRect(accent, 25f * density)
 
@@ -172,16 +177,60 @@ class HomeActivity : BaseActivity() {
         @Suppress("DEPRECATION")
         run {
             val seekColor = if (night) android.graphics.Color.WHITE else accent
-            val bar = binding.mediaProgress
-            val progressDrawable = bar.progressDrawable?.mutate()
-            if (progressDrawable is android.graphics.drawable.LayerDrawable) {
-                progressDrawable.findDrawableByLayerId(android.R.id.progress)
+            // Both bars live on the media card, so they share the same treatment.
+            listOf(binding.mediaProgress, binding.volumeSlider).forEach { bar ->
+                val progressDrawable = bar.progressDrawable?.mutate()
+                if (progressDrawable is android.graphics.drawable.LayerDrawable) {
+                    progressDrawable.findDrawableByLayerId(android.R.id.progress)
+                        ?.setColorFilter(seekColor, android.graphics.PorterDuff.Mode.SRC_IN)
+                    bar.progressDrawable = progressDrawable
+                }
+                bar.thumb?.mutate()
                     ?.setColorFilter(seekColor, android.graphics.PorterDuff.Mode.SRC_IN)
-                bar.progressDrawable = progressDrawable
             }
-            bar.thumb?.mutate()
-                ?.setColorFilter(seekColor, android.graphics.PorterDuff.Mode.SRC_IN)
         }
+    }
+
+    // ---- Volume ------------------------------------------------------------
+
+    private fun setupVolume() {
+        val stream = android.media.AudioManager.STREAM_MUSIC
+        binding.volumeSlider.max = audioManager.getStreamMaxVolume(stream)
+        syncVolume()
+
+        binding.volumeSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
+                runCatching { audioManager.setStreamVolume(stream, progress, 0) }
+                updateVolumeIcon(progress)
+            }
+            override fun onStartTrackingTouch(sb: SeekBar) { draggingVolume = true }
+            override fun onStopTrackingTouch(sb: SeekBar) { draggingVolume = false }
+        })
+        binding.volumeIcon.setOnClickListener { toggleMute() }
+    }
+
+    /** Keeps the slider in step with the unit's own volume knob / hardware keys. */
+    private fun syncVolume() {
+        if (draggingVolume) return
+        val vol = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+        binding.volumeSlider.progress = vol
+        updateVolumeIcon(vol)
+    }
+
+    private fun updateVolumeIcon(vol: Int) {
+        binding.volumeIcon.setImageResource(
+            if (vol == 0) R.drawable.ic_volume_off else R.drawable.ic_volume
+        )
+    }
+
+    private fun toggleMute() {
+        val stream = android.media.AudioManager.STREAM_MUSIC
+        val vol = audioManager.getStreamVolume(stream)
+        val target = if (vol > 0) 0 else audioManager.getStreamMaxVolume(stream) / 2
+        runCatching { audioManager.setStreamVolume(stream, target, 0) }
+        binding.volumeSlider.progress = target
+        updateVolumeIcon(target)
     }
 
     // ---- Media widget ------------------------------------------------------
@@ -244,6 +293,7 @@ class HomeActivity : BaseActivity() {
             binding.mediaTitle.isSelected = false
             binding.mediaControls.visibility = android.view.View.GONE
             binding.mediaSeekRow.visibility = android.view.View.GONE
+            tintMediaCard(null)
 
             // On 5.0+, reading what's playing needs Notification access. If it isn't
             // granted, the widget can never see media — guide the user to enable it.
@@ -261,7 +311,13 @@ class HomeActivity : BaseActivity() {
             return
         }
         needsMediaAccess = false
-        if (info.art != null) showAlbumArt(info.art) else showPlaceholderArt()
+        if (info.art != null) {
+            showAlbumArt(info.art)
+            tintMediaCard(ArtColor.dominant(info.art))
+        } else {
+            showPlaceholderArt()
+            tintMediaCard(null)
+        }
 
         binding.mediaTitle.text = info.title.ifEmpty { getString(R.string.now_playing) }
         binding.mediaTitle.isSelected = true  // starts the marquee for long titles
@@ -273,6 +329,22 @@ class HomeActivity : BaseActivity() {
         )
         binding.mediaControls.visibility = android.view.View.VISIBLE
         updateMediaProgress()
+    }
+
+    /**
+     * Colours the media card from the album art, falling back to the gradient
+     * accent when there's no art or the art is greyscale.
+     */
+    private fun tintMediaCard(artColor: Int?) {
+        val night = GradientThemes.isNight(this)
+        val base = artColor?.let { ArtColor.asCardColor(it, night) }
+            ?: run {
+                val accent = accentColor()
+                if (night) GradientThemes.darken(accent, 0.30f)
+                else GradientThemes.withAlpha(accent, 0x33)
+            }
+        binding.mediaCard.background =
+            GradientThemes.roundedRect(base, 8f * resources.displayMetrics.density)
     }
 
     /** Square-crops the album art and rounds its corners to match the card. */

@@ -107,4 +107,5 @@
     <string name="settings_carplay_app">Приложение CarPlay</string>
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
+    <string name="volume_mute">Выключить или включить звук</string>
 </resources>

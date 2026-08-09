@@ -254,11 +254,11 @@
                     <!-- Album art: rounded bitmap set in code, on a rounded tile -->
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/mediaArt"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_width="104dp"
+                        android:layout_height="104dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/art_bg"
-                        android:padding="12dp"
+                        android:padding="26dp"
                         android:scaleType="centerCrop"
                         android:contentDescription="@string/tab_audio"
                         app:srcCompat="@drawable/ic_audio" />
@@ -376,14 +376,46 @@
                         android:contentDescription="@string/media_next"
                         app:srcCompat="@drawable/ic_skip_next" />
                 </LinearLayout>
+
+                <!-- Media volume — always available, unlike the transport controls -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/volumeIcon"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:padding="6dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/volume_mute"
+                        app:srcCompat="@drawable/ic_volume" />
+
+                    <SeekBar
+                        android:id="@+id/volumeSlider"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:maxHeight="4dp"
+                        android:minHeight="4dp"
+                        android:progressDrawable="@drawable/seek_progress"
+                        android:thumb="@drawable/seek_thumb"
+                        android:thumbOffset="0dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Phone -->
+            <!-- Hugs its content so the media card above takes the leftover height,
+                 instead of both stretching and leaving large gaps. -->
             <LinearLayout
                 android:id="@+id/phoneCard"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
+                android:layout_height="wrap_content"
+                android:minHeight="76dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="16dp"

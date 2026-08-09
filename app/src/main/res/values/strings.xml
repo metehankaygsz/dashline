@@ -114,6 +114,9 @@
     <string name="fav_change">Change app</string>
     <string name="fav_remove">Remove</string>
 
+    <!-- volume -->
+    <string name="volume_mute">Mute or unmute</string>
+
     <!-- in-app navigation -->
     <string name="nav_back">Back</string>
     <string name="nav_home">Home</string>
