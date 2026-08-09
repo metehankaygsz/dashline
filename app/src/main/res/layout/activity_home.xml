@@ -177,7 +177,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 android:baselineAligned="false">
 
@@ -415,7 +415,7 @@
                 android:id="@+id/phoneCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="76dp"
+                android:minHeight="152dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="16dp"

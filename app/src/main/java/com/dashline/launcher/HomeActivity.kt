@@ -166,9 +166,11 @@ class HomeActivity : BaseActivity() {
         val density = resources.displayMetrics.density
         val night = GradientThemes.isNight(this)
 
-        // The card colour itself is owned by tintMediaCard, which prefers the
-        // album art and falls back to this accent.
-        tintMediaCard(currentMedia?.art?.let { ArtColor.dominant(it) })
+        // Card reads as a solid accent panel at night, a pale wash in daylight.
+        val cardColor =
+            if (night) GradientThemes.darken(accent, 0.30f)
+            else GradientThemes.withAlpha(accent, 0x33)
+        binding.mediaCard.background = GradientThemes.roundedRect(cardColor, 8f * density)
 
         binding.btnPlayPause.background = GradientThemes.roundedRect(accent, 25f * density)
 
@@ -293,7 +295,6 @@ class HomeActivity : BaseActivity() {
             binding.mediaTitle.isSelected = false
             binding.mediaControls.visibility = android.view.View.GONE
             binding.mediaSeekRow.visibility = android.view.View.GONE
-            tintMediaCard(null)
 
             // On 5.0+, reading what's playing needs Notification access. If it isn't
             // granted, the widget can never see media — guide the user to enable it.
@@ -311,13 +312,7 @@ class HomeActivity : BaseActivity() {
             return
         }
         needsMediaAccess = false
-        if (info.art != null) {
-            showAlbumArt(info.art)
-            tintMediaCard(ArtColor.dominant(info.art))
-        } else {
-            showPlaceholderArt()
-            tintMediaCard(null)
-        }
+        if (info.art != null) showAlbumArt(info.art) else showPlaceholderArt()
 
         binding.mediaTitle.text = info.title.ifEmpty { getString(R.string.now_playing) }
         binding.mediaTitle.isSelected = true  // starts the marquee for long titles
@@ -329,22 +324,6 @@ class HomeActivity : BaseActivity() {
         )
         binding.mediaControls.visibility = android.view.View.VISIBLE
         updateMediaProgress()
-    }
-
-    /**
-     * Colours the media card from the album art, falling back to the gradient
-     * accent when there's no art or the art is greyscale.
-     */
-    private fun tintMediaCard(artColor: Int?) {
-        val night = GradientThemes.isNight(this)
-        val base = artColor?.let { ArtColor.asCardColor(it, night) }
-            ?: run {
-                val accent = accentColor()
-                if (night) GradientThemes.darken(accent, 0.30f)
-                else GradientThemes.withAlpha(accent, 0x33)
-            }
-        binding.mediaCard.background =
-            GradientThemes.roundedRect(base, 8f * resources.displayMetrics.density)
     }
 
     /** Square-crops the album art and rounds its corners to match the card. */
