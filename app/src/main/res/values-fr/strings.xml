@@ -123,14 +123,18 @@
     <string name="settings_chrono">Chronomètre</string>
     <string name="chrono_start_stop">Démarrer ou arrêter</string>
     <string name="chrono_reset">Réinitialiser</string>
-    <string name="settings_panel_order">Ordre des cartes</string>
-    <string name="panel_media_first">Multimédia en haut</string>
-    <string name="panel_phone_first">Seconde carte en haut</string>
-    <string name="settings_panel_split">Taille des cartes</string>
-    <string name="split_media_large">Multimédia plus grande</string>
-    <string name="split_equal">Égales</string>
-    <string name="split_second_large">Seconde carte plus grande</string>
     <string name="settings_second_card">Seconde carte</string>
     <string name="second_phone">Téléphone</string>
     <string name="second_shortcuts">Raccourcis d\'applis</string>
+    <string name="settings_customize">Personnaliser l\'accueil</string>
+    <string name="customize_hint">Faites glisser la barre entre les cartes pour les redimensionner.</string>
+    <string name="customize_hint_split">Carte multimédia : %1$d%% de la colonne. Faites glisser la barre.</string>
+    <string name="customize_swap">Permuter</string>
+    <string name="customize_second_card">Seconde carte</string>
+    <string name="customize_reset">Réinitialiser</string>
+    <string name="customize_pick_widget">Choisir un widget</string>
+    <string name="customize_sample_date">Lundi 1 janvier</string>
+    <string name="customize_sample_track">Morceau d\'exemple</string>
+    <string name="customize_sample_artist">Artiste</string>
+    <string name="second_widget">Widget</string>
 </resources>

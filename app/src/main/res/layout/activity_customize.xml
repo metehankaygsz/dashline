@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/view_page_header" />
+
+    <!--
+      The real activity_home layout is inflated into this frame at runtime, so the
+      preview is the actual dashboard rather than a mock-up that can drift.
+    -->
+    <FrameLayout
+        android:id="@+id/previewFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/customizeHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/customize_hint"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/btnSwap"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_swap" />
+
+        <TextView
+            android:id="@+id/btnSecondCard"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_second_card" />
+
+        <TextView
+            android:id="@+id/btnReset"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_reset" />
+    </LinearLayout>
+</LinearLayout>

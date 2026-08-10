@@ -77,12 +77,21 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_PANEL_ORDER, PANEL_MEDIA_FIRST) ?: PANEL_MEDIA_FIRST
         set(v) = sp.edit().putString(KEY_PANEL_ORDER, v).apply()
 
-    /** SPLIT_MEDIA_LARGE (default), SPLIT_EQUAL or SPLIT_SECOND_LARGE. */
-    var panelSplit: String
-        get() = sp.getString(KEY_PANEL_SPLIT, SPLIT_MEDIA_LARGE) ?: SPLIT_MEDIA_LARGE
-        set(v) = sp.edit().putString(KEY_PANEL_SPLIT, v).apply()
+    /**
+     * Share of the right column given to the media card, 0..1. Set by dragging
+     * the divider in the Customize screen, so it's continuous rather than a
+     * handful of presets. Clamped so neither card can collapse to nothing.
+     */
+    var mediaFraction: Float
+        get() = sp.getFloat(KEY_MEDIA_FRACTION, 0.72f).coerceIn(MIN_FRACTION, MAX_FRACTION)
+        set(v) = sp.edit().putFloat(KEY_MEDIA_FRACTION, v.coerceIn(MIN_FRACTION, MAX_FRACTION)).apply()
 
-    /** SECOND_PHONE (default) or SECOND_SHORTCUTS — what the lower card shows. */
+    /** Widget bound to the second card, or WidgetHost.INVALID_ID. */
+    var panelWidgetId: Int
+        get() = sp.getInt(KEY_WIDGET_ID, WidgetHost.INVALID_ID)
+        set(v) = sp.edit().putInt(KEY_WIDGET_ID, v).apply()
+
+    /** SECOND_PHONE (default), SECOND_SHORTCUTS or SECOND_WIDGET. */
     var secondCardMode: String
         get() = sp.getString(KEY_SECOND_MODE, SECOND_PHONE) ?: SECOND_PHONE
         set(v) = sp.edit().putString(KEY_SECOND_MODE, v).apply()
@@ -222,16 +231,19 @@ class Prefs(context: Context) {
         private const val KEY_ASKED_LOCATION = "asked_location"
         private const val KEY_GRADIENT = "gradient"
         private const val KEY_PANEL_ORDER = "panel_order"
-        private const val KEY_PANEL_SPLIT = "panel_split"
+        private const val KEY_MEDIA_FRACTION = "media_fraction"
+        private const val KEY_WIDGET_ID = "panel_widget_id"
+
+        /** Neither card may collapse; keeps both usable at any drag position. */
+        const val MIN_FRACTION = 0.25f
+        const val MAX_FRACTION = 0.80f
         private const val KEY_SECOND_MODE = "second_card_mode"
 
         const val PANEL_MEDIA_FIRST = "media_first"
         const val PANEL_PHONE_FIRST = "phone_first"
-        const val SPLIT_MEDIA_LARGE = "media_large"
-        const val SPLIT_EQUAL = "equal"
-        const val SPLIT_SECOND_LARGE = "second_large"
         const val SECOND_PHONE = "phone"
         const val SECOND_SHORTCUTS = "shortcuts"
+        const val SECOND_WIDGET = "widget"
 
         /** Shortcut slots in the lower card when it's in shortcuts mode. */
         const val PANEL_SHORTCUT_COUNT = 4

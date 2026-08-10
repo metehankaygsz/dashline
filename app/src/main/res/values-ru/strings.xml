@@ -123,14 +123,18 @@
     <string name="settings_chrono">Секундомер</string>
     <string name="chrono_start_stop">Пуск или стоп</string>
     <string name="chrono_reset">Сброс</string>
-    <string name="settings_panel_order">Порядок карточек</string>
-    <string name="panel_media_first">Медиа сверху</string>
-    <string name="panel_phone_first">Вторая карточка сверху</string>
-    <string name="settings_panel_split">Размер карточек</string>
-    <string name="split_media_large">Медиа больше</string>
-    <string name="split_equal">Одинаково</string>
-    <string name="split_second_large">Вторая карточка больше</string>
     <string name="settings_second_card">Вторая карточка</string>
     <string name="second_phone">Телефон</string>
     <string name="second_shortcuts">Ярлыки приложений</string>
+    <string name="settings_customize">Настроить главный экран</string>
+    <string name="customize_hint">Перетащите полосу между карточками, чтобы изменить размер.</string>
+    <string name="customize_hint_split">Карточка медиа: %1$d%% колонки. Перетащите полосу.</string>
+    <string name="customize_swap">Поменять</string>
+    <string name="customize_second_card">Вторая карточка</string>
+    <string name="customize_reset">Сбросить</string>
+    <string name="customize_pick_widget">Выбрать виджет</string>
+    <string name="customize_sample_date">Понедельник, 1 января</string>
+    <string name="customize_sample_track">Пример трека</string>
+    <string name="customize_sample_artist">Исполнитель</string>
+    <string name="second_widget">Виджет</string>
 </resources>

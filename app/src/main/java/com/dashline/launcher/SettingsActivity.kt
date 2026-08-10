@@ -60,9 +60,9 @@ class SettingsActivity : BaseActivity() {
             refresh()
         }
         binding.rowTheme.setOnClickListener { showThemeDialog() }
-        binding.rowPanelOrder.setOnClickListener { showPanelOrderDialog() }
-        binding.rowPanelSplit.setOnClickListener { showPanelSplitDialog() }
-        binding.rowSecondCard.setOnClickListener { showSecondCardDialog() }
+        binding.rowCustomize.setOnClickListener {
+            startActivity(Intent(this, CustomizeActivity::class.java))
+        }
         binding.rowClockStyle.setOnClickListener { showClockStyleDialog() }
         binding.rowChrono.setOnClickListener {
             prefs.chronoEnabled = !prefs.chronoEnabled
@@ -110,31 +110,6 @@ class SettingsActivity : BaseActivity() {
             }
             .show()
     }
-
-    private fun showPanelOrderDialog() = pick(
-        R.string.settings_panel_order,
-        listOf(
-            Prefs.PANEL_MEDIA_FIRST to R.string.panel_media_first,
-            Prefs.PANEL_PHONE_FIRST to R.string.panel_phone_first
-        )
-    ) { prefs.panelOrder = it }
-
-    private fun showPanelSplitDialog() = pick(
-        R.string.settings_panel_split,
-        listOf(
-            Prefs.SPLIT_MEDIA_LARGE to R.string.split_media_large,
-            Prefs.SPLIT_EQUAL to R.string.split_equal,
-            Prefs.SPLIT_SECOND_LARGE to R.string.split_second_large
-        )
-    ) { prefs.panelSplit = it }
-
-    private fun showSecondCardDialog() = pick(
-        R.string.settings_second_card,
-        listOf(
-            Prefs.SECOND_PHONE to R.string.second_phone,
-            Prefs.SECOND_SHORTCUTS to R.string.second_shortcuts
-        )
-    ) { prefs.secondCardMode = it }
 
     /** Small helper for the single-choice dialogs this screen is full of. */
     private fun pick(titleRes: Int, options: List<Pair<String, Int>>, onPick: (String) -> Unit) {
@@ -203,19 +178,11 @@ class SettingsActivity : BaseActivity() {
         )
         binding.themeValue.text = getString(themeLabel(prefs.themeMode))
         binding.tabsValue.text = getString(R.string.tabs_count, prefs.visibleTabs().size)
-        binding.panelOrderValue.text = getString(
-            if (prefs.panelOrder == Prefs.PANEL_PHONE_FIRST) R.string.panel_phone_first
-            else R.string.panel_media_first
-        )
-        binding.panelSplitValue.text = getString(when (prefs.panelSplit) {
-            Prefs.SPLIT_EQUAL -> R.string.split_equal
-            Prefs.SPLIT_SECOND_LARGE -> R.string.split_second_large
-            else -> R.string.split_media_large
+        binding.customizeValue.text = getString(when (prefs.secondCardMode) {
+            Prefs.SECOND_SHORTCUTS -> R.string.second_shortcuts
+            Prefs.SECOND_WIDGET -> R.string.second_widget
+            else -> R.string.second_phone
         })
-        binding.secondCardValue.text = getString(
-            if (prefs.secondCardMode == Prefs.SECOND_SHORTCUTS) R.string.second_shortcuts
-            else R.string.second_phone
-        )
         binding.clockStyleValue.text = getString(when (prefs.clockStyle) {
             Prefs.CLOCK_ANALOG -> R.string.clock_analog
             Prefs.CLOCK_MINIMAL -> R.string.clock_minimal

@@ -62,6 +62,12 @@
             android:configChanges="keyboard|keyboardHidden|navigation" />
 
         <activity
+            android:name=".CustomizeActivity"
+            android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
             android:name=".TabOrderActivity"
             android:exported="false"
             android:configChanges="keyboard|keyboardHidden|navigation"

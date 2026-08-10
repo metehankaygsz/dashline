@@ -123,14 +123,18 @@
     <string name="settings_chrono">Stoppuhr</string>
     <string name="chrono_start_stop">Starten oder stoppen</string>
     <string name="chrono_reset">Zurücksetzen</string>
-    <string name="settings_panel_order">Kartenreihenfolge</string>
-    <string name="panel_media_first">Medien oben</string>
-    <string name="panel_phone_first">Zweite Karte oben</string>
-    <string name="settings_panel_split">Kartengrößen</string>
-    <string name="split_media_large">Medien größer</string>
-    <string name="split_equal">Gleich</string>
-    <string name="split_second_large">Zweite Karte größer</string>
     <string name="settings_second_card">Zweite Karte</string>
     <string name="second_phone">Telefon</string>
     <string name="second_shortcuts">App-Verknüpfungen</string>
+    <string name="settings_customize">Startseite anpassen</string>
+    <string name="customize_hint">Ziehe die Leiste zwischen den Karten, um sie zu skalieren.</string>
+    <string name="customize_hint_split">Medienkarte: %1$d%% der Spalte. Zum Skalieren ziehen.</string>
+    <string name="customize_swap">Tauschen</string>
+    <string name="customize_second_card">Zweite Karte</string>
+    <string name="customize_reset">Zurücksetzen</string>
+    <string name="customize_pick_widget">Widget wählen</string>
+    <string name="customize_sample_date">Montag, 1. Januar</string>
+    <string name="customize_sample_track">Beispieltitel</string>
+    <string name="customize_sample_artist">Interpret</string>
+    <string name="second_widget">Widget</string>
 </resources>

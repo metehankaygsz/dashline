@@ -123,14 +123,18 @@
     <string name="settings_chrono">秒表</string>
     <string name="chrono_start_stop">开始或停止</string>
     <string name="chrono_reset">重置</string>
-    <string name="settings_panel_order">卡片顺序</string>
-    <string name="panel_media_first">媒体在上</string>
-    <string name="panel_phone_first">第二张卡片在上</string>
-    <string name="settings_panel_split">卡片大小</string>
-    <string name="split_media_large">媒体更大</string>
-    <string name="split_equal">相同</string>
-    <string name="split_second_large">第二张卡片更大</string>
     <string name="settings_second_card">第二张卡片</string>
     <string name="second_phone">电话</string>
     <string name="second_shortcuts">应用快捷方式</string>
+    <string name="settings_customize">自定义主屏幕</string>
+    <string name="customize_hint">拖动卡片之间的横条即可调整大小。</string>
+    <string name="customize_hint_split">媒体卡片：占列的 %1$d%%。拖动横条调整。</string>
+    <string name="customize_swap">交换</string>
+    <string name="customize_second_card">第二张卡片</string>
+    <string name="customize_reset">重置</string>
+    <string name="customize_pick_widget">选择微件</string>
+    <string name="customize_sample_date">1月1日 星期一</string>
+    <string name="customize_sample_track">示例曲目</string>
+    <string name="customize_sample_artist">艺术家</string>
+    <string name="second_widget">微件</string>
 </resources>

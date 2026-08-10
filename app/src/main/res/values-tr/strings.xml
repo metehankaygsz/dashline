@@ -132,14 +132,18 @@
     <string name="settings_chrono">Kronometre</string>
     <string name="chrono_start_stop">Başlat veya durdur</string>
     <string name="chrono_reset">Sıfırla</string>
-    <string name="settings_panel_order">Kart sırası</string>
-    <string name="panel_media_first">Medya üstte</string>
-    <string name="panel_phone_first">İkinci kart üstte</string>
-    <string name="settings_panel_split">Kart boyutları</string>
-    <string name="split_media_large">Medya daha büyük</string>
-    <string name="split_equal">Eşit</string>
-    <string name="split_second_large">İkinci kart daha büyük</string>
     <string name="settings_second_card">İkinci kart</string>
     <string name="second_phone">Telefon</string>
     <string name="second_shortcuts">Uygulama kısayolları</string>
+    <string name="settings_customize">Ana ekranı özelleştir</string>
+    <string name="customize_hint">Kartları yeniden boyutlandırmak için aradaki çubuğu sürükleyin.</string>
+    <string name="customize_hint_split">Medya kartı: sütunun %%%1$d\'i. Boyutlandırmak için çubuğu sürükleyin.</string>
+    <string name="customize_swap">Yer değiştir</string>
+    <string name="customize_second_card">İkinci kart</string>
+    <string name="customize_reset">Sıfırla</string>
+    <string name="customize_pick_widget">Widget seçin</string>
+    <string name="customize_sample_date">1 Ocak Pazartesi</string>
+    <string name="customize_sample_track">Örnek Parça</string>
+    <string name="customize_sample_artist">Sanatçı</string>
+    <string name="second_widget">Widget</string>
 </resources>

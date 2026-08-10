@@ -474,6 +474,13 @@
                     android:baselineAligned="false"
                     android:gravity="center"
                     android:visibility="gone" />
+
+                <!-- Or: a hosted Android app widget -->
+                <FrameLayout
+                    android:id="@+id/panelWidget"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

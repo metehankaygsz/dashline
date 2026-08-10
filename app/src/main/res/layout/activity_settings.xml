@@ -41,24 +41,9 @@
                 </LinearLayout>
 
                 <View style="@style/SettingsDivider" />
-
-                <LinearLayout android:id="@+id/rowPanelOrder" style="@style/SettingsRow">
-                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_panel_order" />
-                    <TextView android:id="@+id/panelOrderValue" style="@style/SettingsRowValue" />
-                </LinearLayout>
-
-                <View style="@style/SettingsDivider" />
-
-                <LinearLayout android:id="@+id/rowPanelSplit" style="@style/SettingsRow">
-                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_panel_split" />
-                    <TextView android:id="@+id/panelSplitValue" style="@style/SettingsRowValue" />
-                </LinearLayout>
-
-                <View style="@style/SettingsDivider" />
-
-                <LinearLayout android:id="@+id/rowSecondCard" style="@style/SettingsRow">
-                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_second_card" />
-                    <TextView android:id="@+id/secondCardValue" style="@style/SettingsRowValue" />
+                <LinearLayout android:id="@+id/rowCustomize" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_customize" />
+                    <TextView android:id="@+id/customizeValue" style="@style/SettingsRowValue" />
                 </LinearLayout>
 
                 <View style="@style/SettingsDivider" />

@@ -41,6 +41,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var audioManager: android.media.AudioManager
     private var draggingVolume = false
     private var mediaCompact = false
+    private var appWidgetHost: android.appwidget.AppWidgetHost? = null
 
     private lateinit var favSlots: List<AppCompatImageView>
 
@@ -248,14 +249,10 @@ class HomeActivity : BaseActivity() {
                 parent.addView(binding.phoneCard, 1)
             }
 
-            val (mediaWeight, secondWeight) = when (prefs.panelSplit) {
-                Prefs.SPLIT_EQUAL -> 1f to 1f
-                Prefs.SPLIT_SECOND_LARGE -> 0.75f to 1.6f
-                else -> 1.9f to 0.55f
-            }
-            setCardWeight(binding.mediaCard, mediaWeight)
-            setCardWeight(binding.phoneCard, secondWeight)
-            applyMediaDensity(mediaWeight)
+            val fraction = prefs.mediaFraction
+            setCardWeight(binding.mediaCard, fraction)
+            setCardWeight(binding.phoneCard, 1f - fraction)
+            applyMediaDensity(fraction)
         }
 
         applySecondCardMode()
@@ -274,9 +271,10 @@ class HomeActivity : BaseActivity() {
      * Scales the media card's contents to the height it was given. A small card
      * drops the seek row and shrinks the artwork rather than clipping.
      */
-    private fun applyMediaDensity(mediaWeight: Float) {
+    private fun applyMediaDensity(mediaFraction: Float) {
         val density = resources.displayMetrics.density
-        val compact = mediaWeight < 1f
+        // Below roughly half the column there isn't room for full-size controls.
+        val compact = mediaFraction < 0.5f
 
         val art = if (compact) 56f else resources.getDimension(R.dimen.album_art) / density
         val artPx = (art * density).toInt()
@@ -304,21 +302,87 @@ class HomeActivity : BaseActivity() {
         updateMediaProgress()
     }
 
-    /** Phone shortcut, or a row of app shortcuts the user picks. */
+    /** Phone shortcut, a row of app shortcuts, or a hosted app widget. */
     private fun applySecondCardMode() {
-        val shortcuts = prefs.secondCardMode == Prefs.SECOND_SHORTCUTS
+        val mode = prefs.secondCardMode
+        val shortcuts = mode == Prefs.SECOND_SHORTCUTS
+        val widget = mode == Prefs.SECOND_WIDGET
+
         binding.phoneDefault.visibility =
-            if (shortcuts) android.view.View.GONE else android.view.View.VISIBLE
+            if (shortcuts || widget) android.view.View.GONE else android.view.View.VISIBLE
         binding.panelShortcuts.visibility =
             if (shortcuts) android.view.View.VISIBLE else android.view.View.GONE
+        binding.panelWidget.visibility =
+            if (widget) android.view.View.VISIBLE else android.view.View.GONE
 
-        // Tapping the card only dials when it's actually the phone card.
+        // Only dial when the card is actually the phone card.
         binding.phoneCard.setOnClickListener(
-            if (shortcuts) null else android.view.View.OnClickListener { openPhone() }
+            if (shortcuts || widget) null else android.view.View.OnClickListener { openPhone() }
         )
-        binding.phoneCard.isClickable = !shortcuts
+        binding.phoneCard.isClickable = !shortcuts && !widget
 
-        if (shortcuts) bindPanelShortcuts()
+        when {
+            shortcuts -> bindPanelShortcuts()
+            widget -> bindPanelWidget()
+        }
+    }
+
+    /**
+     * Renders the bound app widget. Anything missing — never picked, uninstalled,
+     * or permission revoked — falls back to the phone card rather than an empty
+     * hole in the dashboard.
+     */
+    private fun bindPanelWidget() {
+        val container = binding.panelWidget
+        container.removeAllViews()
+
+        val id = prefs.panelWidgetId
+        if (id == WidgetHost.INVALID_ID) {
+            fallbackToPhoneCard()
+            return
+        }
+        val view = WidgetHost.createView(this, widgetHost(), id)
+        if (view == null) {
+            // Provider gone. Drop the stale id so we don't retry every resume.
+            prefs.panelWidgetId = WidgetHost.INVALID_ID
+            prefs.secondCardMode = Prefs.SECOND_PHONE
+            fallbackToPhoneCard()
+            return
+        }
+        container.addView(
+            view,
+            android.widget.FrameLayout.LayoutParams(
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        )
+        // Tell the widget its real size once the card has been measured.
+        container.post {
+            val d = resources.displayMetrics.density
+            if (container.width > 0 && container.height > 0) {
+                WidgetHost.resize(
+                    view,
+                    (container.width / d).toInt(),
+                    (container.height / d).toInt()
+                )
+            }
+        }
+    }
+
+    private fun fallbackToPhoneCard() {
+        binding.panelWidget.visibility = android.view.View.GONE
+        binding.phoneDefault.visibility = android.view.View.VISIBLE
+        binding.phoneCard.setOnClickListener { openPhone() }
+        binding.phoneCard.isClickable = true
+    }
+
+    private fun widgetHost(): android.appwidget.AppWidgetHost {
+        var h = appWidgetHost
+        if (h == null) {
+            h = WidgetHost.host(this)
+            appWidgetHost = h
+        }
+        return h
     }
 
     private fun bindPanelShortcuts() {
@@ -801,6 +865,10 @@ class HomeActivity : BaseActivity() {
         handler.post(ticker)
         loadWeather()
         mediaMonitor?.start()
+        // A hosted widget only receives updates while the host is listening.
+        if (prefs.secondCardMode == Prefs.SECOND_WIDGET) {
+            runCatching { widgetHost().startListening() }
+        }
         bindFavorites()
         // Settings changes land here: this is a singleTask HOME activity, so
         // onCreate does not run again when the user comes back from Settings.
@@ -822,6 +890,7 @@ class HomeActivity : BaseActivity() {
         super.onPause()
         handler.removeCallbacks(ticker)
         handler.removeCallbacks(chronoTicker)
+        runCatching { appWidgetHost?.stopListening() }
         mediaMonitor?.stop()
     }
 
