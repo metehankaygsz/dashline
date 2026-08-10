@@ -26,4 +26,7 @@
     <dimen name="media_title">17sp</dimen>
     <dimen name="phone_card_height">104dp</dimen>
     <dimen name="analog_clock">132dp</dimen>
+    <dimen name="chrono_text">26sp</dimen>
+    <dimen name="chrono_button">44dp</dimen>
+    <dimen name="chrono_width">112dp</dimen>
 </resources>

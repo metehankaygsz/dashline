@@ -61,6 +61,20 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    /**
+     * The dashboard ticker runs once a second, which leaves the stopwatch tenths
+     * looking frozen. This one runs only while the stopwatch is actually running,
+     * and stops itself the moment it isn't.
+     */
+    private val chronoTicker = object : Runnable {
+        override fun run() {
+            updateChrono()
+            if (prefs.chronoEnabled && prefs.chronoRunning) {
+                handler.postDelayed(this, CHRONO_TICK_MS)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -243,6 +257,7 @@ class HomeActivity : BaseActivity() {
                 prefs.chronoStartedAt = SystemClock.elapsedRealtime()
             }
             updateChrono()
+            startChronoTicker()
         }
         binding.chronoReset.setOnClickListener {
             prefs.chronoStartedAt = 0L
@@ -254,6 +269,14 @@ class HomeActivity : BaseActivity() {
     private fun updateChronoVisibility() {
         binding.chronoRow.visibility =
             if (prefs.chronoEnabled) android.view.View.VISIBLE else android.view.View.GONE
+        updateChrono()
+        startChronoTicker()
+    }
+
+    /** Runs the fast ticker only while the stopwatch is counting. */
+    private fun startChronoTicker() {
+        handler.removeCallbacks(chronoTicker)
+        if (prefs.chronoEnabled && prefs.chronoRunning) handler.post(chronoTicker)
     }
 
     private fun updateChrono() {
@@ -267,16 +290,15 @@ class HomeActivity : BaseActivity() {
         )
     }
 
-    /** m:ss.t, or h:mm:ss past an hour. */
+    /** m:ss.hh with hundredths, or h:mm:ss once past an hour. */
     private fun formatChrono(ms: Long): String {
-        val total = ms / 100          // tenths
-        val tenths = total % 10
-        val secs = total / 10
+        val hundredths = (ms / 10) % 100
+        val secs = ms / 1000
         val h = secs / 3600
         val m = (secs % 3600) / 60
         val sec = secs % 60
         return if (h > 0) String.format(Locale.US, "%d:%02d:%02d", h, m, sec)
-        else String.format(Locale.US, "%d:%02d.%d", m, sec, tenths)
+        else String.format(Locale.US, "%d:%02d.%02d", m, sec, hundredths)
     }
 
     // ---- Volume ------------------------------------------------------------
@@ -495,8 +517,6 @@ class HomeActivity : BaseActivity() {
             binding.favSlot3, binding.favSlot4
         )
         bindFavorites()
-        setupTabs()
-        applyClockStyle()
     }
 
     private fun bindFavorites() {
@@ -635,6 +655,11 @@ class HomeActivity : BaseActivity() {
         loadWeather()
         mediaMonitor?.start()
         bindFavorites()
+        // Settings changes land here: this is a singleTask HOME activity, so
+        // onCreate does not run again when the user comes back from Settings.
+        setupTabs()
+        applyClockStyle()
+        setupVolume()
     }
 
     private fun applyKeepScreenOn() {
@@ -648,6 +673,7 @@ class HomeActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         handler.removeCallbacks(ticker)
+        handler.removeCallbacks(chronoTicker)
         mediaMonitor?.stop()
     }
 
@@ -662,5 +688,7 @@ class HomeActivity : BaseActivity() {
         private const val REQ_LOCATION = 201
         private const val REQ_FAV_BASE = 300
         private const val WEATHER_INTERVAL_MS = 15 * 60 * 1000L
+        /** ~30fps — smooth hundredths without burning CPU on a slow SoC. */
+        private const val CHRONO_TICK_MS = 33L
     }
 }

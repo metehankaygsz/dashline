@@ -109,25 +109,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
-                    android:minWidth="86dp"
-                    android:text="0:00.0"
+                    android:minWidth="@dimen/chrono_width"
+                    android:text="0:00.00"
                     android:textColor="@color/text_primary"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/chrono_text"
+                    android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/chronoToggle"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:padding="8dp"
+                    android:layout_width="@dimen/chrono_button"
+                    android:layout_height="@dimen/chrono_button"
+                    android:padding="10dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/chrono_start_stop"
                     app:srcCompat="@drawable/ic_play" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/chronoReset"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:padding="8dp"
+                    android:layout_width="@dimen/chrono_button"
+                    android:layout_height="@dimen/chrono_button"
+                    android:padding="10dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/chrono_reset"
                     app:srcCompat="@drawable/ic_reset" />
