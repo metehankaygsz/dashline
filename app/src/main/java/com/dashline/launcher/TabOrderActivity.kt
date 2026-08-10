@@ -61,12 +61,16 @@ class TabOrderActivity : BaseActivity() {
             row.tabEditLabel.alpha = if (visible) 1f else 0.45f
             row.tabEditIcon.alpha = if (visible) 1f else 0.45f
 
-            row.tabEditVisible.setOnClickListener {
-                // Never let the user hide every tab and strand themselves with no
-                // way back into Settings.
-                if (visible && prefs.visibleTabs().size <= 1) return@setOnClickListener
-                prefs.setTabVisible(tab, !visible)
-                render()
+            if (tab.canHide) {
+                row.tabEditVisible.visibility = View.VISIBLE
+                row.tabEditVisible.setOnClickListener {
+                    prefs.setTabVisible(tab, !visible)
+                    render()
+                }
+            } else {
+                // Apps and Settings are always shown — no toggle to press.
+                row.tabEditVisible.visibility = View.INVISIBLE
+                row.tabEditVisible.setOnClickListener(null)
             }
 
             row.tabEditUp.visibility = if (index == 0) View.INVISIBLE else View.VISIBLE

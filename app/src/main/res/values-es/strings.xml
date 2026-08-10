@@ -123,4 +123,14 @@
     <string name="settings_chrono">Cronómetro</string>
     <string name="chrono_start_stop">Iniciar o parar</string>
     <string name="chrono_reset">Reiniciar</string>
+    <string name="settings_panel_order">Orden de tarjetas</string>
+    <string name="panel_media_first">Multimedia arriba</string>
+    <string name="panel_phone_first">Segunda tarjeta arriba</string>
+    <string name="settings_panel_split">Tamaño de tarjetas</string>
+    <string name="split_media_large">Multimedia mayor</string>
+    <string name="split_equal">Iguales</string>
+    <string name="split_second_large">Segunda tarjeta mayor</string>
+    <string name="settings_second_card">Segunda tarjeta</string>
+    <string name="second_phone">Teléfono</string>
+    <string name="second_shortcuts">Accesos directos</string>
 </resources>

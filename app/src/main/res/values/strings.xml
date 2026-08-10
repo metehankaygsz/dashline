@@ -74,6 +74,16 @@
     <string name="unit_celsius">Celsius (°C)</string>
     <string name="unit_fahrenheit">Fahrenheit (°F)</string>
     <string name="settings_theme">Theme</string>
+    <string name="settings_panel_order">Card order</string>
+    <string name="panel_media_first">Media on top</string>
+    <string name="panel_phone_first">Second card on top</string>
+    <string name="settings_panel_split">Card sizes</string>
+    <string name="split_media_large">Media larger</string>
+    <string name="split_equal">Equal</string>
+    <string name="split_second_large">Second card larger</string>
+    <string name="settings_second_card">Second card</string>
+    <string name="second_phone">Phone</string>
+    <string name="second_shortcuts">App shortcuts</string>
     <string name="settings_clock_style">Clock style</string>
     <string name="clock_digital">Digital</string>
     <string name="clock_analog">Analog</string>

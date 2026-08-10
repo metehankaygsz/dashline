@@ -6,13 +6,22 @@ package com.dashline.launcher
  *
  * [id] is persisted — never rename one without a migration.
  */
-enum class TabAction(val id: String, val iconRes: Int, val labelRes: Int) {
+enum class TabAction(
+    val id: String,
+    val iconRes: Int,
+    val labelRes: Int,
+    /**
+     * Apps and Settings can be reordered but never hidden — without them there's
+     * no way to reach the drawer or get back into Settings to undo it.
+     */
+    val canHide: Boolean = true
+) {
     AUDIO("audio", R.drawable.ic_audio, R.string.tab_audio),
     RADIO("radio", R.drawable.ic_radio, R.string.audio_radio),
     PHONE("phone", R.drawable.ic_phone, R.string.tab_phone),
     NAV("nav", R.drawable.ic_nav, R.string.tab_nav),
-    APPS("apps", R.drawable.ic_apps, R.string.tab_apps),
-    SETTINGS("settings", R.drawable.ic_settings, R.string.tab_settings);
+    APPS("apps", R.drawable.ic_apps, R.string.tab_apps, canHide = false),
+    SETTINGS("settings", R.drawable.ic_settings, R.string.tab_settings, canHide = false);
 
     companion object {
         fun byId(id: String): TabAction? = entries.firstOrNull { it.id == id }

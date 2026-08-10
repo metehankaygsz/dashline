@@ -70,6 +70,30 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_THEME, THEME_DARK) ?: THEME_DARK
         set(v) = sp.edit().putString(KEY_THEME, v).apply()
 
+    // ---- home screen panels -------------------------------------------------
+
+    /** PANEL_MEDIA_FIRST (default) or PANEL_PHONE_FIRST — which card sits on top. */
+    var panelOrder: String
+        get() = sp.getString(KEY_PANEL_ORDER, PANEL_MEDIA_FIRST) ?: PANEL_MEDIA_FIRST
+        set(v) = sp.edit().putString(KEY_PANEL_ORDER, v).apply()
+
+    /** SPLIT_MEDIA_LARGE (default), SPLIT_EQUAL or SPLIT_SECOND_LARGE. */
+    var panelSplit: String
+        get() = sp.getString(KEY_PANEL_SPLIT, SPLIT_MEDIA_LARGE) ?: SPLIT_MEDIA_LARGE
+        set(v) = sp.edit().putString(KEY_PANEL_SPLIT, v).apply()
+
+    /** SECOND_PHONE (default) or SECOND_SHORTCUTS — what the lower card shows. */
+    var secondCardMode: String
+        get() = sp.getString(KEY_SECOND_MODE, SECOND_PHONE) ?: SECOND_PHONE
+        set(v) = sp.edit().putString(KEY_SECOND_MODE, v).apply()
+
+    fun getPanelShortcut(index: Int): String? = sp.getString("panel_shortcut_$index", null)
+
+    fun setPanelShortcut(index: Int, pkg: String) =
+        sp.edit().putString("panel_shortcut_$index", pkg).apply()
+
+    fun clearPanelShortcut(index: Int) = sp.edit().remove("panel_shortcut_$index").apply()
+
     // ---- clock ------------------------------------------------------------
 
     /** CLOCK_DIGITAL (default), CLOCK_ANALOG or CLOCK_MINIMAL. */
@@ -116,9 +140,10 @@ class Prefs(context: Context) {
         get() = HashSet(sp.getStringSet(KEY_TABS_HIDDEN, emptySet()) ?: emptySet())
         set(v) = sp.edit().putStringSet(KEY_TABS_HIDDEN, v).apply()
 
-    fun isTabVisible(tab: TabAction): Boolean = tab.id !in hiddenTabs
+    fun isTabVisible(tab: TabAction): Boolean = !tab.canHide || tab.id !in hiddenTabs
 
     fun setTabVisible(tab: TabAction, visible: Boolean) {
+        if (!tab.canHide) return
         hiddenTabs = if (visible) hiddenTabs - tab.id else hiddenTabs + tab.id
     }
 
@@ -196,6 +221,21 @@ class Prefs(context: Context) {
         private const val KEY_LANGUAGE = "language"
         private const val KEY_ASKED_LOCATION = "asked_location"
         private const val KEY_GRADIENT = "gradient"
+        private const val KEY_PANEL_ORDER = "panel_order"
+        private const val KEY_PANEL_SPLIT = "panel_split"
+        private const val KEY_SECOND_MODE = "second_card_mode"
+
+        const val PANEL_MEDIA_FIRST = "media_first"
+        const val PANEL_PHONE_FIRST = "phone_first"
+        const val SPLIT_MEDIA_LARGE = "media_large"
+        const val SPLIT_EQUAL = "equal"
+        const val SPLIT_SECOND_LARGE = "second_large"
+        const val SECOND_PHONE = "phone"
+        const val SECOND_SHORTCUTS = "shortcuts"
+
+        /** Shortcut slots in the lower card when it's in shortcuts mode. */
+        const val PANEL_SHORTCUT_COUNT = 4
+
         private const val KEY_CLOCK_STYLE = "clock_style"
         private const val KEY_CHRONO_ON = "chrono_enabled"
         private const val KEY_CHRONO_START = "chrono_started_at"

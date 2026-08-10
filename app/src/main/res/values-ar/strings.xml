@@ -123,4 +123,14 @@
     <string name="settings_chrono">ساعة إيقاف</string>
     <string name="chrono_start_stop">بدء أو إيقاف</string>
     <string name="chrono_reset">إعادة تعيين</string>
+    <string name="settings_panel_order">ترتيب البطاقات</string>
+    <string name="panel_media_first">الوسائط في الأعلى</string>
+    <string name="panel_phone_first">البطاقة الثانية في الأعلى</string>
+    <string name="settings_panel_split">أحجام البطاقات</string>
+    <string name="split_media_large">الوسائط أكبر</string>
+    <string name="split_equal">متساوية</string>
+    <string name="split_second_large">البطاقة الثانية أكبر</string>
+    <string name="settings_second_card">البطاقة الثانية</string>
+    <string name="second_phone">الهاتف</string>
+    <string name="second_shortcuts">اختصارات التطبيقات</string>
 </resources>

@@ -123,4 +123,14 @@
     <string name="settings_chrono">Stoppuhr</string>
     <string name="chrono_start_stop">Starten oder stoppen</string>
     <string name="chrono_reset">Zurücksetzen</string>
+    <string name="settings_panel_order">Kartenreihenfolge</string>
+    <string name="panel_media_first">Medien oben</string>
+    <string name="panel_phone_first">Zweite Karte oben</string>
+    <string name="settings_panel_split">Kartengrößen</string>
+    <string name="split_media_large">Medien größer</string>
+    <string name="split_equal">Gleich</string>
+    <string name="split_second_large">Zweite Karte größer</string>
+    <string name="settings_second_card">Zweite Karte</string>
+    <string name="second_phone">Telefon</string>
+    <string name="second_shortcuts">App-Verknüpfungen</string>
 </resources>

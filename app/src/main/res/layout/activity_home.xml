@@ -463,26 +463,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/phone_card_height"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center_vertical"
                 android:padding="16dp"
                 android:background="@drawable/card_dark"
                 android:foreground="?android:attr/selectableItemBackground">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="@string/tab_phone"
-                    app:srcCompat="@drawable/ic_phone" />
-
-                <TextView
-                    android:id="@+id/phoneLabel"
-                    android:layout_width="wrap_content"
+                <!-- Default: a plain Phone shortcut -->
+                <LinearLayout
+                    android:id="@+id/phoneDefault"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tab_phone"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/tab_phone"
+                        app:srcCompat="@drawable/ic_phone" />
+
+                    <TextView
+                        android:id="@+id/phoneLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tab_phone"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <!-- Or: user-chosen app shortcuts, populated in code -->
+                <LinearLayout
+                    android:id="@+id/panelShortcuts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false"
+                    android:gravity="center"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

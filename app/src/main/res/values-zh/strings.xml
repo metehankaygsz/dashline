@@ -123,4 +123,14 @@
     <string name="settings_chrono">秒表</string>
     <string name="chrono_start_stop">开始或停止</string>
     <string name="chrono_reset">重置</string>
+    <string name="settings_panel_order">卡片顺序</string>
+    <string name="panel_media_first">媒体在上</string>
+    <string name="panel_phone_first">第二张卡片在上</string>
+    <string name="settings_panel_split">卡片大小</string>
+    <string name="split_media_large">媒体更大</string>
+    <string name="split_equal">相同</string>
+    <string name="split_second_large">第二张卡片更大</string>
+    <string name="settings_second_card">第二张卡片</string>
+    <string name="second_phone">电话</string>
+    <string name="second_shortcuts">应用快捷方式</string>
 </resources>

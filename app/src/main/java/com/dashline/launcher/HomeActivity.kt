@@ -40,6 +40,7 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var audioManager: android.media.AudioManager
     private var draggingVolume = false
+    private var mediaCompact = false
 
     private lateinit var favSlots: List<AppCompatImageView>
 
@@ -95,6 +96,7 @@ class HomeActivity : BaseActivity() {
         setupFavorites()
         setupChrono()
         applyClockStyle()
+        applyPanelLayout()
         applyAccent()
         ensureLocationPermission()
     }
@@ -218,6 +220,141 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+
+
+    // ---- Home panel layout -------------------------------------------------
+
+    /**
+     * Applies the user's chosen order, split and lower-card mode to the right
+     * column, then rescales the media card's contents to match the space it
+     * ended up with. Portrait stacks everything and has no weights, so the
+     * resize is skipped there.
+     */
+    private fun applyPanelLayout() {
+        val landscape =
+            resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
+        val parent = binding.mediaCard.parent as? android.widget.LinearLayout
+        if (parent != null && landscape) {
+            val phoneFirst = prefs.panelOrder == Prefs.PANEL_PHONE_FIRST
+            // Reorder by removing and re-adding — cheaper than rebuilding views.
+            parent.removeView(binding.mediaCard)
+            parent.removeView(binding.phoneCard)
+            if (phoneFirst) {
+                parent.addView(binding.phoneCard, 0)
+                parent.addView(binding.mediaCard, 1)
+            } else {
+                parent.addView(binding.mediaCard, 0)
+                parent.addView(binding.phoneCard, 1)
+            }
+
+            val (mediaWeight, secondWeight) = when (prefs.panelSplit) {
+                Prefs.SPLIT_EQUAL -> 1f to 1f
+                Prefs.SPLIT_SECOND_LARGE -> 0.75f to 1.6f
+                else -> 1.9f to 0.55f
+            }
+            setCardWeight(binding.mediaCard, mediaWeight)
+            setCardWeight(binding.phoneCard, secondWeight)
+            applyMediaDensity(mediaWeight)
+        }
+
+        applySecondCardMode()
+    }
+
+    private fun setCardWeight(card: android.view.View, weight: Float) {
+        val lp = card.layoutParams as? android.widget.LinearLayout.LayoutParams ?: return
+        lp.height = 0
+        lp.weight = weight
+        // A weighted card must not also enforce a minimum, or it can't shrink.
+        (card as? android.view.ViewGroup)?.minimumHeight = 0
+        card.layoutParams = lp
+    }
+
+    /**
+     * Scales the media card's contents to the height it was given. A small card
+     * drops the seek row and shrinks the artwork rather than clipping.
+     */
+    private fun applyMediaDensity(mediaWeight: Float) {
+        val density = resources.displayMetrics.density
+        val compact = mediaWeight < 1f
+
+        val art = if (compact) 56f else resources.getDimension(R.dimen.album_art) / density
+        val artPx = (art * density).toInt()
+        binding.mediaArt.layoutParams = binding.mediaArt.layoutParams.apply {
+            width = artPx
+            height = artPx
+        }
+        val pad = ((if (compact) 14f else resources.getDimension(R.dimen.album_art_padding) / density) * density).toInt()
+        // Padding only applies to the placeholder glyph; real art fills the tile.
+        if (currentMedia?.art == null) binding.mediaArt.setPadding(pad, pad, pad, pad)
+
+        binding.mediaTitle.textSize = if (compact) 15f else
+            resources.getDimension(R.dimen.media_title) / resources.displayMetrics.scaledDensity
+
+        val btn = ((if (compact) 40f else 50f) * density).toInt()
+        binding.btnPlayPause.layoutParams = binding.btnPlayPause.layoutParams.apply {
+            width = btn
+            height = btn
+        }
+        binding.btnPlayPause.background =
+            GradientThemes.roundedRect(accentColor(), btn / 2f)
+
+        mediaCompact = compact
+        // updateMediaProgress() owns the seek row; just re-evaluate it now.
+        updateMediaProgress()
+    }
+
+    /** Phone shortcut, or a row of app shortcuts the user picks. */
+    private fun applySecondCardMode() {
+        val shortcuts = prefs.secondCardMode == Prefs.SECOND_SHORTCUTS
+        binding.phoneDefault.visibility =
+            if (shortcuts) android.view.View.GONE else android.view.View.VISIBLE
+        binding.panelShortcuts.visibility =
+            if (shortcuts) android.view.View.VISIBLE else android.view.View.GONE
+
+        // Tapping the card only dials when it's actually the phone card.
+        binding.phoneCard.setOnClickListener(
+            if (shortcuts) null else android.view.View.OnClickListener { openPhone() }
+        )
+        binding.phoneCard.isClickable = !shortcuts
+
+        if (shortcuts) bindPanelShortcuts()
+    }
+
+    private fun bindPanelShortcuts() {
+        val row = binding.panelShortcuts
+        row.removeAllViews()
+        val density = resources.displayMetrics.density
+        val inflater = layoutInflater
+
+        for (index in 0 until Prefs.PANEL_SHORTCUT_COUNT) {
+            val pkg = prefs.getPanelShortcut(index)
+            val item = com.dashline.launcher.databinding.ItemAppBinding
+                .inflate(inflater, row, false)
+
+            if (pkg != null && AppRepository.isInstalled(this, pkg)) {
+                item.appIcon.setImageDrawable(AppRepository.iconFor(this, pkg))
+                item.appLabel.text = AppRepository.labelFor(this, pkg)
+                item.root.setOnClickListener { AppRepository.launch(this, pkg) }
+                item.root.setOnLongClickListener { pickPanelShortcut(index); true }
+            } else {
+                item.appIcon.setImageResource(R.drawable.ic_add)
+                item.appLabel.text = ""
+                item.root.setOnClickListener { pickPanelShortcut(index) }
+                item.root.setOnLongClickListener { false }
+            }
+            row.addView(
+                item.root,
+                android.widget.LinearLayout.LayoutParams(
+                    0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                )
+            )
+        }
+    }
+
+    private fun pickPanelShortcut(index: Int) {
+        AppPickerActivity.start(this, Prefs.ROLE_FAVORITE, REQ_PANEL_BASE + index)
+    }
 
     // ---- Clock style + stopwatch -------------------------------------------
 
@@ -378,6 +515,11 @@ class HomeActivity : BaseActivity() {
             binding.mediaSeekRow.visibility = android.view.View.GONE
             return
         }
+        if (mediaCompact) {
+            // Not enough height for a seek row — controls take priority.
+            binding.mediaSeekRow.visibility = android.view.View.GONE
+            return
+        }
         val position = monitor.positionMs().coerceAtMost(duration)
         binding.mediaSeekRow.visibility = android.view.View.VISIBLE
         binding.mediaProgress.max = duration.toInt()
@@ -502,6 +644,11 @@ class HomeActivity : BaseActivity() {
             requestCode >= REQ_FAV_BASE && requestCode < REQ_FAV_BASE + Prefs.FAVORITE_COUNT -> {
                 prefs.setFavorite(requestCode - REQ_FAV_BASE, pkg)
                 bindFavorites()
+            }
+            requestCode >= REQ_PANEL_BASE &&
+                requestCode < REQ_PANEL_BASE + Prefs.PANEL_SHORTCUT_COUNT -> {
+                prefs.setPanelShortcut(requestCode - REQ_PANEL_BASE, pkg)
+                bindPanelShortcuts()
             }
         }
     }
@@ -659,6 +806,7 @@ class HomeActivity : BaseActivity() {
         // onCreate does not run again when the user comes back from Settings.
         setupTabs()
         applyClockStyle()
+        applyPanelLayout()
         setupVolume()
     }
 
@@ -687,6 +835,7 @@ class HomeActivity : BaseActivity() {
         private const val REQ_PICK_GENERIC = 102
         private const val REQ_LOCATION = 201
         private const val REQ_FAV_BASE = 300
+        private const val REQ_PANEL_BASE = 400
         private const val WEATHER_INTERVAL_MS = 15 * 60 * 1000L
         /** ~30fps — smooth hundredths without burning CPU on a slow SoC. */
         private const val CHRONO_TICK_MS = 33L

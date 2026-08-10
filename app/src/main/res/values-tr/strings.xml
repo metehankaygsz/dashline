@@ -132,4 +132,14 @@
     <string name="settings_chrono">Kronometre</string>
     <string name="chrono_start_stop">Başlat veya durdur</string>
     <string name="chrono_reset">Sıfırla</string>
+    <string name="settings_panel_order">Kart sırası</string>
+    <string name="panel_media_first">Medya üstte</string>
+    <string name="panel_phone_first">İkinci kart üstte</string>
+    <string name="settings_panel_split">Kart boyutları</string>
+    <string name="split_media_large">Medya daha büyük</string>
+    <string name="split_equal">Eşit</string>
+    <string name="split_second_large">İkinci kart daha büyük</string>
+    <string name="settings_second_card">İkinci kart</string>
+    <string name="second_phone">Telefon</string>
+    <string name="second_shortcuts">Uygulama kısayolları</string>
 </resources>

@@ -123,4 +123,14 @@
     <string name="settings_chrono">Секундомер</string>
     <string name="chrono_start_stop">Пуск или стоп</string>
     <string name="chrono_reset">Сброс</string>
+    <string name="settings_panel_order">Порядок карточек</string>
+    <string name="panel_media_first">Медиа сверху</string>
+    <string name="panel_phone_first">Вторая карточка сверху</string>
+    <string name="settings_panel_split">Размер карточек</string>
+    <string name="split_media_large">Медиа больше</string>
+    <string name="split_equal">Одинаково</string>
+    <string name="split_second_large">Вторая карточка больше</string>
+    <string name="settings_second_card">Вторая карточка</string>
+    <string name="second_phone">Телефон</string>
+    <string name="second_shortcuts">Ярлыки приложений</string>
 </resources>
