@@ -137,4 +137,5 @@
     <string name="customize_sample_track">Faixa de exemplo</string>
     <string name="customize_sample_artist">Artista</string>
     <string name="second_widget">Widget</string>
+    <string name="customize_hint_portrait">Na vertical os cartões empilham-se; os tamanhos definem-se na horizontal.</string>
 </resources>

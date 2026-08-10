@@ -77,6 +77,7 @@
     <string name="settings_customize">Customize home screen</string>
     <string name="customize_hint">Drag the bar between the cards to resize them.</string>
     <string name="customize_hint_split">Media card: %1$d%% of the column. Drag the bar to resize.</string>
+    <string name="customize_hint_portrait">Cards stack in portrait, so sizes are set in landscape.</string>
     <string name="customize_swap">Swap</string>
     <string name="customize_second_card">Second card</string>
     <string name="customize_reset">Reset</string>

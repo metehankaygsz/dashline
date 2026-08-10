@@ -146,4 +146,5 @@
     <string name="customize_sample_track">Örnek Parça</string>
     <string name="customize_sample_artist">Sanatçı</string>
     <string name="second_widget">Widget</string>
+    <string name="customize_hint_portrait">Dikey modda kartlar alt alta dizilir, boyutlar yatay modda ayarlanır.</string>
 </resources>

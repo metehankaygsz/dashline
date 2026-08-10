@@ -63,27 +63,59 @@ object WidgetHost {
         }
     }
 
-    /** Build the view for an already-bound widget, or null if it's gone. */
+    /**
+     * Build the view for an already-bound widget, or null if it can't be shown.
+     *
+     * Three things matter here and each one crashed a build at some point:
+     *  - the host must be listening before createView, or the returned view
+     *    never receives its RemoteViews and can throw on first layout;
+     *  - createView already calls setAppWidget internally — calling it again
+     *    re-inflates and throws;
+     *  - the view must be built with the *activity* context, since it goes into
+     *    an activity's hierarchy and needs its theme.
+     */
     fun createView(
         context: Context,
         host: AppWidgetHost,
         widgetId: Int
     ): AppWidgetHostView? {
-        val info: AppWidgetProviderInfo = manager(context).getAppWidgetInfo(widgetId) ?: return null
+        if (widgetId == INVALID_ID) return null
         return try {
-            host.createView(context.applicationContext, widgetId, info).apply {
-                setAppWidget(widgetId, info)
-            }
-        } catch (e: Exception) {
+            val info: AppWidgetProviderInfo =
+                manager(context).getAppWidgetInfo(widgetId) ?: return null
+            runCatching { host.startListening() }
+            host.createView(context, widgetId, info)
+        } catch (e: Throwable) {
+            // Providers can throw anything at all from their RemoteViews.
             null
         }
     }
 
     /** Tell the widget how much room it has, so it can pick a layout. */
     fun resize(view: AppWidgetHostView, widthDp: Int, heightDp: Int) {
+        if (widthDp <= 0 || heightDp <= 0) return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             runCatching { view.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp) }
         }
+    }
+
+    /**
+     * The system picker usually binds for us, but some OEM pickers return an id
+     * without binding it. Rendering an unbound id throws, so check first and ask
+     * the user explicitly when needed.
+     */
+    fun isBound(context: Context, widgetId: Int): Boolean =
+        widgetId != INVALID_ID && manager(context).getAppWidgetInfo(widgetId) != null
+
+    fun requestBind(activity: Activity, widgetId: Int, requestCode: Int): Boolean = try {
+        activity.startActivityForResult(
+            Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
+                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId),
+            requestCode
+        )
+        true
+    } catch (e: Exception) {
+        false
     }
 
     fun delete(host: AppWidgetHost, widgetId: Int) {

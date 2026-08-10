@@ -41,6 +41,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var audioManager: android.media.AudioManager
     private var draggingVolume = false
     private var mediaCompact = false
+    private var showSeek = true
     private var appWidgetHost: android.appwidget.AppWidgetHost? = null
 
     private lateinit var favSlots: List<AppCompatImageView>
@@ -236,23 +237,36 @@ class HomeActivity : BaseActivity() {
             resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
         val parent = binding.mediaCard.parent as? android.widget.LinearLayout
-        if (parent != null && landscape) {
+        if (parent != null) {
+            // Card order applies in both orientations. In portrait the cards sit
+            // after the clock panel, so reorder relative to their current spot.
+            val base = minOf(
+                parent.indexOfChild(binding.mediaCard),
+                parent.indexOfChild(binding.phoneCard)
+            ).coerceAtLeast(0)
             val phoneFirst = prefs.panelOrder == Prefs.PANEL_PHONE_FIRST
-            // Reorder by removing and re-adding — cheaper than rebuilding views.
             parent.removeView(binding.mediaCard)
             parent.removeView(binding.phoneCard)
             if (phoneFirst) {
-                parent.addView(binding.phoneCard, 0)
-                parent.addView(binding.mediaCard, 1)
+                parent.addView(binding.phoneCard, base)
+                parent.addView(binding.mediaCard, base + 1)
             } else {
-                parent.addView(binding.mediaCard, 0)
-                parent.addView(binding.phoneCard, 1)
+                parent.addView(binding.mediaCard, base)
+                parent.addView(binding.phoneCard, base + 1)
             }
 
-            val fraction = prefs.mediaFraction
-            setCardWeight(binding.mediaCard, fraction)
-            setCardWeight(binding.phoneCard, 1f - fraction)
-            applyMediaDensity(fraction)
+            if (landscape) {
+                // Weights only mean something in the fixed-height column.
+                val fraction = prefs.mediaFraction
+                setCardWeight(binding.mediaCard, fraction)
+                setCardWeight(binding.phoneCard, 1f - fraction)
+                applyMediaDensity(fraction)
+            } else {
+                // Portrait scrolls, so everything gets its full size.
+                showSeek = true
+                mediaCompact = false
+                binding.mediaVolumeRow.visibility = android.view.View.VISIBLE
+            }
         }
 
         applySecondCardMode()
@@ -271,20 +285,34 @@ class HomeActivity : BaseActivity() {
      * Scales the media card's contents to the height it was given. A small card
      * drops the seek row and shrinks the artwork rather than clipping.
      */
+    /**
+     * Scales the media card to the height it was given, and — more importantly —
+     * removes controls *before* they'd be squashed. A cramped seek bar or volume
+     * slider looks broken; showing fewer, correctly sized controls does not.
+     */
     private fun applyMediaDensity(mediaFraction: Float) {
         val density = resources.displayMetrics.density
-        // Below roughly half the column there isn't room for full-size controls.
-        val compact = mediaFraction < 0.5f
 
-        val art = if (compact) 56f else resources.getDimension(R.dimen.album_art) / density
-        val artPx = (art * density).toInt()
+        // Drop rows in order of expendability as the card shrinks.
+        showSeek = mediaFraction >= 0.56f
+        val showVolume = mediaFraction >= 0.46f
+        val showControls = mediaFraction >= 0.34f
+        val compact = mediaFraction < 0.46f
+
+        binding.mediaVolumeRow.visibility =
+            if (showVolume) android.view.View.VISIBLE else android.view.View.GONE
+        if (!showControls) binding.mediaControls.visibility = android.view.View.GONE
+
+        val art = ((if (compact) 52f else resources.getDimension(R.dimen.album_art) / density) * density).toInt()
         binding.mediaArt.layoutParams = binding.mediaArt.layoutParams.apply {
-            width = artPx
-            height = artPx
+            width = art
+            height = art
         }
-        val pad = ((if (compact) 14f else resources.getDimension(R.dimen.album_art_padding) / density) * density).toInt()
-        // Padding only applies to the placeholder glyph; real art fills the tile.
-        if (currentMedia?.art == null) binding.mediaArt.setPadding(pad, pad, pad, pad)
+        if (currentMedia?.art == null) {
+            val pad = ((if (compact) 13f else resources.getDimension(R.dimen.album_art_padding) / density) * density).toInt()
+            binding.mediaArt.setPadding(pad, pad, pad, pad)
+        }
+        binding.mediaArt.requestLayout()
 
         binding.mediaTitle.textSize = if (compact) 15f else
             resources.getDimension(R.dimen.media_title) / resources.displayMetrics.scaledDensity
@@ -294,11 +322,9 @@ class HomeActivity : BaseActivity() {
             width = btn
             height = btn
         }
-        binding.btnPlayPause.background =
-            GradientThemes.roundedRect(accentColor(), btn / 2f)
+        binding.btnPlayPause.background = GradientThemes.roundedRect(accentColor(), btn / 2f)
 
         mediaCompact = compact
-        // updateMediaProgress() owns the seek row; just re-evaluate it now.
         updateMediaProgress()
     }
 
@@ -368,6 +394,10 @@ class HomeActivity : BaseActivity() {
             }
         }
     }
+
+    private fun isLandscapeNow(): Boolean =
+        resources.configuration.orientation ==
+            android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
     private fun fallbackToPhoneCard() {
         binding.panelWidget.visibility = android.view.View.GONE
@@ -579,8 +609,8 @@ class HomeActivity : BaseActivity() {
             binding.mediaSeekRow.visibility = android.view.View.GONE
             return
         }
-        if (mediaCompact) {
-            // Not enough height for a seek row — controls take priority.
+        if (!showSeek) {
+            // Not enough height — a squashed seek bar reads as broken.
             binding.mediaSeekRow.visibility = android.view.View.GONE
             return
         }
@@ -636,7 +666,10 @@ class HomeActivity : BaseActivity() {
         binding.btnPlayPause.setImageResource(
             if (info.isPlaying) R.drawable.ic_pause else R.drawable.ic_play
         )
-        binding.mediaControls.visibility = android.view.View.VISIBLE
+        // Respect whatever applyMediaDensity decided there was room for.
+        if (prefs.mediaFraction >= 0.34f || !isLandscapeNow()) {
+            binding.mediaControls.visibility = android.view.View.VISIBLE
+        }
         updateMediaProgress()
     }
 

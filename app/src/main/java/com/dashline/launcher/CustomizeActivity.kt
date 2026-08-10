@@ -29,6 +29,8 @@ class CustomizeActivity : BaseActivity() {
 
     private var widgetHost: AppWidgetHost? = null
     private var dragHandle: View? = null
+    private var dragFraction = 0.72f
+    private var dragging = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,46 +110,87 @@ class CustomizeActivity : BaseActivity() {
     }
 
     /**
-     * A grab bar sitting between the two cards. Dragging it rewrites the media
-     * fraction continuously, so the size is set by feel rather than by picking
-     * from a list.
+     * A grab bar between the two cards. Dragging rewrites the split continuously.
+     *
+     * The move handler deliberately does as little as possible: no preference
+     * writes (that's a disk commit per touch event) and no view re-parenting.
+     * It only adjusts the two weights and lets the parent re-measure. The value
+     * is persisted once, on release.
      */
     private fun addDragHandle() {
+        if (!isLandscape()) return   // portrait stacks and scrolls; weights don't apply
         val column = preview.mediaCard.parent as? LinearLayout ?: return
+
         val handle = View(this).apply {
             setBackgroundResource(R.drawable.drag_handle)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                (18 * resources.displayMetrics.density).toInt()
+                (22 * resources.displayMetrics.density).toInt()
             )
         }
-        handle.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_MOVE, MotionEvent.ACTION_DOWN -> {
+        val loc = IntArray(2)   // reused; allocating per event causes GC churn
+
+        handle.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    view.parent?.requestDisallowInterceptTouchEvent(true)
+                    dragging = true
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
                     val height = column.height.toFloat()
                     if (height > 0f) {
-                        // Position within the column becomes the split point.
-                        val y = event.rawY - intArrayOf(0, 0).also {
-                            column.getLocationOnScreen(it)
-                        }[1]
-                        val f = (y / height).coerceIn(Prefs.MIN_FRACTION, Prefs.MAX_FRACTION)
+                        column.getLocationOnScreen(loc)
+                        val ratio = ((event.rawY - loc[1]) / height)
+                            .coerceIn(Prefs.MIN_FRACTION, Prefs.MAX_FRACTION)
                         val mediaFirst = prefs.panelOrder != Prefs.PANEL_PHONE_FIRST
-                        prefs.mediaFraction = if (mediaFirst) f else 1f - f
-                        applyToPreview()
+                        dragFraction = if (mediaFirst) ratio else 1f - ratio
+                        applyWeights(dragFraction)
+                        showSplitHint(dragFraction)
                     }
                     true
                 }
-                else -> true
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    view.parent?.requestDisallowInterceptTouchEvent(false)
+                    dragging = false
+                    prefs.mediaFraction = dragFraction   // single commit
+                    true
+                }
+                else -> false
             }
         }
         column.addView(handle, 1)
         dragHandle = handle
     }
 
+    /** Cheap path used while dragging — weights only, no re-parenting. */
+    private fun applyWeights(fraction: Float) {
+        weight(preview.mediaCard, fraction)
+        weight(preview.phoneCard, 1f - fraction)
+        applyMediaDensityPreview(fraction)
+    }
+
+    private fun showSplitHint(fraction: Float) {
+        binding.customizeHint.text =
+            getString(R.string.customize_hint_split, (fraction * 100).toInt())
+    }
+
+    private fun isLandscape(): Boolean =
+        resources.configuration.orientation ==
+            android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
     /** Re-applies order, split and second-card mode to the preview. */
     private fun applyToPreview() {
+        if (dragging) return   // the drag path owns the layout until release
         val column = preview.mediaCard.parent as? LinearLayout ?: return
         val handle = dragHandle
+
+        // In portrait the cards sit after the clock panel, so reorder relative to
+        // wherever they currently are rather than assuming index 0.
+        val base = minOf(
+            column.indexOfChild(preview.mediaCard),
+            column.indexOfChild(preview.phoneCard)
+        ).coerceAtLeast(0)
 
         column.removeView(preview.mediaCard)
         column.removeView(preview.phoneCard)
@@ -156,18 +199,41 @@ class CustomizeActivity : BaseActivity() {
         val mediaFirst = prefs.panelOrder != Prefs.PANEL_PHONE_FIRST
         val first = if (mediaFirst) preview.mediaCard else preview.phoneCard
         val second = if (mediaFirst) preview.phoneCard else preview.mediaCard
-        column.addView(first, 0)
-        handle?.let { column.addView(it, 1) }
-        column.addView(second, if (handle != null) 2 else 1)
 
-        val fraction = prefs.mediaFraction
-        weight(preview.mediaCard, fraction)
-        weight(preview.phoneCard, 1f - fraction)
+        var at = base
+        column.addView(first, at++)
+        handle?.let { column.addView(it, at++) }
+        column.addView(second, at)
+
+        dragFraction = prefs.mediaFraction
+        if (isLandscape()) {
+            applyWeights(dragFraction)
+            showSplitHint(dragFraction)
+        } else {
+            // No weights in portrait — say so instead of showing a meaningless %.
+            binding.customizeHint.setText(R.string.customize_hint_portrait)
+        }
 
         applySecondCardPreview()
-        binding.customizeHint.text = getString(
-            R.string.customize_hint_split, (fraction * 100).toInt()
-        )
+    }
+
+    /** Mirrors HomeActivity: hide controls before they get cramped. */
+    private fun applyMediaDensityPreview(fraction: Float) {
+        val density = resources.displayMetrics.density
+        val showVolume = fraction >= 0.46f
+        val showControls = fraction >= 0.34f
+        val showSeek = fraction >= 0.56f
+
+        preview.mediaVolumeRow.visibility = if (showVolume) View.VISIBLE else View.GONE
+        preview.mediaControls.visibility = if (showControls) View.VISIBLE else View.GONE
+        preview.mediaSeekRow.visibility = if (showSeek) View.VISIBLE else View.GONE
+
+        val art = ((if (fraction < 0.46f) 52f else 86f) * density).toInt()
+        preview.mediaArt.layoutParams = preview.mediaArt.layoutParams.apply {
+            width = art
+            height = art
+        }
+        preview.mediaArt.requestLayout()
     }
 
     private fun weight(card: View, w: Float) {
@@ -229,7 +295,15 @@ class CustomizeActivity : BaseActivity() {
             container.addView(prompt)
             return
         }
-        container.addView(view)
+        runCatching {
+            container.addView(
+                view,
+                android.widget.FrameLayout.LayoutParams(
+                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+                )
+            )
+        }
         // Long-press to swap the widget out.
         container.setOnLongClickListener { pickWidget(); true }
     }
@@ -280,10 +354,28 @@ class CustomizeActivity : BaseActivity() {
 
         when {
             requestCode == REQ_PICK_WIDGET && resultCode == Activity.RESULT_OK -> {
-                // Some widgets insist on a configuration step before they render.
+                when {
+                    // Some OEM pickers hand back an id they never bound.
+                    !WidgetHost.isBound(this, widgetId) ->
+                        if (!WidgetHost.requestBind(this, widgetId, REQ_BIND_WIDGET)) {
+                            WidgetHost.delete(host(), widgetId)
+                            prefs.secondCardMode = Prefs.SECOND_PHONE
+                            applyToPreview()
+                        }
+                    // Some widgets insist on a configuration step before rendering.
+                    WidgetHost.configureIfNeeded(this, widgetId, REQ_CONFIGURE_WIDGET) -> Unit
+                    else -> commitWidget(widgetId)
+                }
+            }
+            requestCode == REQ_BIND_WIDGET && resultCode == Activity.RESULT_OK -> {
                 if (!WidgetHost.configureIfNeeded(this, widgetId, REQ_CONFIGURE_WIDGET)) {
                     commitWidget(widgetId)
                 }
+            }
+            requestCode == REQ_BIND_WIDGET -> {
+                WidgetHost.delete(host(), widgetId)
+                prefs.secondCardMode = Prefs.SECOND_PHONE
+                applyToPreview()
             }
             requestCode == REQ_PICK_WIDGET -> {
                 WidgetHost.delete(host(), widgetId)
@@ -327,6 +419,7 @@ class CustomizeActivity : BaseActivity() {
     private companion object {
         const val REQ_PICK_WIDGET = 900
         const val REQ_CONFIGURE_WIDGET = 901
+        const val REQ_BIND_WIDGET = 902
         const val REQ_SHORTCUT_BASE = 910
     }
 }

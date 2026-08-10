@@ -137,4 +137,5 @@
     <string name="customize_sample_track">مقطع تجريبي</string>
     <string name="customize_sample_artist">الفنان</string>
     <string name="second_widget">أداة</string>
+    <string name="customize_hint_portrait">تتكدس البطاقات في الوضع الرأسي؛ تُضبط الأحجام في الوضع الأفقي.</string>
 </resources>

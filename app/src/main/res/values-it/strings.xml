@@ -137,4 +137,5 @@
     <string name="customize_sample_track">Brano di esempio</string>
     <string name="customize_sample_artist">Artista</string>
     <string name="second_widget">Widget</string>
+    <string name="customize_hint_portrait">In verticale le schede si impilano; le dimensioni si impostano in orizzontale.</string>
 </resources>
