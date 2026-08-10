@@ -139,4 +139,11 @@
     <string name="second_widget">Виджет</string>
     <string name="customize_hint_portrait">В портретном режиме карточки идут стопкой; размеры задаются в альбомном.</string>
     <string name="widget_none">На этом устройстве нет доступных виджетов</string>
+    <string name="drawer_page">Страница %1$d из %2$d</string>
+    <string name="customize_media_card">Карточка медиа</string>
+    <string name="card_media_player">Медиаплеер</string>
+    <string name="widget_add">Добавить виджет</string>
+    <string name="widget_change">Заменить</string>
+    <string name="widget_remove">Удалить</string>
+    <string name="widget_full">На карточке помещается до %1$d виджетов</string>
 </resources>

@@ -45,6 +45,9 @@ class HomeActivity : BaseActivity() {
     private var appWidgetHost: android.appwidget.AppWidgetHost? = null
     /** Packages currently drawn in the portrait drawer, to skip pointless rebuilds. */
     private var drawerSignature: String? = null
+    private var drawerPages: List<List<AppInfo>> = emptyList()
+    private var drawerPage = 0
+    private var drawerRows = 0
 
     private lateinit var favSlots: List<AppCompatImageView>
 
@@ -272,7 +275,7 @@ class HomeActivity : BaseActivity() {
             }
         }
 
-        applySecondCardMode()
+        applyCardModes()
     }
 
     private fun setCardWeight(card: android.view.View, weight: Float) {
@@ -294,6 +297,8 @@ class HomeActivity : BaseActivity() {
      * slider looks broken; showing fewer, correctly sized controls does not.
      */
     private fun applyMediaDensity(mediaFraction: Float) {
+        // Nothing to scale when the card has been given over to shortcuts or widgets.
+        if (prefs.cardMode(Prefs.SLOT_MEDIA) != Prefs.CARD_MEDIA) return
         val density = resources.displayMetrics.density
 
         // Drop rows in order of expendability as the card shrinks.
@@ -331,80 +336,96 @@ class HomeActivity : BaseActivity() {
         updateMediaProgress()
     }
 
-    /** Phone shortcut, a row of app shortcuts, or a hosted app widget. */
-    private fun applySecondCardMode() {
-        val mode = prefs.secondCardMode
-        val shortcuts = mode == Prefs.SECOND_SHORTCUTS
-        val widget = mode == Prefs.SECOND_WIDGET
+    /**
+     * Both cards are configurable and share this code: each shows its default
+     * content (the player, or the phone shortcut), a row of app shortcuts, or
+     * hosted app widgets.
+     */
+    private fun applyCardModes() {
+        applyCardMode(Prefs.SLOT_MEDIA)
+        applyCardMode(Prefs.SLOT_SECOND)
+    }
 
-        binding.phoneDefault.visibility =
-            if (shortcuts || widget) android.view.View.GONE else android.view.View.VISIBLE
-        binding.panelShortcuts.visibility =
-            if (shortcuts) android.view.View.VISIBLE else android.view.View.GONE
-        binding.panelWidget.visibility =
-            if (widget) android.view.View.VISIBLE else android.view.View.GONE
+    private fun applyCardMode(slot: String) {
+        val media = slot == Prefs.SLOT_MEDIA
+        val mode = prefs.cardMode(slot)
+        val default = if (media) binding.mediaDefault else binding.phoneDefault
+        val shortcuts = if (media) binding.mediaShortcuts else binding.panelShortcuts
+        val widgets = if (media) binding.mediaWidget else binding.panelWidget
+        val card = if (media) binding.mediaCard else binding.phoneCard
 
-        // Only dial when the card is actually the phone card.
-        binding.phoneCard.setOnClickListener(
-            if (shortcuts || widget) null else android.view.View.OnClickListener { openPhone() }
+        val isShortcuts = mode == Prefs.CARD_SHORTCUTS
+        val isWidget = mode == Prefs.CARD_WIDGET
+        val isDefault = !isShortcuts && !isWidget
+
+        default.visibility = if (isDefault) android.view.View.VISIBLE else android.view.View.GONE
+        shortcuts.visibility = if (isShortcuts) android.view.View.VISIBLE else android.view.View.GONE
+        widgets.visibility = if (isWidget) android.view.View.VISIBLE else android.view.View.GONE
+
+        // The card only acts as a shortcut while it's showing its default.
+        card.setOnClickListener(
+            if (!isDefault) null
+            else android.view.View.OnClickListener { if (media) openMedia() else openPhone() }
         )
-        binding.phoneCard.isClickable = !shortcuts && !widget
+        card.isClickable = isDefault
 
         when {
-            shortcuts -> bindPanelShortcuts()
-            widget -> bindPanelWidget()
+            isShortcuts -> bindCardShortcuts(slot, shortcuts)
+            isWidget -> bindCardWidgets(slot, widgets)
         }
     }
 
     /**
-     * Renders the bound app widget. Anything missing — never picked, uninstalled,
-     * or permission revoked — falls back to the phone card rather than an empty
-     * hole in the dashboard.
+     * Renders a card's widgets side by side. Anything missing — never picked,
+     * uninstalled, or permission revoked — is dropped rather than left as an
+     * empty hole, and a card with nothing left falls back to its default.
      */
-    private fun bindPanelWidget() {
-        val container = binding.panelWidget
+    private fun bindCardWidgets(slot: String, container: android.widget.LinearLayout) {
         container.removeAllViews()
 
-        val id = prefs.panelWidgetId
-        if (id == WidgetHost.INVALID_ID) {
-            fallbackToPhoneCard()
+        val ids = prefs.cardWidgets(slot)
+        val views = ids.mapNotNull { id ->
+            val view = WidgetHost.createView(this, widgetHost(), id)
+            if (view == null) prefs.removeCardWidget(slot, id)
+            view?.let { id to it }
+        }
+        if (views.isEmpty()) {
+            prefs.setCardMode(slot, defaultModeFor(slot))
+            applyCardMode(slot)
             return
         }
-        val view = WidgetHost.createView(this, widgetHost(), id)
-        if (view == null) {
-            // Provider gone. Drop the stale id so we don't retry every resume.
-            prefs.panelWidgetId = WidgetHost.INVALID_ID
-            prefs.secondCardMode = Prefs.SECOND_PHONE
-            fallbackToPhoneCard()
-            return
-        }
+
         // Portrait cards wrap their content, so a MATCH_PARENT widget inside one
-        // measures to nothing. Give it a real height there.
-        if (!isLandscapeNow()) {
-            container.layoutParams = container.layoutParams.apply {
-                height = (PORTRAIT_WIDGET_DP * resources.displayMetrics.density).toInt()
+        // measures to nothing. Give the row a real height there.
+        container.layoutParams = container.layoutParams.apply {
+            height = if (isLandscapeNow()) {
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            } else {
+                (PORTRAIT_WIDGET_DP * resources.displayMetrics.density).toInt()
             }
         }
 
-        container.addView(
-            view,
-            android.widget.FrameLayout.LayoutParams(
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+        views.forEach { (_, view) ->
+            container.addView(
+                view,
+                android.widget.LinearLayout.LayoutParams(
+                    0, android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                )
             )
-        )
-        // Tell the widget its real size once the card has been measured.
+        }
+        // Tell each widget its real size once the card has been measured.
         container.post {
             val d = resources.displayMetrics.density
-            if (container.width > 0 && container.height > 0) {
-                WidgetHost.resize(
-                    view,
-                    (container.width / d).toInt(),
-                    (container.height / d).toInt()
-                )
+            views.forEach { (_, view) ->
+                if (view.width > 0 && view.height > 0) {
+                    WidgetHost.resize(view, (view.width / d).toInt(), (view.height / d).toInt())
+                }
             }
         }
     }
+
+    private fun defaultModeFor(slot: String) =
+        if (slot == Prefs.SLOT_MEDIA) Prefs.CARD_MEDIA else Prefs.CARD_PHONE
 
     // ---- portrait app drawer -----------------------------------------------
 
@@ -412,6 +433,11 @@ class HomeActivity : BaseActivity() {
      * Portrait stacks the cards and still leaves a large empty area underneath,
      * so the app drawer lives there rather than behind a tab press. Landscape
      * has no such space, and keeps the drawer on the Apps tab only.
+     *
+     * The drawer never scrolls: it takes whatever height the cards leave, works
+     * out how many rows fit, and pages the rest. Reaching for a scrollbar while
+     * driving is worse than a swipe, and a half-visible row of icons cut off by
+     * the tab bar looks broken.
      */
     private fun setupPortraitDrawer() {
         if (isLandscapeNow()) {
@@ -422,23 +448,50 @@ class HomeActivity : BaseActivity() {
         binding.portraitDrawerHeader.setOnClickListener {
             startActivity(Intent(this, AppDrawerActivity::class.java))
         }
+        attachDrawerSwipe()
 
         val apps = drawerApps()
-        // Rebuilding ~20 tiles on every resume is wasted work on a slow head
-        // unit, so only do it when the list actually changed.
+        // Rebuilding every tile on resume is wasted work on a slow head unit, so
+        // only do it when the app list or the space available actually changed.
         val signature = apps.joinToString(",") { it.packageName }
-        if (signature == drawerSignature && binding.portraitDrawerGrid.childCount > 0) return
+        val grid = binding.portraitDrawerGrid
+        val rows = rowsThatFit(grid)
+        if (signature == drawerSignature && rows == drawerRows && grid.childCount > 0) return
         drawerSignature = signature
+        drawerRows = rows
 
+        drawerPages = apps.chunked(rows * DRAWER_COLUMNS)
+        drawerPage = drawerPage.coerceIn(0, maxOf(0, drawerPages.lastIndex))
+        renderDrawerPage()
+    }
+
+    /**
+     * How many rows of icons fit in the space the cards left over. Measured
+     * rather than assumed, since head-unit screens vary wildly — and the grid
+     * has no height at all on the very first pass, so fall back to one page.
+     */
+    private fun rowsThatFit(grid: android.view.View): Int {
+        val cell = DRAWER_CELL_DP * resources.displayMetrics.density
+        val available = grid.height
+        if (available <= 0) {
+            // Nothing measured yet; re-run once layout has happened.
+            grid.post { setupPortraitDrawer() }
+            return 1
+        }
+        return (available / cell).toInt().coerceIn(1, DRAWER_MAX_ROWS)
+    }
+
+    private fun renderDrawerPage() {
         val grid = binding.portraitDrawerGrid
         grid.removeAllViews()
-        apps.chunked(DRAWER_COLUMNS).forEach { rowApps ->
+        val page = drawerPages.getOrNull(drawerPage) ?: emptyList()
+
+        page.chunked(DRAWER_COLUMNS).forEach { rowApps ->
             val row = android.widget.LinearLayout(this).apply {
                 orientation = android.widget.LinearLayout.HORIZONTAL
                 isBaselineAligned = false
                 layoutParams = android.widget.LinearLayout.LayoutParams(
-                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
                 )
             }
             rowApps.forEach { app ->
@@ -455,32 +508,81 @@ class HomeActivity : BaseActivity() {
             }
             grid.addView(row)
         }
+        // Keep every page the same shape: a short last page shouldn't spread its
+        // one row down the middle of the card.
+        repeat(drawerRows - page.chunked(DRAWER_COLUMNS).size) {
+            grid.addView(
+                android.view.View(this),
+                android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+                )
+            )
+        }
+        renderDrawerDots()
+        tintIcons(grid)
+    }
+
+    private fun renderDrawerDots() {
+        val dots = binding.portraitDrawerDots
+        dots.removeAllViews()
+        if (drawerPages.size < 2) return
+
+        val density = resources.displayMetrics.density
+        val size = (DRAWER_DOT_DP * density).toInt()
+        val touch = (DRAWER_DOT_TOUCH_DP * density).toInt()
+        val accent = accentColor()
+
+        drawerPages.indices.forEach { index ->
+            val dot = android.view.View(this).apply {
+                background = GradientThemes.roundedRect(
+                    if (index == drawerPage) accent
+                    else GradientThemes.withAlpha(accent, 0x55),
+                    size / 2f
+                )
+                layoutParams = android.widget.LinearLayout.LayoutParams(size, size).also {
+                    it.setMargins((touch - size) / 2, 0, (touch - size) / 2, 0)
+                }
+                // The dot itself is small, so give it a driver-sized touch area.
+                minimumWidth = touch
+                minimumHeight = touch
+                setOnClickListener { showDrawerPage(index) }
+                contentDescription =
+                    getString(R.string.drawer_page, index + 1, drawerPages.size)
+            }
+            dots.addView(dot)
+        }
+    }
+
+    private fun showDrawerPage(index: Int) {
+        if (index !in drawerPages.indices || index == drawerPage) return
+        drawerPage = index
+        renderDrawerPage()
+    }
+
+    /** Swipe left/right anywhere on the grid to change page. */
+    private fun attachDrawerSwipe() {
+        binding.portraitDrawerGrid.onSwipe = { direction ->
+            showDrawerPage(drawerPage + direction)
+        }
     }
 
     private fun cellParams() = android.widget.LinearLayout.LayoutParams(
-        0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+        0, android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1f
     )
 
     /** Most-used apps first, then the rest alphabetically. */
     private fun drawerApps(): List<AppInfo> {
         val all = AppRepository.loadLaunchableApps(this, prefs.hiddenApps)
-        val top = Usage.topApps(this, DRAWER_MAX)
+        val top = Usage.topApps(this, DRAWER_COLUMNS * DRAWER_MAX_ROWS)
         val byPackage = all.associateBy { it.packageName }
         val frequent = top.mapNotNull { byPackage[it] }
         val rest = all.filter { it.packageName !in top }
-        return (frequent + rest).take(DRAWER_MAX)
+        return frequent + rest
     }
 
     private fun isLandscapeNow(): Boolean =
         resources.configuration.orientation ==
             android.content.res.Configuration.ORIENTATION_LANDSCAPE
-
-    private fun fallbackToPhoneCard() {
-        binding.panelWidget.visibility = android.view.View.GONE
-        binding.phoneDefault.visibility = android.view.View.VISIBLE
-        binding.phoneCard.setOnClickListener { openPhone() }
-        binding.phoneCard.isClickable = true
-    }
 
     private fun widgetHost(): android.appwidget.AppWidgetHost {
         var h = appWidgetHost
@@ -491,14 +593,12 @@ class HomeActivity : BaseActivity() {
         return h
     }
 
-    private fun bindPanelShortcuts() {
-        val row = binding.panelShortcuts
+    private fun bindCardShortcuts(slot: String, row: android.widget.LinearLayout) {
         row.removeAllViews()
-        val density = resources.displayMetrics.density
         val inflater = layoutInflater
 
         for (index in 0 until Prefs.PANEL_SHORTCUT_COUNT) {
-            val pkg = prefs.getPanelShortcut(index)
+            val pkg = prefs.cardShortcut(slot, index)
             val item = com.dashline.launcher.databinding.ItemAppBinding
                 .inflate(inflater, row, false)
 
@@ -507,14 +607,14 @@ class HomeActivity : BaseActivity() {
                 item.appIcon.clearColorFilter()
                 item.appLabel.text = AppRepository.labelFor(this, pkg)
                 item.root.setOnClickListener { AppRepository.launch(this, pkg) }
-                item.root.setOnLongClickListener { pickPanelShortcut(index); true }
+                item.root.setOnLongClickListener { pickCardShortcut(slot, index); true }
             } else {
                 item.appIcon.setImageResource(R.drawable.ic_add)
                 item.appIcon.setColorFilter(
                     accentColor(), android.graphics.PorterDuff.Mode.SRC_IN
                 )
                 item.appLabel.text = ""
-                item.root.setOnClickListener { pickPanelShortcut(index) }
+                item.root.setOnClickListener { pickCardShortcut(slot, index) }
                 item.root.setOnLongClickListener { false }
             }
             row.addView(
@@ -526,8 +626,10 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun pickPanelShortcut(index: Int) {
-        AppPickerActivity.start(this, Prefs.ROLE_FAVORITE, REQ_PANEL_BASE + index)
+    /** Request codes are laid out per slot so the result knows where to land. */
+    private fun pickCardShortcut(slot: String, index: Int) {
+        val base = if (slot == Prefs.SLOT_MEDIA) REQ_MEDIA_PANEL_BASE else REQ_PANEL_BASE
+        AppPickerActivity.start(this, Prefs.ROLE_FAVORITE, base + index)
     }
 
     // ---- Clock style + stopwatch -------------------------------------------
@@ -822,10 +924,19 @@ class HomeActivity : BaseActivity() {
                 prefs.setFavorite(requestCode - REQ_FAV_BASE, pkg)
                 bindFavorites()
             }
+            requestCode >= REQ_MEDIA_PANEL_BASE &&
+                requestCode < REQ_MEDIA_PANEL_BASE + Prefs.PANEL_SHORTCUT_COUNT -> {
+                prefs.setCardShortcut(
+                    Prefs.SLOT_MEDIA, requestCode - REQ_MEDIA_PANEL_BASE, pkg
+                )
+                bindCardShortcuts(Prefs.SLOT_MEDIA, binding.mediaShortcuts)
+            }
             requestCode >= REQ_PANEL_BASE &&
                 requestCode < REQ_PANEL_BASE + Prefs.PANEL_SHORTCUT_COUNT -> {
-                prefs.setPanelShortcut(requestCode - REQ_PANEL_BASE, pkg)
-                bindPanelShortcuts()
+                prefs.setCardShortcut(
+                    Prefs.SLOT_SECOND, requestCode - REQ_PANEL_BASE, pkg
+                )
+                bindCardShortcuts(Prefs.SLOT_SECOND, binding.panelShortcuts)
             }
         }
     }
@@ -983,7 +1094,9 @@ class HomeActivity : BaseActivity() {
         loadWeather()
         mediaMonitor?.start()
         // A hosted widget only receives updates while the host is listening.
-        if (prefs.secondCardMode == Prefs.SECOND_WIDGET) {
+        if (prefs.cardMode(Prefs.SLOT_MEDIA) == Prefs.CARD_WIDGET ||
+            prefs.cardMode(Prefs.SLOT_SECOND) == Prefs.CARD_WIDGET
+        ) {
             runCatching { widgetHost().startListening() }
         }
         bindFavorites()
@@ -1026,9 +1139,17 @@ class HomeActivity : BaseActivity() {
         private const val REQ_LOCATION = 201
         private const val REQ_FAV_BASE = 300
         private const val REQ_PANEL_BASE = 400
-        /** Portrait drawer: four across, capped so resume stays cheap. */
+        private const val REQ_MEDIA_PANEL_BASE = 420
+        /** Portrait drawer: four across, as many rows as the space allows. */
         private const val DRAWER_COLUMNS = 4
-        private const val DRAWER_MAX = 20
+        /** One tile: 56dp icon + label + padding. Rows are derived from this. */
+        private const val DRAWER_CELL_DP = 96f
+        /** A sanity cap, so a very tall screen doesn't build a hundred tiles. */
+        private const val DRAWER_MAX_ROWS = 6
+        private const val DRAWER_DOT_DP = 8f
+        private const val DRAWER_DOT_TOUCH_DP = 32f
+        /** Below this a fling is a mis-swipe, not a page turn. */
+        private const val DRAWER_SWIPE_DP = 40f
         /** Height a hosted widget gets in portrait, where cards wrap. */
         private const val PORTRAIT_WIDGET_DP = 180f
         private const val WEATHER_INTERVAL_MS = 15 * 60 * 1000L

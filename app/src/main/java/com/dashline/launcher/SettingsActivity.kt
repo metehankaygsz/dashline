@@ -178,9 +178,9 @@ class SettingsActivity : BaseActivity() {
         )
         binding.themeValue.text = getString(themeLabel(prefs.themeMode))
         binding.tabsValue.text = getString(R.string.tabs_count, prefs.visibleTabs().size)
-        binding.customizeValue.text = getString(when (prefs.secondCardMode) {
-            Prefs.SECOND_SHORTCUTS -> R.string.second_shortcuts
-            Prefs.SECOND_WIDGET -> R.string.second_widget
+        binding.customizeValue.text = getString(when (prefs.cardMode(Prefs.SLOT_SECOND)) {
+            Prefs.CARD_SHORTCUTS -> R.string.second_shortcuts
+            Prefs.CARD_WIDGET -> R.string.second_widget
             else -> R.string.second_phone
         })
         binding.clockStyleValue.text = getString(when (prefs.clockStyle) {

@@ -10,6 +10,10 @@ class Prefs(context: Context) {
 
     private val sp = context.getSharedPreferences("radio_launcher", Context.MODE_PRIVATE)
 
+    init {
+        migrateLegacyCard()
+    }
+
     var setupDone: Boolean
         get() = sp.getBoolean(KEY_SETUP_DONE, false)
         set(v) = sp.edit().putBoolean(KEY_SETUP_DONE, v).apply()
@@ -86,22 +90,78 @@ class Prefs(context: Context) {
         get() = sp.getFloat(KEY_MEDIA_FRACTION, 0.72f).coerceIn(MIN_FRACTION, MAX_FRACTION)
         set(v) = sp.edit().putFloat(KEY_MEDIA_FRACTION, v.coerceIn(MIN_FRACTION, MAX_FRACTION)).apply()
 
-    /** Widget bound to the second card, or WidgetHost.INVALID_ID. */
-    var panelWidgetId: Int
-        get() = sp.getInt(KEY_WIDGET_ID, WidgetHost.INVALID_ID)
-        set(v) = sp.edit().putInt(KEY_WIDGET_ID, v).apply()
+    // ---- dashboard cards ----------------------------------------------------
 
-    /** SECOND_PHONE (default), SECOND_SHORTCUTS or SECOND_WIDGET. */
-    var secondCardMode: String
-        get() = sp.getString(KEY_SECOND_MODE, SECOND_PHONE) ?: SECOND_PHONE
-        set(v) = sp.edit().putString(KEY_SECOND_MODE, v).apply()
+    /**
+     * Both cards share one model: a slot with a content mode, its own shortcut
+     * slots and its own list of hosted widgets. The media card simply defaults
+     * to the player and the lower card to the phone shortcut.
+     */
+    fun cardMode(slot: String): String =
+        sp.getString(modeKey(slot), defaultMode(slot)) ?: defaultMode(slot)
 
-    fun getPanelShortcut(index: Int): String? = sp.getString("panel_shortcut_$index", null)
+    fun setCardMode(slot: String, mode: String) =
+        sp.edit().putString(modeKey(slot), mode).apply()
 
-    fun setPanelShortcut(index: Int, pkg: String) =
-        sp.edit().putString("panel_shortcut_$index", pkg).apply()
+    private fun defaultMode(slot: String) =
+        if (slot == SLOT_MEDIA) CARD_MEDIA else CARD_PHONE
 
-    fun clearPanelShortcut(index: Int) = sp.edit().remove("panel_shortcut_$index").apply()
+    /** Hosted widget ids for a slot, in display order. */
+    fun cardWidgets(slot: String): List<Int> =
+        (sp.getString(widgetsKey(slot), "") ?: "")
+            .split(",")
+            .mapNotNull { it.trim().toIntOrNull() }
+            .filter { it != INVALID_WIDGET }
+
+    fun setCardWidgets(slot: String, ids: List<Int>) =
+        sp.edit().putString(widgetsKey(slot), ids.joinToString(",")).apply()
+
+    /** Returns false when the card is already full. */
+    fun addCardWidget(slot: String, id: Int): Boolean {
+        val ids = cardWidgets(slot)
+        if (id == INVALID_WIDGET || id in ids || ids.size >= MAX_CARD_WIDGETS) return false
+        setCardWidgets(slot, ids + id)
+        return true
+    }
+
+    fun removeCardWidget(slot: String, id: Int) =
+        setCardWidgets(slot, cardWidgets(slot) - id)
+
+    /** Swap one widget for another in place, keeping its position on the card. */
+    fun replaceCardWidget(slot: String, oldId: Int, newId: Int) =
+        setCardWidgets(slot, cardWidgets(slot).map { if (it == oldId) newId else it })
+
+    fun cardShortcut(slot: String, index: Int): String? =
+        sp.getString(shortcutKey(slot, index), null)
+
+    fun setCardShortcut(slot: String, index: Int, pkg: String) =
+        sp.edit().putString(shortcutKey(slot, index), pkg).apply()
+
+    fun clearCardShortcut(slot: String, index: Int) =
+        sp.edit().remove(shortcutKey(slot, index)).apply()
+
+    private fun modeKey(slot: String) = "card_${slot}_mode"
+    private fun widgetsKey(slot: String) = "card_${slot}_widgets"
+    private fun shortcutKey(slot: String, index: Int) = "card_${slot}_shortcut_$index"
+
+    /**
+     * Earlier versions only had a configurable lower card, with a single widget.
+     * Carry those settings into the per-slot keys once, so an upgrade doesn't
+     * silently reset someone's dashboard.
+     */
+    private fun migrateLegacyCard() {
+        if (sp.getBoolean(KEY_CARDS_MIGRATED, false)) return
+
+        // The legacy mode values match the new ones, so they carry over as-is.
+        sp.getString(KEY_SECOND_MODE, null)?.let { setCardMode(SLOT_SECOND, it) }
+        val legacyWidget = sp.getInt(KEY_WIDGET_ID, INVALID_WIDGET)
+        if (legacyWidget != INVALID_WIDGET) setCardWidgets(SLOT_SECOND, listOf(legacyWidget))
+        for (index in 0 until PANEL_SHORTCUT_COUNT) {
+            sp.getString("panel_shortcut_$index", null)
+                ?.let { setCardShortcut(SLOT_SECOND, index, it) }
+        }
+        sp.edit().putBoolean(KEY_CARDS_MIGRATED, true).apply()
+    }
 
     // ---- clock ------------------------------------------------------------
 
@@ -241,11 +301,26 @@ class Prefs(context: Context) {
 
         const val PANEL_MEDIA_FIRST = "media_first"
         const val PANEL_PHONE_FIRST = "phone_first"
-        const val SECOND_PHONE = "phone"
-        const val SECOND_SHORTCUTS = "shortcuts"
-        const val SECOND_WIDGET = "widget"
 
-        /** Shortcut slots in the lower card when it's in shortcuts mode. */
+        /** The two configurable cards in the right-hand column. */
+        const val SLOT_MEDIA = "media"
+        const val SLOT_SECOND = "second"
+
+        /**
+         * What a card shows. CARD_MEDIA is only meaningful for the media slot and
+         * CARD_PHONE for the lower one; the other two apply to either.
+         */
+        const val CARD_MEDIA = "media"
+        const val CARD_PHONE = "phone"
+        const val CARD_SHORTCUTS = "shortcuts"
+        const val CARD_WIDGET = "widget"
+
+        /** Widgets get unreadably narrow past this, even on a 10" unit. */
+        const val MAX_CARD_WIDGETS = 3
+        private const val INVALID_WIDGET = -1
+        private const val KEY_CARDS_MIGRATED = "cards_migrated"
+
+        /** Shortcut slots in a card when it's in shortcuts mode. */
         const val PANEL_SHORTCUT_COUNT = 4
 
         private const val KEY_CLOCK_STYLE = "clock_style"

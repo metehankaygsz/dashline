@@ -139,4 +139,11 @@
     <string name="second_widget">微件</string>
     <string name="customize_hint_portrait">竖屏时卡片纵向堆叠，尺寸需在横屏中调整。</string>
     <string name="widget_none">此设备上没有可用的小部件</string>
+    <string name="drawer_page">第 %1$d 页，共 %2$d 页</string>
+    <string name="customize_media_card">媒体卡片</string>
+    <string name="card_media_player">媒体播放器</string>
+    <string name="widget_add">添加小部件</string>
+    <string name="widget_change">更换</string>
+    <string name="widget_remove">移除</string>
+    <string name="widget_full">一张卡片最多可放 %1$d 个小部件</string>
 </resources>

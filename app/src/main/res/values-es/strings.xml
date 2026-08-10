@@ -139,4 +139,11 @@
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">Las tarjetas se apilan en vertical; los tamaños se ajustan en horizontal.</string>
     <string name="widget_none">No hay widgets disponibles en este dispositivo</string>
+    <string name="drawer_page">Página %1$d de %2$d</string>
+    <string name="customize_media_card">Tarjeta multimedia</string>
+    <string name="card_media_player">Reproductor</string>
+    <string name="widget_add">Añadir un widget</string>
+    <string name="widget_change">Cambiar</string>
+    <string name="widget_remove">Quitar</string>
+    <string name="widget_full">Una tarjeta admite hasta %1$d widgets</string>
 </resources>

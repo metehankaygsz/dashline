@@ -31,6 +31,9 @@ class CustomizeActivity : BaseActivity() {
     private var widgetHost: AppWidgetHost? = null
     /** Id reserved for a widget that's mid-bind; the result may not carry it. */
     private var pendingWidgetId = WidgetHost.INVALID_ID
+    /** Which card the pending widget is for, and the id it replaces (if any). */
+    private var pendingSlot: String? = null
+    private var pendingReplaced = WidgetHost.INVALID_ID
     private var dragHandle: View? = null
     private var dragFraction = 0.72f
     private var dragging = false
@@ -55,11 +58,13 @@ class CustomizeActivity : BaseActivity() {
                 else Prefs.PANEL_PHONE_FIRST
             applyToPreview()
         }
-        binding.btnSecondCard.setOnClickListener { chooseSecondCard() }
+        binding.btnMediaCard.setOnClickListener { chooseCard(Prefs.SLOT_MEDIA) }
+        binding.btnSecondCard.setOnClickListener { chooseCard(Prefs.SLOT_SECOND) }
         binding.btnReset.setOnClickListener {
             prefs.mediaFraction = 0.72f
             prefs.panelOrder = Prefs.PANEL_MEDIA_FIRST
-            prefs.secondCardMode = Prefs.SECOND_PHONE
+            prefs.setCardMode(Prefs.SLOT_MEDIA, Prefs.CARD_MEDIA)
+            prefs.setCardMode(Prefs.SLOT_SECOND, Prefs.CARD_PHONE)
             applyToPreview()
         }
 
@@ -234,7 +239,7 @@ class CustomizeActivity : BaseActivity() {
             binding.customizeHint.setText(R.string.customize_hint_portrait)
         }
 
-        applySecondCardPreview()
+        applyCardPreviews()
         // The preview inflates its own views, so it needs the icon tinting too.
         tintIcons(preview.root)
     }
@@ -266,24 +271,35 @@ class CustomizeActivity : BaseActivity() {
         card.layoutParams = lp
     }
 
-    private fun applySecondCardPreview() {
-        val mode = prefs.secondCardMode
-        preview.phoneDefault.visibility =
-            if (mode == Prefs.SECOND_PHONE) View.VISIBLE else View.GONE
-        preview.panelShortcuts.visibility =
-            if (mode == Prefs.SECOND_SHORTCUTS) View.VISIBLE else View.GONE
-        preview.panelWidget.visibility =
-            if (mode == Prefs.SECOND_WIDGET) View.VISIBLE else View.GONE
-
-        if (mode == Prefs.SECOND_SHORTCUTS) renderShortcutSlots()
-        if (mode == Prefs.SECOND_WIDGET) renderWidgetPreview()
+    private fun applyCardPreviews() {
+        applyCardPreview(Prefs.SLOT_MEDIA)
+        applyCardPreview(Prefs.SLOT_SECOND)
     }
 
-    private fun renderShortcutSlots() {
-        val row = preview.panelShortcuts
+    /** Same three states as the dashboard, drawn into the live preview. */
+    private fun applyCardPreview(slot: String) {
+        val media = slot == Prefs.SLOT_MEDIA
+        val mode = prefs.cardMode(slot)
+        val default = if (media) preview.mediaDefault else preview.phoneDefault
+        val shortcuts = if (media) preview.mediaShortcuts else preview.panelShortcuts
+        val widgets = if (media) preview.mediaWidget else preview.panelWidget
+
+        val isShortcuts = mode == Prefs.CARD_SHORTCUTS
+        val isWidget = mode == Prefs.CARD_WIDGET
+
+        default.visibility = if (!isShortcuts && !isWidget) View.VISIBLE else View.GONE
+        shortcuts.visibility = if (isShortcuts) View.VISIBLE else View.GONE
+        widgets.visibility = if (isWidget) View.VISIBLE else View.GONE
+
+        if (isShortcuts) renderShortcutSlots(slot, shortcuts)
+        if (isWidget) renderWidgetPreview(slot, widgets)
+    }
+
+    private fun renderShortcutSlots(slot: String, row: LinearLayout) {
         row.removeAllViews()
+        val base = if (slot == Prefs.SLOT_MEDIA) REQ_MEDIA_SHORTCUT_BASE else REQ_SHORTCUT_BASE
         for (index in 0 until Prefs.PANEL_SHORTCUT_COUNT) {
-            val pkg = prefs.getPanelShortcut(index)
+            val pkg = prefs.cardShortcut(slot, index)
             val item = com.dashline.launcher.databinding.ItemAppBinding
                 .inflate(layoutInflater, row, false)
             if (pkg != null && AppRepository.isInstalled(this, pkg)) {
@@ -299,7 +315,7 @@ class CustomizeActivity : BaseActivity() {
             }
             // In the editor, tapping a slot assigns it.
             item.root.setOnClickListener {
-                AppPickerActivity.start(this, Prefs.ROLE_FAVORITE, REQ_SHORTCUT_BASE + index)
+                AppPickerActivity.start(this, Prefs.ROLE_FAVORITE, base + index)
             }
             row.addView(
                 item.root,
@@ -308,48 +324,118 @@ class CustomizeActivity : BaseActivity() {
         }
     }
 
-    private fun renderWidgetPreview() {
-        val container = preview.panelWidget
+    /**
+     * Draws the card's widgets side by side. An empty card shows the "add a
+     * widget" prompt instead, so the mode is never a blank rectangle.
+     */
+    private fun renderWidgetPreview(slot: String, container: LinearLayout) {
         container.removeAllViews()
-        val id = prefs.panelWidgetId
-        val view = if (id == WidgetHost.INVALID_ID) null
-        else WidgetHost.createView(this, host(), id)
 
-        if (view == null) {
-            val prompt = layoutInflater.inflate(R.layout.view_widget_empty, container, false)
-            prompt.setOnClickListener { pickWidget() }
-            container.addView(prompt)
-            return
+        // Build the views first: a provider uninstalled since it was bound is
+        // dropped here, and a card left with nothing shows the prompt instead of
+        // an empty rectangle.
+        val views = prefs.cardWidgets(slot).mapNotNull { id ->
+            val view = WidgetHost.createView(this, host(), id)
+            if (view == null) prefs.removeCardWidget(slot, id)
+            view
         }
-        runCatching {
+
+        if (views.isEmpty()) {
+            val prompt = layoutInflater.inflate(R.layout.view_widget_empty, container, false)
+            prompt.setOnClickListener { pickWidget(slot) }
             container.addView(
-                view,
-                android.widget.FrameLayout.LayoutParams(
-                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
-                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+                prompt,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 )
             )
+            return
         }
-        // Long-press to swap the widget out.
-        container.setOnLongClickListener { pickWidget(); true }
+
+        views.forEach { view ->
+            runCatching {
+                container.addView(
+                    view,
+                    LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
+                )
+            }
+        }
+        // Long-press the card to add, swap or remove widgets.
+        container.setOnLongClickListener { manageWidgets(slot); true }
     }
 
-    // ---- second card mode ---------------------------------------------------
+    // ---- card content -------------------------------------------------------
 
-    private fun chooseSecondCard() {
-        val options = listOf(
-            Prefs.SECOND_PHONE to R.string.second_phone,
-            Prefs.SECOND_SHORTCUTS to R.string.second_shortcuts,
-            Prefs.SECOND_WIDGET to R.string.second_widget
-        )
+    /** What this card should show. The media card can also stay a player. */
+    private fun chooseCard(slot: String) {
+        val options = buildList {
+            if (slot == Prefs.SLOT_MEDIA) {
+                add(Prefs.CARD_MEDIA to R.string.card_media_player)
+            } else {
+                add(Prefs.CARD_PHONE to R.string.second_phone)
+            }
+            add(Prefs.CARD_SHORTCUTS to R.string.second_shortcuts)
+            add(Prefs.CARD_WIDGET to R.string.second_widget)
+        }
         AlertDialog.Builder(this)
-            .setTitle(R.string.settings_second_card)
+            .setTitle(
+                if (slot == Prefs.SLOT_MEDIA) R.string.customize_media_card
+                else R.string.settings_second_card
+            )
             .setItems(options.map { getString(it.second) }.toTypedArray()) { _, which ->
                 val mode = options[which].first
-                prefs.secondCardMode = mode
-                if (mode == Prefs.SECOND_WIDGET && prefs.panelWidgetId == WidgetHost.INVALID_ID) {
-                    pickWidget()
+                prefs.setCardMode(slot, mode)
+                when {
+                    // A widget card with nothing on it yet goes straight to the picker.
+                    mode == Prefs.CARD_WIDGET && prefs.cardWidgets(slot).isEmpty() ->
+                        pickWidget(slot)
+                    mode == Prefs.CARD_WIDGET -> {
+                        // Show the card in its new mode behind the manage dialog.
+                        applyToPreview()
+                        manageWidgets(slot)
+                    }
+                    else -> applyToPreview()
+                }
+            }
+            .show()
+    }
+
+    /**
+     * Add, swap or remove the widgets on a card. Reached from this screen's card
+     * button and by long-pressing the card in the preview.
+     */
+    private fun manageWidgets(slot: String) {
+        val ids = prefs.cardWidgets(slot)
+        val entries = ids.map { id ->
+            id to (WidgetHost.label(this, id) ?: getString(R.string.second_widget))
+        }
+        val labels = entries.map { it.second }.toMutableList()
+        val canAdd = ids.size < Prefs.MAX_CARD_WIDGETS
+        if (canAdd) labels.add(getString(R.string.widget_add))
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.settings_customize)
+            .setItems(labels.toTypedArray()) { _, which ->
+                if (which >= entries.size) pickWidget(slot)
+                else widgetActions(slot, entries[which].first, entries[which].second)
+            }
+            .show()
+    }
+
+    private fun widgetActions(slot: String, widgetId: Int, label: String) {
+        val actions = arrayOf(
+            getString(R.string.widget_change), getString(R.string.widget_remove)
+        )
+        AlertDialog.Builder(this)
+            .setTitle(label)
+            .setItems(actions) { _, which ->
+                if (which == 0) {
+                    pickWidget(slot, replacing = widgetId)
                 } else {
+                    prefs.removeCardWidget(slot, widgetId)
+                    WidgetHost.delete(host(), widgetId)
+                    if (prefs.cardWidgets(slot).isEmpty()) revertToDefault(slot)
                     applyToPreview()
                 }
             }
@@ -373,13 +459,18 @@ class CustomizeActivity : BaseActivity() {
      * permission. Without it the picker hands back an id that was never bound,
      * so every pick ended up falling back to the phone card.
      */
-    private fun pickWidget() {
+    private fun pickWidget(slot: String, replacing: Int = WidgetHost.INVALID_ID) {
         val providers = WidgetHost.providers(this)
         if (providers.isEmpty()) {
-            android.widget.Toast
-                .makeText(this, R.string.widget_none, android.widget.Toast.LENGTH_SHORT)
-                .show()
-            revertToPhone()
+            toast(getString(R.string.widget_none))
+            revertToDefault(slot)
+            applyToPreview()
+            return
+        }
+        if (replacing == WidgetHost.INVALID_ID &&
+            prefs.cardWidgets(slot).size >= Prefs.MAX_CARD_WIDGETS
+        ) {
+            toast(getString(R.string.widget_full, Prefs.MAX_CARD_WIDGETS))
             return
         }
 
@@ -389,38 +480,33 @@ class CustomizeActivity : BaseActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(R.string.customize_pick_widget)
-            .setItems(labels) { _, which -> beginBind(providers[which]) }
+            .setItems(labels) { _, which -> beginBind(slot, providers[which], replacing) }
             .setOnCancelListener {
-                // Backing out of the list with nothing bound leaves widget mode
-                // showing an empty card, so drop back to the phone card.
-                if (prefs.panelWidgetId == WidgetHost.INVALID_ID) revertToPhone()
+                // Backing out with nothing on the card leaves an empty rectangle.
+                if (prefs.cardWidgets(slot).isEmpty()) revertToDefault(slot)
+                applyToPreview()
             }
             .show()
     }
 
     /** Reserve an id for the chosen provider and get it bound, asking if needed. */
-    private fun beginBind(provider: AppWidgetProviderInfo) {
-        // Release the previous binding first so we don't leak reserved ids.
-        WidgetHost.delete(host(), prefs.panelWidgetId)
-        prefs.panelWidgetId = WidgetHost.INVALID_ID
-
+    private fun beginBind(slot: String, provider: AppWidgetProviderInfo, replacing: Int) {
         val id = WidgetHost.allocateId(host())
         if (id == WidgetHost.INVALID_ID) {
-            revertToPhone()
+            revertToDefault(slot)
+            applyToPreview()
             return
         }
         pendingWidgetId = id
+        pendingSlot = slot
+        pendingReplaced = replacing
 
         when {
             // Already allowed to bind — no dialog needed.
             WidgetHost.bind(this, id, provider) -> afterBind(id)
             // Otherwise the system asks the user to allow this one widget.
             WidgetHost.requestBind(this, id, provider, REQ_BIND_WIDGET) -> Unit
-            else -> {
-                WidgetHost.delete(host(), id)
-                pendingWidgetId = WidgetHost.INVALID_ID
-                revertToPhone()
-            }
+            else -> abandonPending()
         }
     }
 
@@ -446,35 +532,68 @@ class CustomizeActivity : BaseActivity() {
             requestCode == REQ_CONFIGURE_WIDGET && resultCode == Activity.RESULT_OK ->
                 commitWidget(widgetId)
 
-            requestCode == REQ_BIND_WIDGET || requestCode == REQ_CONFIGURE_WIDGET -> {
-                // Declined or cancelled — give the id back and show the phone card.
-                WidgetHost.delete(host(), widgetId)
-                pendingWidgetId = WidgetHost.INVALID_ID
-                revertToPhone()
+            requestCode == REQ_BIND_WIDGET || requestCode == REQ_CONFIGURE_WIDGET ->
+                abandonPending()
+
+            requestCode >= REQ_MEDIA_SHORTCUT_BASE -> {
+                data?.getStringExtra(AppPickerActivity.EXTRA_PACKAGE)?.let { pkg ->
+                    prefs.setCardShortcut(
+                        Prefs.SLOT_MEDIA, requestCode - REQ_MEDIA_SHORTCUT_BASE, pkg
+                    )
+                }
+                applyToPreview()
             }
 
             requestCode >= REQ_SHORTCUT_BASE -> {
                 data?.getStringExtra(AppPickerActivity.EXTRA_PACKAGE)?.let { pkg ->
-                    prefs.setPanelShortcut(requestCode - REQ_SHORTCUT_BASE, pkg)
+                    prefs.setCardShortcut(
+                        Prefs.SLOT_SECOND, requestCode - REQ_SHORTCUT_BASE, pkg
+                    )
                 }
                 applyToPreview()
             }
         }
     }
 
-    private fun revertToPhone() {
-        if (prefs.panelWidgetId == WidgetHost.INVALID_ID) {
-            prefs.secondCardMode = Prefs.SECOND_PHONE
-        }
+    /** Declined or cancelled — give the reserved id back and leave the card be. */
+    private fun abandonPending() {
+        WidgetHost.delete(host(), pendingWidgetId)
+        val slot = pendingSlot
+        clearPending()
+        if (slot != null && prefs.cardWidgets(slot).isEmpty()) revertToDefault(slot)
         applyToPreview()
     }
 
     private fun commitWidget(widgetId: Int) {
-        pendingWidgetId = WidgetHost.INVALID_ID
-        prefs.panelWidgetId = widgetId
-        prefs.secondCardMode = Prefs.SECOND_WIDGET
+        val slot = pendingSlot ?: Prefs.SLOT_SECOND
+        val replaced = pendingReplaced
+        clearPending()
+
+        if (replaced != WidgetHost.INVALID_ID) {
+            // Keep the swapped widget's position on the card.
+            prefs.replaceCardWidget(slot, replaced, widgetId)
+            WidgetHost.delete(host(), replaced)
+        } else if (!prefs.addCardWidget(slot, widgetId)) {
+            // Card filled up while the picker was open.
+            WidgetHost.delete(host(), widgetId)
+            toast(getString(R.string.widget_full, Prefs.MAX_CARD_WIDGETS))
+        }
+        prefs.setCardMode(slot, Prefs.CARD_WIDGET)
         applyToPreview()
     }
+
+    private fun clearPending() {
+        pendingWidgetId = WidgetHost.INVALID_ID
+        pendingSlot = null
+        pendingReplaced = WidgetHost.INVALID_ID
+    }
+
+    private fun revertToDefault(slot: String) = prefs.setCardMode(
+        slot, if (slot == Prefs.SLOT_MEDIA) Prefs.CARD_MEDIA else Prefs.CARD_PHONE
+    )
+
+    private fun toast(message: String) =
+        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
 
     override fun onResume() {
         super.onResume()
@@ -489,6 +608,8 @@ class CustomizeActivity : BaseActivity() {
     private companion object {
         const val REQ_CONFIGURE_WIDGET = 901
         const val REQ_BIND_WIDGET = 902
+        // One block of request codes per card, so a result knows where it belongs.
         const val REQ_SHORTCUT_BASE = 910
+        const val REQ_MEDIA_SHORTCUT_BASE = 920
     }
 }

@@ -148,4 +148,11 @@
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">Dikey modda kartlar alt alta dizilir, boyutlar yatay modda ayarlanır.</string>
     <string name="widget_none">Bu cihazda kullanılabilir widget yok</string>
+    <string name="drawer_page">Sayfa %1$d / %2$d</string>
+    <string name="customize_media_card">Medya kartı</string>
+    <string name="card_media_player">Medya oynatıcı</string>
+    <string name="widget_add">Widget ekle</string>
+    <string name="widget_change">Değiştir</string>
+    <string name="widget_remove">Kaldır</string>
+    <string name="widget_full">Bir karta en fazla %1$d widget sığar</string>
 </resources>

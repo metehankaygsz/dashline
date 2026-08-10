@@ -156,4 +156,11 @@
     <string name="app_not_found">App not found — choose one in Settings</string>
     <string name="now_playing">Now Playing</string>
     <string name="widget_none">No widgets available on this device</string>
+    <string name="drawer_page">Page %1$d of %2$d</string>
+    <string name="customize_media_card">Media card</string>
+    <string name="card_media_player">Media player</string>
+    <string name="widget_add">Add a widget</string>
+    <string name="widget_change">Change</string>
+    <string name="widget_remove">Remove</string>
+    <string name="widget_full">A card holds up to %1$d widgets</string>
 </resources>

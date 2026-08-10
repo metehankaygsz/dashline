@@ -139,4 +139,11 @@
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">In verticale le schede si impilano; le dimensioni si impostano in orizzontale.</string>
     <string name="widget_none">Nessun widget disponibile su questo dispositivo</string>
+    <string name="drawer_page">Pagina %1$d di %2$d</string>
+    <string name="customize_media_card">Scheda multimediale</string>
+    <string name="card_media_player">Lettore multimediale</string>
+    <string name="widget_add">Aggiungi un widget</string>
+    <string name="widget_change">Cambia</string>
+    <string name="widget_remove">Rimuovi</string>
+    <string name="widget_full">Una scheda contiene fino a %1$d widget</string>
 </resources>

@@ -139,4 +139,11 @@
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">Les cartes s\'empilent en portrait ; les tailles se règlent en paysage.</string>
     <string name="widget_none">Aucun widget disponible sur cet appareil</string>
+    <string name="drawer_page">Page %1$d sur %2$d</string>
+    <string name="customize_media_card">Carte multimédia</string>
+    <string name="card_media_player">Lecteur multimédia</string>
+    <string name="widget_add">Ajouter un widget</string>
+    <string name="widget_change">Changer</string>
+    <string name="widget_remove">Retirer</string>
+    <string name="widget_full">Une carte accepte jusqu\'à %1$d widgets</string>
 </resources>

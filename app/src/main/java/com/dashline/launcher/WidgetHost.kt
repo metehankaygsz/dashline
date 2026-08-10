@@ -116,6 +116,12 @@ object WidgetHost {
         }
     }
 
+    /** Provider name for a bound widget, for menus. Null if it's gone. */
+    fun label(context: Context, widgetId: Int): String? =
+        manager(context).getAppWidgetInfo(widgetId)
+            ?.loadLabel(context.packageManager)
+            ?.toString()
+
     /** Rendering an unbound id throws, so callers check before creating a view. */
     fun isBound(context: Context, widgetId: Int): Boolean =
         widgetId != INVALID_ID && manager(context).getAppWidgetInfo(widgetId) != null

@@ -139,4 +139,11 @@
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">Im Hochformat stapeln sich die Karten; Größen werden im Querformat gesetzt.</string>
     <string name="widget_none">Auf diesem Gerät sind keine Widgets verfügbar</string>
+    <string name="drawer_page">Seite %1$d von %2$d</string>
+    <string name="customize_media_card">Medienkarte</string>
+    <string name="card_media_player">Medienplayer</string>
+    <string name="widget_add">Widget hinzufügen</string>
+    <string name="widget_change">Ändern</string>
+    <string name="widget_remove">Entfernen</string>
+    <string name="widget_full">Eine Karte fasst bis zu %1$d Widgets</string>
 </resources>

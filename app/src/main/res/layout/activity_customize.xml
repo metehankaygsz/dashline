@@ -43,6 +43,11 @@
             android:text="@string/customize_swap" />
 
         <TextView
+            android:id="@+id/btnMediaCard"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_media_card" />
+
+        <TextView
             android:id="@+id/btnSecondCard"
             style="@style/CustomizeButton"
             android:text="@string/customize_second_card" />
