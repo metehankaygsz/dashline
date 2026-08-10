@@ -43,6 +43,8 @@ class HomeActivity : BaseActivity() {
     private var mediaCompact = false
     private var showSeek = true
     private var appWidgetHost: android.appwidget.AppWidgetHost? = null
+    /** Packages currently drawn in the portrait drawer, to skip pointless rebuilds. */
+    private var drawerSignature: String? = null
 
     private lateinit var favSlots: List<AppCompatImageView>
 
@@ -99,6 +101,7 @@ class HomeActivity : BaseActivity() {
         setupChrono()
         applyClockStyle()
         applyPanelLayout()
+        setupPortraitDrawer()
         applyAccent()
         ensureLocationPermission()
     }
@@ -375,6 +378,14 @@ class HomeActivity : BaseActivity() {
             fallbackToPhoneCard()
             return
         }
+        // Portrait cards wrap their content, so a MATCH_PARENT widget inside one
+        // measures to nothing. Give it a real height there.
+        if (!isLandscapeNow()) {
+            container.layoutParams = container.layoutParams.apply {
+                height = (PORTRAIT_WIDGET_DP * resources.displayMetrics.density).toInt()
+            }
+        }
+
         container.addView(
             view,
             android.widget.FrameLayout.LayoutParams(
@@ -393,6 +404,71 @@ class HomeActivity : BaseActivity() {
                 )
             }
         }
+    }
+
+    // ---- portrait app drawer -----------------------------------------------
+
+    /**
+     * Portrait stacks the cards and still leaves a large empty area underneath,
+     * so the app drawer lives there rather than behind a tab press. Landscape
+     * has no such space, and keeps the drawer on the Apps tab only.
+     */
+    private fun setupPortraitDrawer() {
+        if (isLandscapeNow()) {
+            binding.portraitDrawer.visibility = android.view.View.GONE
+            return
+        }
+        binding.portraitDrawer.visibility = android.view.View.VISIBLE
+        binding.portraitDrawerHeader.setOnClickListener {
+            startActivity(Intent(this, AppDrawerActivity::class.java))
+        }
+
+        val apps = drawerApps()
+        // Rebuilding ~20 tiles on every resume is wasted work on a slow head
+        // unit, so only do it when the list actually changed.
+        val signature = apps.joinToString(",") { it.packageName }
+        if (signature == drawerSignature && binding.portraitDrawerGrid.childCount > 0) return
+        drawerSignature = signature
+
+        val grid = binding.portraitDrawerGrid
+        grid.removeAllViews()
+        apps.chunked(DRAWER_COLUMNS).forEach { rowApps ->
+            val row = android.widget.LinearLayout(this).apply {
+                orientation = android.widget.LinearLayout.HORIZONTAL
+                isBaselineAligned = false
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+            rowApps.forEach { app ->
+                val item = com.dashline.launcher.databinding.ItemAppBinding
+                    .inflate(layoutInflater, row, false)
+                item.appIcon.setImageDrawable(app.icon)
+                item.appLabel.text = app.label
+                item.root.setOnClickListener { AppRepository.launch(this, app.packageName) }
+                row.addView(item.root, cellParams())
+            }
+            // Pad the last row so four apps and two apps are the same size.
+            repeat(DRAWER_COLUMNS - rowApps.size) {
+                row.addView(android.view.View(this), cellParams())
+            }
+            grid.addView(row)
+        }
+    }
+
+    private fun cellParams() = android.widget.LinearLayout.LayoutParams(
+        0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+    )
+
+    /** Most-used apps first, then the rest alphabetically. */
+    private fun drawerApps(): List<AppInfo> {
+        val all = AppRepository.loadLaunchableApps(this, prefs.hiddenApps)
+        val top = Usage.topApps(this, DRAWER_MAX)
+        val byPackage = all.associateBy { it.packageName }
+        val frequent = top.mapNotNull { byPackage[it] }
+        val rest = all.filter { it.packageName !in top }
+        return (frequent + rest).take(DRAWER_MAX)
     }
 
     private fun isLandscapeNow(): Boolean =
@@ -428,11 +504,15 @@ class HomeActivity : BaseActivity() {
 
             if (pkg != null && AppRepository.isInstalled(this, pkg)) {
                 item.appIcon.setImageDrawable(AppRepository.iconFor(this, pkg))
+                item.appIcon.clearColorFilter()
                 item.appLabel.text = AppRepository.labelFor(this, pkg)
                 item.root.setOnClickListener { AppRepository.launch(this, pkg) }
                 item.root.setOnLongClickListener { pickPanelShortcut(index); true }
             } else {
                 item.appIcon.setImageResource(R.drawable.ic_add)
+                item.appIcon.setColorFilter(
+                    accentColor(), android.graphics.PorterDuff.Mode.SRC_IN
+                )
                 item.appLabel.text = ""
                 item.root.setOnClickListener { pickPanelShortcut(index) }
                 item.root.setOnLongClickListener { false }
@@ -768,10 +848,14 @@ class HomeActivity : BaseActivity() {
             val pkg = prefs.getFavorite(index)
             if (pkg != null && AppRepository.isInstalled(this, pkg)) {
                 slot.setImageDrawable(AppRepository.iconFor(this, pkg))
+                // A real app icon keeps its own colours.
+                slot.clearColorFilter()
                 slot.setOnClickListener { AppRepository.launch(this, pkg) }
                 slot.setOnLongClickListener { showFavoriteOptions(index); true }
             } else {
                 slot.setImageResource(R.drawable.ic_add)
+                // The empty-slot placeholder is chrome, so it follows the theme.
+                slot.setColorFilter(accentColor(), android.graphics.PorterDuff.Mode.SRC_IN)
                 slot.setOnClickListener { pickFavorite(index) }
                 slot.setOnLongClickListener { false }
             }
@@ -908,7 +992,11 @@ class HomeActivity : BaseActivity() {
         setupTabs()
         applyClockStyle()
         applyPanelLayout()
+        setupPortraitDrawer()
         setupVolume()
+        // Tabs and drawer tiles were just rebuilt, so they missed the tinting
+        // BaseActivity did on the way in.
+        tintIcons()
     }
 
     private fun applyKeepScreenOn() {
@@ -938,6 +1026,11 @@ class HomeActivity : BaseActivity() {
         private const val REQ_LOCATION = 201
         private const val REQ_FAV_BASE = 300
         private const val REQ_PANEL_BASE = 400
+        /** Portrait drawer: four across, capped so resume stays cheap. */
+        private const val DRAWER_COLUMNS = 4
+        private const val DRAWER_MAX = 20
+        /** Height a hosted widget gets in portrait, where cards wrap. */
+        private const val PORTRAIT_WIDGET_DP = 180f
         private const val WEATHER_INTERVAL_MS = 15 * 60 * 1000L
         /** ~30fps — smooth hundredths without burning CPU on a slow SoC. */
         private const val CHRONO_TICK_MS = 33L

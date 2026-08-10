@@ -29,18 +29,35 @@ object WidgetHost {
         AppWidgetManager.getInstance(context.applicationContext)
 
     /**
-     * Step 1: reserve an id, then let the user choose a provider. The system
-     * picker handles permission and provider listing for us.
+     * Every widget the device can offer, in display order.
+     *
+     * We list providers ourselves rather than firing ACTION_APPWIDGET_PICK: that
+     * picker binds the chosen widget on the caller's behalf, which needs the
+     * signature-level BIND_APPWIDGET permission. A normal app never has it, so
+     * the picker either refuses outright or hands back an id it never bound —
+     * which is why choosing a widget used to fall straight back to the phone
+     * card. Listing + [bind] keeps the whole flow in permissions we can actually
+     * get.
      */
-    fun pick(activity: Activity, host: AppWidgetHost, requestCode: Int) {
-        val id = host.allocateAppWidgetId()
-        val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_PICK)
-            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
-            // No custom items — we only want real widgets.
-            .putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, ArrayList())
-            .putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS, ArrayList())
-        activity.startActivityForResult(intent, requestCode)
-    }
+    fun providers(context: Context): List<AppWidgetProviderInfo> =
+        runCatching {
+            manager(context).installedProviders
+                .sortedBy { it.loadLabel(context.packageManager).orEmpty().lowercase() }
+        }.getOrDefault(emptyList())
+
+    /** Reserve an id for a widget we're about to bind. */
+    fun allocateId(host: AppWidgetHost): Int =
+        runCatching { host.allocateAppWidgetId() }.getOrDefault(INVALID_ID)
+
+    /**
+     * Bind without user interaction. Only succeeds when the user has already
+     * allowed this host to bind widgets, so a false here is normal, not an
+     * error — the caller falls through to [requestBind].
+     */
+    fun bind(context: Context, widgetId: Int, provider: AppWidgetProviderInfo): Boolean =
+        runCatching {
+            manager(context).bindAppWidgetIdIfAllowed(widgetId, provider.provider)
+        }.getOrDefault(false)
 
     /**
      * Step 2: some widgets need a configuration activity before they'll render.
@@ -99,22 +116,35 @@ object WidgetHost {
         }
     }
 
-    /**
-     * The system picker usually binds for us, but some OEM pickers return an id
-     * without binding it. Rendering an unbound id throws, so check first and ask
-     * the user explicitly when needed.
-     */
+    /** Rendering an unbound id throws, so callers check before creating a view. */
     fun isBound(context: Context, widgetId: Int): Boolean =
         widgetId != INVALID_ID && manager(context).getAppWidgetInfo(widgetId) != null
 
-    fun requestBind(activity: Activity, widgetId: Int, requestCode: Int): Boolean = try {
-        activity.startActivityForResult(
-            Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
-                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId),
-            requestCode
-        )
+    /**
+     * Ask the system to bind on our behalf; it shows the user a consent dialog.
+     *
+     * The provider extra is mandatory — without it the dialog has nothing to
+     * name and the request is rejected, which is the second half of why picking
+     * a widget silently did nothing.
+     */
+    fun requestBind(
+        activity: Activity,
+        widgetId: Int,
+        provider: AppWidgetProviderInfo,
+        requestCode: Int
+    ): Boolean = try {
+        val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
+            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider.provider)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            intent.putExtra(
+                AppWidgetManager.EXTRA_APPWIDGET_PROVIDER_PROFILE, provider.profile
+            )
+        }
+        activity.startActivityForResult(intent, requestCode)
         true
     } catch (e: Exception) {
+        // Head units with a stripped-down framework may not have the activity.
         false
     }
 

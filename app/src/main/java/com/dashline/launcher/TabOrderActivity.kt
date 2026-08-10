@@ -82,6 +82,8 @@ class TabOrderActivity : BaseActivity() {
 
             list.addView(row.root)
         }
+        // Rows are built here, after the base class tinted the initial layout.
+        tintIcons(list)
     }
 
     private fun move(from: Int, to: Int) {

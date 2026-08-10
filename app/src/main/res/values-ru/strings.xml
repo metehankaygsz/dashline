@@ -138,4 +138,5 @@
     <string name="customize_sample_artist">Исполнитель</string>
     <string name="second_widget">Виджет</string>
     <string name="customize_hint_portrait">В портретном режиме карточки идут стопкой; размеры задаются в альбомном.</string>
+    <string name="widget_none">На этом устройстве нет доступных виджетов</string>
 </resources>

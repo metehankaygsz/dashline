@@ -277,6 +277,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/mediaArt"
+                        android:tag="noTint"
                         android:layout_width="@dimen/album_art"
                         android:layout_height="@dimen/album_art"
                         android:layout_marginEnd="16dp"
@@ -379,6 +380,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/btnPlayPause"
+                        android:tag="noTint"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="18dp"
@@ -482,6 +484,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- Portrait app drawer: fills the space left under the cards.
+                 Present in landscape too (kept gone) only so ViewBinding sees the
+                 same ids in both variants. -->
+            <LinearLayout
+                android:id="@+id/portraitDrawer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="@drawable/card_dark"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/portraitDrawerHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_apps" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/all_apps"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- Rows of app tiles, built in code -->
+                <LinearLayout
+                    android:id="@+id/portraitDrawerGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

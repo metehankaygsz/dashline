@@ -61,6 +61,8 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:src">@drawable/ic_add</item>
+        <!-- Holds a real app icon once assigned; tinted explicitly while empty. -->
+        <item name="android:tag">noTint</item>
     </style>
 
     <!-- Settings: a small caps-ish header above each group of rows. -->

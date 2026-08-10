@@ -138,4 +138,5 @@
     <string name="customize_sample_artist">Artiste</string>
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">Les cartes s\'empilent en portrait ; les tailles se règlent en paysage.</string>
+    <string name="widget_none">Aucun widget disponible sur cet appareil</string>
 </resources>

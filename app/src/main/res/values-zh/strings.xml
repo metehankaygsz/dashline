@@ -138,4 +138,5 @@
     <string name="customize_sample_artist">艺术家</string>
     <string name="second_widget">微件</string>
     <string name="customize_hint_portrait">竖屏时卡片纵向堆叠，尺寸需在横屏中调整。</string>
+    <string name="widget_none">此设备上没有可用的小部件</string>
 </resources>

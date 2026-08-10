@@ -122,6 +122,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    // Pulled in by appcompat anyway; declared so the runtime icon tinting can
+    // reference VectorDrawableCompat directly. 1.1.0 still supports minSdk 14.
+    implementation("androidx.vectordrawable:vectordrawable:1.1.0")
     // Weather uses the keyless Open-Meteo HTTP API + plain LocationManager, so no
     // Google Play Services / Maps SDK is needed — keeps the widest device support.
 }

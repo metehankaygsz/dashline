@@ -3,6 +3,7 @@ package com.dashline.launcher
 import android.app.Activity
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProviderInfo
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -28,6 +29,8 @@ class CustomizeActivity : BaseActivity() {
     private lateinit var prefs: Prefs
 
     private var widgetHost: AppWidgetHost? = null
+    /** Id reserved for a widget that's mid-bind; the result may not carry it. */
+    private var pendingWidgetId = WidgetHost.INVALID_ID
     private var dragHandle: View? = null
     private var dragFraction = 0.72f
     private var dragging = false
@@ -107,6 +110,23 @@ class CustomizeActivity : BaseActivity() {
         preview.root.background = GradientThemes.background(
             this, GradientThemes.current(this)
         )
+        paintPreviewAccent()
+    }
+
+    /**
+     * Mirrors HomeActivity.applyAccent. The preview is only useful if it looks
+     * like the dashboard, and the media card is themed in code rather than XML.
+     */
+    private fun paintPreviewAccent() {
+        val accent = accentColor()
+        val density = resources.displayMetrics.density
+        val night = GradientThemes.isNight(this)
+
+        val cardColor =
+            if (night) GradientThemes.darken(accent, 0.30f)
+            else GradientThemes.withAlpha(accent, 0x33)
+        preview.mediaCard.background = GradientThemes.roundedRect(cardColor, 8f * density)
+        preview.btnPlayPause.background = GradientThemes.roundedRect(accent, 25f * density)
     }
 
     /**
@@ -215,6 +235,8 @@ class CustomizeActivity : BaseActivity() {
         }
 
         applySecondCardPreview()
+        // The preview inflates its own views, so it needs the icon tinting too.
+        tintIcons(preview.root)
     }
 
     /** Mirrors HomeActivity: hide controls before they get cramped. */
@@ -266,9 +288,13 @@ class CustomizeActivity : BaseActivity() {
                 .inflate(layoutInflater, row, false)
             if (pkg != null && AppRepository.isInstalled(this, pkg)) {
                 item.appIcon.setImageDrawable(AppRepository.iconFor(this, pkg))
+                item.appIcon.clearColorFilter()
                 item.appLabel.text = AppRepository.labelFor(this, pkg)
             } else {
                 item.appIcon.setImageResource(R.drawable.ic_add)
+                item.appIcon.setColorFilter(
+                    accentColor(), android.graphics.PorterDuff.Mode.SRC_IN
+                )
                 item.appLabel.text = ""
             }
             // In the editor, tapping a slot assigns it.
@@ -339,58 +365,94 @@ class CustomizeActivity : BaseActivity() {
         return h
     }
 
+    /**
+     * Choose a widget from our own list of installed providers.
+     *
+     * The system's ACTION_APPWIDGET_PICK is not usable here: it binds the chosen
+     * provider itself, which requires the signature-level BIND_APPWIDGET
+     * permission. Without it the picker hands back an id that was never bound,
+     * so every pick ended up falling back to the phone card.
+     */
     private fun pickWidget() {
-        // Drop any previous binding so we don't leak reserved ids.
+        val providers = WidgetHost.providers(this)
+        if (providers.isEmpty()) {
+            android.widget.Toast
+                .makeText(this, R.string.widget_none, android.widget.Toast.LENGTH_SHORT)
+                .show()
+            revertToPhone()
+            return
+        }
+
+        val labels = providers
+            .map { it.loadLabel(packageManager)?.toString().orEmpty() }
+            .toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.customize_pick_widget)
+            .setItems(labels) { _, which -> beginBind(providers[which]) }
+            .setOnCancelListener {
+                // Backing out of the list with nothing bound leaves widget mode
+                // showing an empty card, so drop back to the phone card.
+                if (prefs.panelWidgetId == WidgetHost.INVALID_ID) revertToPhone()
+            }
+            .show()
+    }
+
+    /** Reserve an id for the chosen provider and get it bound, asking if needed. */
+    private fun beginBind(provider: AppWidgetProviderInfo) {
+        // Release the previous binding first so we don't leak reserved ids.
         WidgetHost.delete(host(), prefs.panelWidgetId)
         prefs.panelWidgetId = WidgetHost.INVALID_ID
-        WidgetHost.pick(this, host(), REQ_PICK_WIDGET)
+
+        val id = WidgetHost.allocateId(host())
+        if (id == WidgetHost.INVALID_ID) {
+            revertToPhone()
+            return
+        }
+        pendingWidgetId = id
+
+        when {
+            // Already allowed to bind — no dialog needed.
+            WidgetHost.bind(this, id, provider) -> afterBind(id)
+            // Otherwise the system asks the user to allow this one widget.
+            WidgetHost.requestBind(this, id, provider, REQ_BIND_WIDGET) -> Unit
+            else -> {
+                WidgetHost.delete(host(), id)
+                pendingWidgetId = WidgetHost.INVALID_ID
+                revertToPhone()
+            }
+        }
+    }
+
+    /** Bound — run the provider's configuration step if it insists on one. */
+    private fun afterBind(widgetId: Int) {
+        if (!WidgetHost.configureIfNeeded(this, widgetId, REQ_CONFIGURE_WIDGET)) {
+            commitWidget(widgetId)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        // The bind dialog returns no data when the user declines, so track the id
+        // ourselves rather than reading it back out of the result.
         val widgetId = data?.getIntExtra(
             AppWidgetManager.EXTRA_APPWIDGET_ID, WidgetHost.INVALID_ID
-        ) ?: WidgetHost.INVALID_ID
+        )?.takeIf { it != WidgetHost.INVALID_ID } ?: pendingWidgetId
 
         when {
-            requestCode == REQ_PICK_WIDGET && resultCode == Activity.RESULT_OK -> {
-                when {
-                    // Some OEM pickers hand back an id they never bound.
-                    !WidgetHost.isBound(this, widgetId) ->
-                        if (!WidgetHost.requestBind(this, widgetId, REQ_BIND_WIDGET)) {
-                            WidgetHost.delete(host(), widgetId)
-                            prefs.secondCardMode = Prefs.SECOND_PHONE
-                            applyToPreview()
-                        }
-                    // Some widgets insist on a configuration step before rendering.
-                    WidgetHost.configureIfNeeded(this, widgetId, REQ_CONFIGURE_WIDGET) -> Unit
-                    else -> commitWidget(widgetId)
-                }
-            }
-            requestCode == REQ_BIND_WIDGET && resultCode == Activity.RESULT_OK -> {
-                if (!WidgetHost.configureIfNeeded(this, widgetId, REQ_CONFIGURE_WIDGET)) {
-                    commitWidget(widgetId)
-                }
-            }
-            requestCode == REQ_BIND_WIDGET -> {
-                WidgetHost.delete(host(), widgetId)
-                prefs.secondCardMode = Prefs.SECOND_PHONE
-                applyToPreview()
-            }
-            requestCode == REQ_PICK_WIDGET -> {
-                WidgetHost.delete(host(), widgetId)
-                if (prefs.panelWidgetId == WidgetHost.INVALID_ID) {
-                    prefs.secondCardMode = Prefs.SECOND_PHONE
-                }
-                applyToPreview()
-            }
+            requestCode == REQ_BIND_WIDGET && resultCode == Activity.RESULT_OK ->
+                afterBind(widgetId)
+
             requestCode == REQ_CONFIGURE_WIDGET && resultCode == Activity.RESULT_OK ->
                 commitWidget(widgetId)
-            requestCode == REQ_CONFIGURE_WIDGET -> {
+
+            requestCode == REQ_BIND_WIDGET || requestCode == REQ_CONFIGURE_WIDGET -> {
+                // Declined or cancelled — give the id back and show the phone card.
                 WidgetHost.delete(host(), widgetId)
-                prefs.secondCardMode = Prefs.SECOND_PHONE
-                applyToPreview()
+                pendingWidgetId = WidgetHost.INVALID_ID
+                revertToPhone()
             }
+
             requestCode >= REQ_SHORTCUT_BASE -> {
                 data?.getStringExtra(AppPickerActivity.EXTRA_PACKAGE)?.let { pkg ->
                     prefs.setPanelShortcut(requestCode - REQ_SHORTCUT_BASE, pkg)
@@ -400,7 +462,15 @@ class CustomizeActivity : BaseActivity() {
         }
     }
 
+    private fun revertToPhone() {
+        if (prefs.panelWidgetId == WidgetHost.INVALID_ID) {
+            prefs.secondCardMode = Prefs.SECOND_PHONE
+        }
+        applyToPreview()
+    }
+
     private fun commitWidget(widgetId: Int) {
+        pendingWidgetId = WidgetHost.INVALID_ID
         prefs.panelWidgetId = widgetId
         prefs.secondCardMode = Prefs.SECOND_WIDGET
         applyToPreview()
@@ -417,7 +487,6 @@ class CustomizeActivity : BaseActivity() {
     }
 
     private companion object {
-        const val REQ_PICK_WIDGET = 900
         const val REQ_CONFIGURE_WIDGET = 901
         const val REQ_BIND_WIDGET = 902
         const val REQ_SHORTCUT_BASE = 910

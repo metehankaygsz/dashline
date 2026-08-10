@@ -155,4 +155,5 @@
     <string name="pick_an_app">Pick an app</string>
     <string name="app_not_found">App not found — choose one in Settings</string>
     <string name="now_playing">Now Playing</string>
+    <string name="widget_none">No widgets available on this device</string>
 </resources>

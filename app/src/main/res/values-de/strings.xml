@@ -138,4 +138,5 @@
     <string name="customize_sample_artist">Interpret</string>
     <string name="second_widget">Widget</string>
     <string name="customize_hint_portrait">Im Hochformat stapeln sich die Karten; Größen werden im Querformat gesetzt.</string>
+    <string name="widget_none">Auf diesem Gerät sind keine Widgets verfügbar</string>
 </resources>
