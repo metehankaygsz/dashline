@@ -70,6 +70,37 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_THEME, THEME_DARK) ?: THEME_DARK
         set(v) = sp.edit().putString(KEY_THEME, v).apply()
 
+    // ---- bottom tab bar ----------------------------------------------------
+
+    /**
+     * Tab order, including hidden ones. Stored as a CSV of TabAction ids so new
+     * tabs added in a future version simply appear at the end rather than
+     * invalidating a saved order.
+     */
+    var tabOrder: List<TabAction>
+        get() {
+            val saved = sp.getString(KEY_TAB_ORDER, null)
+                ?.split(",")
+                ?.mapNotNull { TabAction.byId(it.trim()) }
+                ?: return TabAction.DEFAULT_ORDER
+            // Append any tab the saved list doesn't know about yet.
+            return saved + TabAction.DEFAULT_ORDER.filterNot { it in saved }
+        }
+        set(v) = sp.edit().putString(KEY_TAB_ORDER, v.joinToString(",") { it.id }).apply()
+
+    var hiddenTabs: Set<String>
+        get() = HashSet(sp.getStringSet(KEY_TABS_HIDDEN, emptySet()) ?: emptySet())
+        set(v) = sp.edit().putStringSet(KEY_TABS_HIDDEN, v).apply()
+
+    fun isTabVisible(tab: TabAction): Boolean = tab.id !in hiddenTabs
+
+    fun setTabVisible(tab: TabAction, visible: Boolean) {
+        hiddenTabs = if (visible) hiddenTabs - tab.id else hiddenTabs + tab.id
+    }
+
+    /** Tabs actually drawn, in order. */
+    fun visibleTabs(): List<TabAction> = tabOrder.filter { isTabVisible(it) }
+
     /** Id of the selected UI colour gradient (see GradientThemes.PRESETS). */
     var gradient: String
         get() = sp.getString(KEY_GRADIENT, "midnight") ?: "midnight"
@@ -141,6 +172,8 @@ class Prefs(context: Context) {
         private const val KEY_LANGUAGE = "language"
         private const val KEY_ASKED_LOCATION = "asked_location"
         private const val KEY_GRADIENT = "gradient"
+        private const val KEY_TAB_ORDER = "tab_order"
+        private const val KEY_TABS_HIDDEN = "tabs_hidden"
 
         const val THEME_AUTO = "auto"
         const val THEME_LIGHT = "light"

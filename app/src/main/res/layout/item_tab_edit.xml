@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One row in the tab editor: icon, label, show/hide toggle, and move up/down.
+  Arrows rather than drag-and-drop — precise dragging on a screen in a moving
+  car is genuinely hard, and these work with gloves.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:minHeight="60dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="8dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tabEditIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@null"
+        app:srcCompat="@drawable/ic_apps" />
+
+    <TextView
+        android:id="@+id/tabEditLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tabEditVisible"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/tab_toggle_visible"
+        app:srcCompat="@drawable/ic_visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tabEditUp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/tab_move_up"
+        app:srcCompat="@drawable/ic_arrow_up" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tabEditDown"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/tab_move_down"
+        app:srcCompat="@drawable/ic_arrow_down" />
+
+</LinearLayout>

@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">Couper ou activer le son</string>
+    <string name="settings_tabs">Onglets du bas</string>
+    <string name="section_tabs">ONGLETS</string>
+    <string name="tabs_hint">Réorganisez la barre du bas ou masquez les onglets inutiles.</string>
+    <string name="tabs_count">%1$d affichés</string>
+    <string name="tabs_reset">Réinitialiser</string>
+    <string name="tab_move_up">Monter</string>
+    <string name="tab_move_down">Descendre</string>
+    <string name="tab_toggle_visible">Afficher ou masquer</string>
 </resources>

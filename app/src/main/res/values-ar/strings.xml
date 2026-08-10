@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">كتم الصوت أو إلغاؤه</string>
+    <string name="settings_tabs">علامات التبويب السفلية</string>
+    <string name="section_tabs">علامات التبويب</string>
+    <string name="tabs_hint">أعد ترتيب الشريط السفلي أو أخفِ علامات التبويب غير اللازمة.</string>
+    <string name="tabs_count">%1$d معروضة</string>
+    <string name="tabs_reset">إعادة التعيين</string>
+    <string name="tab_move_up">تحريك لأعلى</string>
+    <string name="tab_move_down">تحريك لأسفل</string>
+    <string name="tab_toggle_visible">إظهار أو إخفاء</string>
 </resources>

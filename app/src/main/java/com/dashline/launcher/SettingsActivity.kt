@@ -60,6 +60,9 @@ class SettingsActivity : BaseActivity() {
             refresh()
         }
         binding.rowTheme.setOnClickListener { showThemeDialog() }
+        binding.rowTabs.setOnClickListener {
+            startActivity(Intent(this, TabOrderActivity::class.java))
+        }
         binding.rowGradient.setOnClickListener {
             startActivity(Intent(this, GradientPickerActivity::class.java))
         }
@@ -138,6 +141,7 @@ class SettingsActivity : BaseActivity() {
             if (prefs.useFahrenheit) R.string.unit_fahrenheit else R.string.unit_celsius
         )
         binding.themeValue.text = getString(themeLabel(prefs.themeMode))
+        binding.tabsValue.text = getString(R.string.tabs_count, prefs.visibleTabs().size)
 
         val gradient = GradientThemes.current(this)
         binding.gradientValue.setText(gradient.nameRes)

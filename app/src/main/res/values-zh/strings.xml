@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">静音或取消静音</string>
+    <string name="settings_tabs">底部标签</string>
+    <string name="section_tabs">标签</string>
+    <string name="tabs_hint">重新排列底部栏，或隐藏不需要的标签。</string>
+    <string name="tabs_count">显示 %1$d 个</string>
+    <string name="tabs_reset">恢复默认</string>
+    <string name="tab_move_up">上移</string>
+    <string name="tab_move_down">下移</string>
+    <string name="tab_toggle_visible">显示或隐藏</string>
 </resources>

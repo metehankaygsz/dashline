@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">Silenciar o activar</string>
+    <string name="settings_tabs">Pestañas inferiores</string>
+    <string name="section_tabs">PESTAÑAS</string>
+    <string name="tabs_hint">Reordena la barra inferior u oculta las pestañas que no necesitas.</string>
+    <string name="tabs_count">%1$d visibles</string>
+    <string name="tabs_reset">Restablecer</string>
+    <string name="tab_move_up">Subir</string>
+    <string name="tab_move_down">Bajar</string>
+    <string name="tab_toggle_visible">Mostrar u ocultar</string>
 </resources>

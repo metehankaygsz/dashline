@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">Silenciar ou ativar</string>
+    <string name="settings_tabs">Separadores inferiores</string>
+    <string name="section_tabs">SEPARADORES</string>
+    <string name="tabs_hint">Reordene a barra inferior ou oculte separadores desnecessários.</string>
+    <string name="tabs_count">%1$d visíveis</string>
+    <string name="tabs_reset">Repor</string>
+    <string name="tab_move_up">Mover para cima</string>
+    <string name="tab_move_down">Mover para baixo</string>
+    <string name="tab_toggle_visible">Mostrar ou ocultar</string>
 </resources>

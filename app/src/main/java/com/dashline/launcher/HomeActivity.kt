@@ -116,32 +116,37 @@ class HomeActivity : BaseActivity() {
         if (requestCode == REQ_LOCATION) loadWeather()
     }
 
+    /**
+     * Builds the bottom bar from the user's saved tab order, skipping hidden
+     * ones. Rebuilt on resume so changes in Settings show up immediately.
+     */
     private fun setupTabs() {
-        bindTab(binding.tabAudio, R.drawable.ic_audio, R.string.tab_audio) {
-            launchRole(Prefs.ROLE_MEDIA)
-        }
-        bindTab(binding.tabRadio, R.drawable.ic_radio, R.string.audio_radio) {
-            launchRole(Prefs.ROLE_RADIO)
-        }
-        bindTab(binding.tabPhone, R.drawable.ic_phone, R.string.tab_phone) { openPhone() }
-        bindTab(binding.tabNav, R.drawable.ic_nav, R.string.tab_nav) { openNav() }
-        bindTab(binding.tabApps, R.drawable.ic_apps, R.string.tab_apps) {
-            startActivity(Intent(this, AppDrawerActivity::class.java))
-        }
-        bindTab(binding.tabSettings, R.drawable.ic_settings, R.string.tab_settings) {
-            startActivity(Intent(this, SettingsActivity::class.java))
+        val bar = binding.tabBar
+        bar.removeAllViews()
+        val inflater = layoutInflater
+
+        prefs.visibleTabs().forEach { tab ->
+            val item = com.dashline.launcher.databinding.ItemTabBinding
+                .inflate(inflater, bar, false)
+            item.tabIcon.setImageResource(tab.iconRes)
+            item.tabLabel.setText(tab.labelRes)
+            item.root.setOnClickListener { onTab(tab) }
+            bar.addView(
+                item.root,
+                android.widget.LinearLayout.LayoutParams(
+                    0, android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                )
+            )
         }
     }
 
-    private fun bindTab(
-        tab: com.dashline.launcher.databinding.ItemTabBinding,
-        iconRes: Int,
-        labelRes: Int,
-        onClick: () -> Unit
-    ) {
-        tab.tabIcon.setImageResource(iconRes)
-        tab.tabLabel.setText(labelRes)
-        tab.root.setOnClickListener { onClick() }
+    private fun onTab(tab: TabAction) = when (tab) {
+        TabAction.AUDIO -> launchRole(Prefs.ROLE_MEDIA)
+        TabAction.RADIO -> launchRole(Prefs.ROLE_RADIO)
+        TabAction.PHONE -> openPhone()
+        TabAction.NAV -> openNav()
+        TabAction.APPS -> startActivity(Intent(this, AppDrawerActivity::class.java))
+        TabAction.SETTINGS -> startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     private fun setupCardsAndBar() {
@@ -409,6 +414,7 @@ class HomeActivity : BaseActivity() {
             binding.favSlot3, binding.favSlot4
         )
         bindFavorites()
+        setupTabs()
     }
 
     private fun bindFavorites() {

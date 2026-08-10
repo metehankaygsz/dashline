@@ -74,6 +74,14 @@
     <string name="unit_celsius">Celsius (°C)</string>
     <string name="unit_fahrenheit">Fahrenheit (°F)</string>
     <string name="settings_theme">Theme</string>
+    <string name="settings_tabs">Bottom tabs</string>
+    <string name="section_tabs">TABS</string>
+    <string name="tabs_hint">Reorder the bottom bar, or hide tabs your unit doesn\'t need.</string>
+    <string name="tabs_count">%1$d shown</string>
+    <string name="tabs_reset">Reset to default</string>
+    <string name="tab_move_up">Move up</string>
+    <string name="tab_move_down">Move down</string>
+    <string name="tab_toggle_visible">Show or hide</string>
     <string name="settings_gradient">Colour theme</string>
     <string name="section_appearance">APPEARANCE</string>
     <string name="gradient_preview_hint">Preview of the selected colours</string>

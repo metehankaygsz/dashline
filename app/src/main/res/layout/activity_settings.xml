@@ -42,6 +42,13 @@
 
                 <View style="@style/SettingsDivider" />
 
+                <LinearLayout android:id="@+id/rowTabs" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_tabs" />
+                    <TextView android:id="@+id/tabsValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
+
+                <View style="@style/SettingsDivider" />
+
                 <LinearLayout android:id="@+id/rowGradient" style="@style/SettingsRow">
                     <TextView style="@style/SettingsRowTitle" android:text="@string/settings_gradient" />
                     <View

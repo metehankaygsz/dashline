@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">Disattiva o attiva audio</string>
+    <string name="settings_tabs">Schede in basso</string>
+    <string name="section_tabs">SCHEDE</string>
+    <string name="tabs_hint">Riordina la barra inferiore o nascondi le schede che non ti servono.</string>
+    <string name="tabs_count">%1$d visibili</string>
+    <string name="tabs_reset">Ripristina</string>
+    <string name="tab_move_up">Sposta su</string>
+    <string name="tab_move_down">Sposta giù</string>
+    <string name="tab_toggle_visible">Mostra o nascondi</string>
 </resources>

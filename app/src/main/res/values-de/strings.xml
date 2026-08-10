@@ -108,4 +108,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">Stummschalten oder aktivieren</string>
+    <string name="settings_tabs">Untere Tabs</string>
+    <string name="section_tabs">TABS</string>
+    <string name="tabs_hint">Ordne die untere Leiste neu oder blende nicht benötigte Tabs aus.</string>
+    <string name="tabs_count">%1$d sichtbar</string>
+    <string name="tabs_reset">Zurücksetzen</string>
+    <string name="tab_move_up">Nach oben</string>
+    <string name="tab_move_down">Nach unten</string>
+    <string name="tab_toggle_visible">Ein- oder ausblenden</string>
 </resources>

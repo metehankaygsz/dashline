@@ -117,4 +117,12 @@
     <string name="shortcut_android_auto">Android Auto</string>
     <string name="shortcut_carplay">CarPlay</string>
     <string name="volume_mute">Sesi kapat veya aç</string>
+    <string name="settings_tabs">Alt sekmeler</string>
+    <string name="section_tabs">SEKMELER</string>
+    <string name="tabs_hint">Alt çubuğu yeniden sıralayın veya teypinizde gerekmeyen sekmeleri gizleyin.</string>
+    <string name="tabs_count">%1$d gösteriliyor</string>
+    <string name="tabs_reset">Varsayılana sıfırla</string>
+    <string name="tab_move_up">Yukarı taşı</string>
+    <string name="tab_move_down">Aşağı taşı</string>
+    <string name="tab_toggle_visible">Göster veya gizle</string>
 </resources>
