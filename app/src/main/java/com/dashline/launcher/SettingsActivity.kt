@@ -60,6 +60,11 @@ class SettingsActivity : BaseActivity() {
             refresh()
         }
         binding.rowTheme.setOnClickListener { showThemeDialog() }
+        binding.rowClockStyle.setOnClickListener { showClockStyleDialog() }
+        binding.rowChrono.setOnClickListener {
+            prefs.chronoEnabled = !prefs.chronoEnabled
+            refresh()
+        }
         binding.rowTabs.setOnClickListener {
             startActivity(Intent(this, TabOrderActivity::class.java))
         }
@@ -103,6 +108,22 @@ class SettingsActivity : BaseActivity() {
             .show()
     }
 
+    private fun showClockStyleDialog() {
+        val styles = listOf(
+            Prefs.CLOCK_DIGITAL to R.string.clock_digital,
+            Prefs.CLOCK_ANALOG to R.string.clock_analog,
+            Prefs.CLOCK_MINIMAL to R.string.clock_minimal
+        )
+        val labels = styles.map { getString(it.second) }.toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.settings_clock_style)
+            .setItems(labels) { _, which ->
+                prefs.clockStyle = styles[which].first
+                refresh()
+            }
+            .show()
+    }
+
     private fun showThemeDialog() {
         val modes = listOf(
             Prefs.THEME_AUTO to R.string.theme_auto,
@@ -142,6 +163,12 @@ class SettingsActivity : BaseActivity() {
         )
         binding.themeValue.text = getString(themeLabel(prefs.themeMode))
         binding.tabsValue.text = getString(R.string.tabs_count, prefs.visibleTabs().size)
+        binding.clockStyleValue.text = getString(when (prefs.clockStyle) {
+            Prefs.CLOCK_ANALOG -> R.string.clock_analog
+            Prefs.CLOCK_MINIMAL -> R.string.clock_minimal
+            else -> R.string.clock_digital
+        })
+        binding.chronoValue.text = getString(if (prefs.chronoEnabled) R.string.on else R.string.off)
 
         val gradient = GradientThemes.current(this)
         binding.gradientValue.setText(gradient.nameRes)

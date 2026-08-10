@@ -74,6 +74,13 @@
     <string name="unit_celsius">Celsius (°C)</string>
     <string name="unit_fahrenheit">Fahrenheit (°F)</string>
     <string name="settings_theme">Theme</string>
+    <string name="settings_clock_style">Clock style</string>
+    <string name="clock_digital">Digital</string>
+    <string name="clock_analog">Analog</string>
+    <string name="clock_minimal">Minimal</string>
+    <string name="settings_chrono">Stopwatch</string>
+    <string name="chrono_start_stop">Start or stop</string>
+    <string name="chrono_reset">Reset</string>
     <string name="settings_tabs">Bottom tabs</string>
     <string name="section_tabs">TABS</string>
     <string name="tabs_hint">Reorder the bottom bar, or hide tabs your unit doesn\'t need.</string>

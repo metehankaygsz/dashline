@@ -22,4 +22,5 @@
     <dimen name="album_art_padding">26dp</dimen>
     <dimen name="media_title">19sp</dimen>
     <dimen name="phone_card_height">152dp</dimen>
+    <dimen name="analog_clock">180dp</dimen>
 </resources>

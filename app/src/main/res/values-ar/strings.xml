@@ -116,4 +116,11 @@
     <string name="tab_move_up">تحريك لأعلى</string>
     <string name="tab_move_down">تحريك لأسفل</string>
     <string name="tab_toggle_visible">إظهار أو إخفاء</string>
+    <string name="settings_clock_style">نمط الساعة</string>
+    <string name="clock_digital">رقمية</string>
+    <string name="clock_analog">عقارب</string>
+    <string name="clock_minimal">بسيط</string>
+    <string name="settings_chrono">ساعة إيقاف</string>
+    <string name="chrono_start_stop">بدء أو إيقاف</string>
+    <string name="chrono_reset">إعادة تعيين</string>
 </resources>

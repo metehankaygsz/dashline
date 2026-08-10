@@ -116,4 +116,11 @@
     <string name="tab_move_up">上移</string>
     <string name="tab_move_down">下移</string>
     <string name="tab_toggle_visible">显示或隐藏</string>
+    <string name="settings_clock_style">时钟样式</string>
+    <string name="clock_digital">数字</string>
+    <string name="clock_analog">指针</string>
+    <string name="clock_minimal">极简</string>
+    <string name="settings_chrono">秒表</string>
+    <string name="chrono_start_stop">开始或停止</string>
+    <string name="chrono_reset">重置</string>
 </resources>

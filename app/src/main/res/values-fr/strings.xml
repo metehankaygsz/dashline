@@ -116,4 +116,11 @@
     <string name="tab_move_up">Monter</string>
     <string name="tab_move_down">Descendre</string>
     <string name="tab_toggle_visible">Afficher ou masquer</string>
+    <string name="settings_clock_style">Style d\'horloge</string>
+    <string name="clock_digital">Numérique</string>
+    <string name="clock_analog">Analogique</string>
+    <string name="clock_minimal">Minimal</string>
+    <string name="settings_chrono">Chronomètre</string>
+    <string name="chrono_start_stop">Démarrer ou arrêter</string>
+    <string name="chrono_reset">Réinitialiser</string>
 </resources>

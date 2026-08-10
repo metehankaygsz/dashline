@@ -70,6 +70,30 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_THEME, THEME_DARK) ?: THEME_DARK
         set(v) = sp.edit().putString(KEY_THEME, v).apply()
 
+    // ---- clock ------------------------------------------------------------
+
+    /** CLOCK_DIGITAL (default), CLOCK_ANALOG or CLOCK_MINIMAL. */
+    var clockStyle: String
+        get() = sp.getString(KEY_CLOCK_STYLE, CLOCK_DIGITAL) ?: CLOCK_DIGITAL
+        set(v) = sp.edit().putString(KEY_CLOCK_STYLE, v).apply()
+
+    /** Stopwatch on the dashboard. Off by default — it's a niche extra. */
+    var chronoEnabled: Boolean
+        get() = sp.getBoolean(KEY_CHRONO_ON, false)
+        set(v) = sp.edit().putBoolean(KEY_CHRONO_ON, v).apply()
+
+    /** elapsedRealtime() when the stopwatch was last started, or 0 if paused. */
+    var chronoStartedAt: Long
+        get() = sp.getLong(KEY_CHRONO_START, 0L)
+        set(v) = sp.edit().putLong(KEY_CHRONO_START, v).apply()
+
+    /** Milliseconds banked from previous runs, so pause/resume accumulates. */
+    var chronoAccumulated: Long
+        get() = sp.getLong(KEY_CHRONO_ACC, 0L)
+        set(v) = sp.edit().putLong(KEY_CHRONO_ACC, v).apply()
+
+    val chronoRunning: Boolean get() = chronoStartedAt != 0L
+
     // ---- bottom tab bar ----------------------------------------------------
 
     /**
@@ -172,6 +196,15 @@ class Prefs(context: Context) {
         private const val KEY_LANGUAGE = "language"
         private const val KEY_ASKED_LOCATION = "asked_location"
         private const val KEY_GRADIENT = "gradient"
+        private const val KEY_CLOCK_STYLE = "clock_style"
+        private const val KEY_CHRONO_ON = "chrono_enabled"
+        private const val KEY_CHRONO_START = "chrono_started_at"
+        private const val KEY_CHRONO_ACC = "chrono_accumulated"
+
+        const val CLOCK_DIGITAL = "digital"
+        const val CLOCK_ANALOG = "analog"
+        const val CLOCK_MINIMAL = "minimal"
+
         private const val KEY_TAB_ORDER = "tab_order"
         private const val KEY_TABS_HIDDEN = "tabs_hidden"
 

@@ -42,6 +42,20 @@
 
                 <View style="@style/SettingsDivider" />
 
+                <LinearLayout android:id="@+id/rowClockStyle" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_clock_style" />
+                    <TextView android:id="@+id/clockStyleValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
+
+                <View style="@style/SettingsDivider" />
+
+                <LinearLayout android:id="@+id/rowChrono" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_chrono" />
+                    <TextView android:id="@+id/chronoValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
+
+                <View style="@style/SettingsDivider" />
+
                 <LinearLayout android:id="@+id/rowTabs" style="@style/SettingsRow">
                     <TextView style="@style/SettingsRowTitle" android:text="@string/settings_tabs" />
                     <TextView android:id="@+id/tabsValue" style="@style/SettingsRowValue" />

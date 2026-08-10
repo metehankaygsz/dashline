@@ -7,9 +7,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
+import android.graphics.Typeface
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +55,7 @@ class HomeActivity : BaseActivity() {
             updateWifi()
             updateMediaProgress()
             syncVolume()
+            updateChrono()
             maybeRefreshWeather()
             handler.postDelayed(this, 1000)
         }
@@ -75,6 +79,8 @@ class HomeActivity : BaseActivity() {
         setupMedia()
         setupVolume()
         setupFavorites()
+        setupChrono()
+        applyClockStyle()
         applyAccent()
         ensureLocationPermission()
     }
@@ -196,6 +202,81 @@ class HomeActivity : BaseActivity() {
                     ?.setColorFilter(seekColor, android.graphics.PorterDuff.Mode.SRC_IN)
             }
         }
+    }
+
+
+    // ---- Clock style + stopwatch -------------------------------------------
+
+    /** Swaps between the digital, analog and minimal faces. */
+    private fun applyClockStyle() {
+        val style = prefs.clockStyle
+        val analog = style == Prefs.CLOCK_ANALOG
+        val minimal = style == Prefs.CLOCK_MINIMAL
+
+        binding.analogClock.visibility =
+            if (analog) android.view.View.VISIBLE else android.view.View.GONE
+        binding.bigClock.visibility =
+            if (analog) android.view.View.GONE else android.view.View.VISIBLE
+        // Minimal is time only — the date is what makes it "not minimal".
+        binding.bigDate.visibility =
+            if (minimal) android.view.View.GONE else android.view.View.VISIBLE
+
+        binding.bigClock.setTypeface(null, if (minimal) Typeface.NORMAL else Typeface.BOLD)
+
+        if (analog) {
+            binding.analogClock.setColors(
+                hands = ContextCompat.getColor(this, R.color.text_primary),
+                ticks = ContextCompat.getColor(this, R.color.text_secondary),
+                accentColor = accentColor()
+            )
+        }
+        updateChronoVisibility()
+    }
+
+    private fun setupChrono() {
+        binding.chronoToggle.setOnClickListener {
+            if (prefs.chronoRunning) {
+                // Bank the elapsed time and stop.
+                prefs.chronoAccumulated += SystemClock.elapsedRealtime() - prefs.chronoStartedAt
+                prefs.chronoStartedAt = 0L
+            } else {
+                prefs.chronoStartedAt = SystemClock.elapsedRealtime()
+            }
+            updateChrono()
+        }
+        binding.chronoReset.setOnClickListener {
+            prefs.chronoStartedAt = 0L
+            prefs.chronoAccumulated = 0L
+            updateChrono()
+        }
+    }
+
+    private fun updateChronoVisibility() {
+        binding.chronoRow.visibility =
+            if (prefs.chronoEnabled) android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    private fun updateChrono() {
+        if (!prefs.chronoEnabled) return
+        val running = prefs.chronoRunning
+        val elapsed = prefs.chronoAccumulated +
+            if (running) SystemClock.elapsedRealtime() - prefs.chronoStartedAt else 0L
+        binding.chronoText.text = formatChrono(elapsed)
+        binding.chronoToggle.setImageResource(
+            if (running) R.drawable.ic_pause else R.drawable.ic_play
+        )
+    }
+
+    /** m:ss.t, or h:mm:ss past an hour. */
+    private fun formatChrono(ms: Long): String {
+        val total = ms / 100          // tenths
+        val tenths = total % 10
+        val secs = total / 10
+        val h = secs / 3600
+        val m = (secs % 3600) / 60
+        val sec = secs % 60
+        return if (h > 0) String.format(Locale.US, "%d:%02d:%02d", h, m, sec)
+        else String.format(Locale.US, "%d:%02d.%d", m, sec, tenths)
     }
 
     // ---- Volume ------------------------------------------------------------
@@ -415,6 +496,7 @@ class HomeActivity : BaseActivity() {
         )
         bindFavorites()
         setupTabs()
+        applyClockStyle()
     }
 
     private fun bindFavorites() {
@@ -455,6 +537,10 @@ class HomeActivity : BaseActivity() {
         val now = Date()
         binding.bigClock.text = timeFormat.format(now)
         binding.bigDate.text = dateFormat.format(now)
+        // The analog face has no timer of its own; it repaints from here.
+        if (binding.analogClock.visibility == android.view.View.VISIBLE) {
+            binding.analogClock.invalidate()
+        }
     }
 
     private fun currentLocale(): Locale =

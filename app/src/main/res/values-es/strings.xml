@@ -116,4 +116,11 @@
     <string name="tab_move_up">Subir</string>
     <string name="tab_move_down">Bajar</string>
     <string name="tab_toggle_visible">Mostrar u ocultar</string>
+    <string name="settings_clock_style">Estilo de reloj</string>
+    <string name="clock_digital">Digital</string>
+    <string name="clock_analog">Analógico</string>
+    <string name="clock_minimal">Minimalista</string>
+    <string name="settings_chrono">Cronómetro</string>
+    <string name="chrono_start_stop">Iniciar o parar</string>
+    <string name="chrono_reset">Reiniciar</string>
 </resources>
