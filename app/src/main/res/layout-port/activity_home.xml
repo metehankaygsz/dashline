@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Portrait variant for upright head units. Same views and the same ids as the
+  landscape layout — ViewBinding merges variants and would make any id missing
+  here nullable, breaking HomeActivity — just stacked instead of side by side.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,7 +11,7 @@
     android:orientation="vertical"
     android:background="@color/bg">
 
-    <!-- ===== Top status bar: home | favorites dock | wifi ===== -->
+    <!-- ===== Top status bar ===== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height"
@@ -25,7 +30,6 @@
             android:contentDescription="@string/tab_apps"
             app:srcCompat="@drawable/ic_home" />
 
-        <!-- Favorite-apps dock (quick launch). Slots are bound in code. -->
         <LinearLayout
             android:id="@+id/favoritesDock"
             android:layout_width="0dp"
@@ -50,195 +54,169 @@
             app:srcCompat="@drawable/ic_wifi" />
     </LinearLayout>
 
-    <!-- ===== Middle: map (left) + panel (right) ===== -->
-    <LinearLayout
+    <!-- ===== Stacked content ===== -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
+        android:fillViewport="true"
+        android:clipToPadding="false"
         android:padding="8dp">
 
-        <!-- Clock + weather dashboard -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.35"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/panel_padding"
-            android:background="@drawable/card_dark">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/bigClock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00:00"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/clock_text"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/bigDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/date_margin_bottom"
-                android:text=""
-                android:textColor="@color/text_secondary"
-                android:textSize="@dimen/date_text" />
-
-            <!-- Weather row: icon + temperature + description -->
+            <!-- Clock + weather -->
             <LinearLayout
-                android:id="@+id/weatherRow"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/weatherIcon"
-                    android:layout_width="@dimen/weather_icon"
-                    android:layout_height="@dimen/weather_icon"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@string/settings_temp_unit"
-                    app:srcCompat="@drawable/ic_wx_cloudy" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="@dimen/panel_padding"
+                android:background="@drawable/card_dark">
 
                 <TextView
-                    android:id="@+id/weatherTemp"
+                    android:id="@+id/bigClock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:text=""
+                    android:text="00:00"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/weather_temp"
+                    android:textSize="@dimen/clock_text"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/weatherDesc"
+                    android:id="@+id/bigDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/weather_loading"
+                    android:layout_marginBottom="@dimen/date_margin_bottom"
+                    android:text=""
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/weather_desc" />
-            </LinearLayout>
-
-            <!-- Upcoming-days forecast strip -->
-            <LinearLayout
-                android:id="@+id/forecastRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/forecast_margin_top"
-                android:orientation="horizontal"
-                android:baselineAligned="false"
-                android:visibility="gone">
-
-                <LinearLayout style="@style/FcCell">
-                    <TextView android:id="@+id/fc0Day" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-                    <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc0Icon"
-                        android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
-                        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
-                        android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
-                    <TextView android:id="@+id/fc0Temp" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/FcCell">
-                    <TextView android:id="@+id/fc1Day" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-                    <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc1Icon"
-                        android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
-                        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
-                        android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
-                    <TextView android:id="@+id/fc1Temp" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/FcCell">
-                    <TextView android:id="@+id/fc2Day" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-                    <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc2Icon"
-                        android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
-                        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
-                        android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
-                    <TextView android:id="@+id/fc2Temp" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Phone-projection shortcuts -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/shortcut_margin_top"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                    android:textSize="@dimen/date_text" />
 
                 <LinearLayout
-                    android:id="@+id/shortcutAndroidAuto"
-                    style="@style/ProjectionTile">
+                    android:id="@+id/weatherRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="8dp"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_android_auto" />
+                        android:id="@+id/weatherIcon"
+                        android:layout_width="@dimen/weather_icon"
+                        android:layout_height="@dimen/weather_icon"
+                        android:layout_marginEnd="14dp"
+                        android:contentDescription="@string/settings_temp_unit"
+                        app:srcCompat="@drawable/ic_wx_cloudy" />
 
                     <TextView
+                        android:id="@+id/weatherTemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="@string/shortcut_android_auto"
+                        android:layout_marginEnd="12dp"
+                        android:text=""
                         android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
+                        android:textSize="@dimen/weather_temp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/weatherDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weather_loading"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/weather_desc" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/shortcutCarPlay"
-                    style="@style/ProjectionTile">
+                    android:id="@+id/forecastRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/forecast_margin_top"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false"
+                    android:visibility="gone">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="8dp"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_carplay" />
+                    <LinearLayout style="@style/FcCell">
+                        <TextView android:id="@+id/fc0Day" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+                        <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc0Icon"
+                            android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
+                            android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+                            android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
+                        <TextView android:id="@+id/fc0Temp" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="@string/shortcut_carplay"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
+                    <LinearLayout style="@style/FcCell">
+                        <TextView android:id="@+id/fc1Day" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+                        <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc1Icon"
+                            android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
+                            android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+                            android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
+                        <TextView android:id="@+id/fc1Temp" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/FcCell">
+                        <TextView android:id="@+id/fc2Day" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+                        <androidx.appcompat.widget.AppCompatImageView android:id="@+id/fc2Icon"
+                            android:layout_width="@dimen/forecast_icon" android:layout_height="@dimen/forecast_icon"
+                            android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+                            android:contentDescription="@null" app:srcCompat="@drawable/ic_wx_cloudy" />
+                        <TextView android:id="@+id/fc2Temp" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/shortcut_margin_top"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <LinearLayout android:id="@+id/shortcutAndroidAuto" style="@style/ProjectionTile">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="22dp" android:layout_height="22dp"
+                            android:layout_marginEnd="8dp" android:contentDescription="@null"
+                            app:srcCompat="@drawable/ic_android_auto" />
+                        <TextView
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:maxLines="1" android:ellipsize="end"
+                            android:text="@string/shortcut_android_auto"
+                            android:textColor="@color/text_primary" android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/shortcutCarPlay" style="@style/ProjectionTile">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="22dp" android:layout_height="22dp"
+                            android:layout_marginEnd="8dp" android:contentDescription="@null"
+                            app:srcCompat="@drawable/ic_carplay" />
+                        <TextView
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:maxLines="1" android:ellipsize="end"
+                            android:text="@string/shortcut_carplay"
+                            android:textColor="@color/text_primary" android:textSize="13sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- Right column: media widget + phone card -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <!-- Media player widget (real now-playing when available) -->
+            <!-- Media -->
             <LinearLayout
                 android:id="@+id/mediaCard"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginBottom="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 android:gravity="center_vertical"
                 android:padding="14dp"
@@ -251,7 +229,6 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <!-- Album art: rounded bitmap set in code, on a rounded tile -->
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/mediaArt"
                         android:layout_width="@dimen/album_art"
@@ -295,7 +272,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Seek row: elapsed | bar | total (hidden when no duration) -->
                 <LinearLayout
                     android:id="@+id/mediaSeekRow"
                     android:layout_width="match_parent"
@@ -336,7 +312,6 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Transport controls (hidden when nothing is playing) -->
                 <LinearLayout
                     android:id="@+id/mediaControls"
                     android:layout_width="wrap_content"
@@ -377,7 +352,6 @@
                         app:srcCompat="@drawable/ic_skip_next" />
                 </LinearLayout>
 
-                <!-- Media volume — always available, unlike the transport controls -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -409,13 +383,12 @@
             </LinearLayout>
 
             <!-- Phone -->
-            <!-- Hugs its content so the media card above takes the leftover height,
-                 instead of both stretching and leaving large gaps. -->
             <LinearLayout
                 android:id="@+id/phoneCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/phone_card_height"
+                android:layout_marginTop="8dp"
+                android:minHeight="72dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="16dp"
@@ -438,7 +411,7 @@
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <!-- ===== Bottom tab bar ===== -->
     <LinearLayout

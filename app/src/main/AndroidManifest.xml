@@ -31,9 +31,8 @@
             android:name=".HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
             android:stateNotNeeded="true"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:theme="@style/Theme.RadioLauncher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,36 +46,31 @@
         <activity
             android:name=".AppDrawerActivity"
             android:exported="false"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:parentActivityName=".HomeActivity" />
 
         <activity
             android:name=".AppPickerActivity"
             android:exported="false"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:parentActivityName=".HomeActivity" />
 
         <activity
             android:name=".SetupActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout" />
+            android:configChanges="keyboard|keyboardHidden|navigation" />
 
         <activity
             android:name=".GradientPickerActivity"
             android:exported="false"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:parentActivityName=".SettingsActivity" />
 
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:parentActivityName=".HomeActivity" />
 
         <!--

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Roomier sizing for screens with at least 600dp of height (1024x600, 1280x720). -->
+<resources>
+    <dimen name="bar_height">48dp</dimen>
+    <dimen name="tab_bar_height">72dp</dimen>
+    <dimen name="panel_padding">20dp</dimen>
+
+    <dimen name="clock_text">72sp</dimen>
+    <dimen name="date_text">18sp</dimen>
+    <dimen name="date_margin_bottom">18dp</dimen>
+
+    <dimen name="weather_icon">48dp</dimen>
+    <dimen name="weather_temp">40sp</dimen>
+    <dimen name="weather_desc">18sp</dimen>
+    <dimen name="forecast_icon">30dp</dimen>
+    <dimen name="forecast_margin_top">12dp</dimen>
+
+    <dimen name="shortcut_margin_top">30dp</dimen>
+    <dimen name="shortcut_height">44dp</dimen>
+
+    <dimen name="album_art">104dp</dimen>
+    <dimen name="album_art_padding">26dp</dimen>
+    <dimen name="media_title">19sp</dimen>
+    <dimen name="phone_card_height">152dp</dimen>
+</resources>

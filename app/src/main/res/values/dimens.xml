@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Compact sizing — the safe default, and what 800x480 units get.
+  values-h600dp/ overrides these with the roomier sizes for taller screens.
+-->
+<resources>
+    <dimen name="bar_height">44dp</dimen>
+    <dimen name="tab_bar_height">60dp</dimen>
+    <dimen name="panel_padding">12dp</dimen>
+
+    <dimen name="clock_text">54sp</dimen>
+    <dimen name="date_text">15sp</dimen>
+    <dimen name="date_margin_bottom">10dp</dimen>
+
+    <dimen name="weather_icon">38dp</dimen>
+    <dimen name="weather_temp">30sp</dimen>
+    <dimen name="weather_desc">15sp</dimen>
+    <dimen name="forecast_icon">24dp</dimen>
+    <dimen name="forecast_margin_top">8dp</dimen>
+
+    <dimen name="shortcut_margin_top">16dp</dimen>
+    <dimen name="shortcut_height">40dp</dimen>
+
+    <dimen name="album_art">76dp</dimen>
+    <dimen name="album_art_padding">19dp</dimen>
+    <dimen name="media_title">17sp</dimen>
+    <dimen name="phone_card_height">104dp</dimen>
+</resources>
