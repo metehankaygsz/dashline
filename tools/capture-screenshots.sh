@@ -13,11 +13,12 @@ OUT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/docs/screenshots"
 mkdir -p "$OUT_DIR"
 
 SCREENS=(
-    "dashboard:Home dashboard — clock, weather and media"
-    "drawer:App drawer with search"
-    "settings:Settings"
-    "gradients:Colour theme picker"
-    "setup:First-run setup"
+    "dashboard:Home dashboard — clock, weather and the media card"
+    "dashboard-light:Home dashboard in a light theme, analog face on"
+    "cards:Home dashboard with a widget and app shortcuts in the cards"
+    "customize:Settings → Customize home screen"
+    "themes:Settings → Colour theme"
+    "tabs:Settings → Bottom tabs"
 )
 
 if ! adb get-state >/dev/null 2>&1; then

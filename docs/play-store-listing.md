@@ -31,9 +31,21 @@ WHAT YOU GET
 • A large, legible clock and date
 • Current weather plus a three-day forecast
 • A media panel showing what is actually playing — album art, title and artist —
-  with play, pause, next and previous controls and a seek bar
+  with play, pause, next and previous controls, volume and a seek bar
 • Five quick-launch shortcuts along the top bar for the apps you use most
 • One-tap tabs for Audio, Radio, Phone, Navigation, Apps and Settings
+• A layout of its own for upright screens, with a paged app drawer on the home
+  screen itself
+
+A DASHBOARD YOU LAY OUT YOURSELF
+
+• Resize the two panels by dragging the bar between them, or swap their order
+• Fill either panel with the media player, a phone shortcut, your own app
+  shortcuts, or up to three standard Android home-screen widgets
+• The Customize screen shows the real dashboard while you edit it, so what you
+  see is what you get
+• Reorder the bottom tabs, or hide the ones your unit does not need
+• Digital, analog or minimal clock face, with an optional stopwatch
 
 APP DRAWER THAT STAYS OUT OF THE WAY
 
@@ -76,7 +88,7 @@ of it at https://github.com/metehankaygsz/dashline
 ## Category and tags
 
 - **App category:** Personalization
-- **Tags:** launcher, home screen, car, customization
+- **Tags:** launcher, home screen, car, customization, widgets
 
 ## Contact details
 

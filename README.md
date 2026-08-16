@@ -16,30 +16,65 @@
 </p>
 
 <p align="center">
-  Kotlin, classic Views, landscape-first, <b>no Google Play Services required</b>,<br>
+  Kotlin, classic Views, landscape-first with a portrait layout for upright<br>
+  screens, <b>no Google Play Services required</b>,<br>
   and it runs all the way back to <b>Android 4.4 (KitKat)</b> so it works on old units too.
 </p>
 
 ---
 
-## Screenshots
+## How it works
 
-### Dashboard
-
-Clock, date, current conditions and a three-day forecast on the left; media and
-phone on the right; quick-launch favourites along the top.
+The whole launcher is one screen. A status bar across the top, two panels below
+it, and a tab bar along the bottom.
 
 ![Home dashboard](docs/screenshots/dashboard.png)
 
-### App drawer
+**The top bar** holds a Home button, five quick-launch favourites, and a Wi-Fi
+indicator that only appears when the unit is connected. Tap an empty favourite
+slot to assign an app, long-press one to change or clear it.
 
-Search, a frequently-used strip, and the full app grid.
+**The left panel** is the clock and weather: a large clock and date, current
+conditions, and a three-day forecast. The clock face can be digital, analog or
+minimal, and an optional stopwatch sits under it.
 
-![App drawer](docs/screenshots/drawer.png)
+![Light theme with the analog face and stopwatch](docs/screenshots/dashboard-light.png)
 
-| Settings | Colour themes |
+**The right column is two cards, and both are yours to fill.** Either one can be:
+
+- the **media player** — album art, title and artist read from whatever app is
+  actually playing, with play/pause, skip, a scrubbable seek bar and volume;
+- the **phone shortcut**;
+- a row of **app shortcuts** you choose;
+- up to three **Android home-screen widgets**, hosted for real — the same
+  widgets you'd put on a phone's home screen.
+
+![A calendar widget in one card, app shortcuts in the other](docs/screenshots/cards.png)
+
+**The bottom tabs** are Audio, Radio, Phone, Nav, Apps and Settings, each mapped
+to an app you pick. They can be reordered, and any of them except Apps and
+Settings can be hidden — those two stay because they're the only way back into
+the launcher's own screens.
+
+### Laying it out
+
+**Settings → Customize home screen** is a live editor: it inflates the real
+dashboard, so what you're dragging is exactly what you'll get. Drag the bar
+between the cards to resize them, swap their order, and choose what each one
+holds.
+
+![The customize screen](docs/screenshots/customize.png)
+
+| Colour themes | Tab editor |
 |---|---|
-| ![Settings](docs/screenshots/settings.png) | ![Colour theme picker](docs/screenshots/gradients.png) |
+| ![Colour theme picker](docs/screenshots/themes.png) | ![Bottom tab editor](docs/screenshots/tabs.png) |
+
+### On upright screens
+
+Portrait units stack the panels and fill the space underneath with the app
+drawer. It doesn't scroll: it measures the room it has, works out how many rows
+fit, and pages the rest — swipe across the icons or tap a dot to change page.
+Reaching for a scrollbar while driving is worse than a swipe.
 
 ---
 
@@ -48,11 +83,23 @@ Search, a frequently-used strip, and the full app grid.
 **Dashboard**
 
 - Large clock and date, current weather, and a 3-day forecast
-- Live media widget: album art, title/artist, play-pause, next/previous, and a
-  scrubbable seek bar with elapsed/total times
+- Digital, analog or minimal clock face, plus an optional stopwatch
+- Live media panel: album art, title/artist, play-pause, next/previous, volume,
+  and a scrubbable seek bar with elapsed/total times
+- Controls drop out in order as a card shrinks, rather than being squashed
+- Two configurable cards: media player, phone, app shortcuts, or app widgets
 - Quick-launch dock of 5 favourite apps in the top bar
 - Wi-Fi indicator (only shown when connected)
 - Six tabs: **Audio · Radio · Phone · Nav · Apps · Settings**
+
+**App widgets**
+
+- Any installed home-screen widget can be hosted on either card, up to three
+  side by side
+- Add, swap and remove them from the Customize screen, or by long-pressing the
+  card itself
+- Widgets that need a configuration step get one, and are told their real size
+  so they pick the right layout
 
 **App drawer**
 
@@ -60,11 +107,13 @@ Search, a frequently-used strip, and the full app grid.
 - "Frequently used" strip based on your own launch history
 - Long-press any app to hide it from the drawer
 - Refreshes automatically when apps are installed or removed
+- On portrait units, a paged drawer sits on the home screen itself
 
 **Appearance**
 
 - **7 colour schemes** — Midnight, Ocean, Sunset, Forest, Violet, Crimson,
-  Graphite — each applying a gradient and matching accent across the whole UI
+  Graphite — each applying a gradient and matching accent across the whole UI,
+  icons included
 - Light and dark palettes; dark by default, with Auto (by time of day), Light,
   and Follow-system options
 - Runs fullscreen with the system bars hidden, using its own in-app Back/Home
@@ -86,11 +135,12 @@ Search, a frequently-used strip, and the full app grid.
 |---|---|
 | Min Android | 4.4 KitKat (API 19) sideloaded · 5.0 (API 21) via Play |
 | Target Android | 16 (API 36) |
-| Orientation | Landscape |
+| Orientation | Landscape and portrait |
 | Google Play Services | Not required |
 | API keys | None |
 
-Designed for common head-unit resolutions — 1024×600 and 800×480 both work.
+Designed for common head-unit resolutions — 1024×600 and 800×480 both work,
+and upright screens get their own stacked layout.
 
 ---
 
@@ -213,12 +263,19 @@ app/src/main/
 ├── AndroidManifest.xml              # HOME intent-filter, notification listener
 ├── java/com/dashline/launcher/
 │   ├── App.kt                       # applies saved language + theme at startup
-│   ├── BaseActivity.kt              # locale, fullscreen, gradient, in-app nav
+│   ├── BaseActivity.kt              # locale, fullscreen, gradient, icon tint, nav
 │   ├── HomeActivity.kt              # the dashboard
+│   ├── CustomizeActivity.kt         # live layout editor
+│   ├── WidgetHost.kt                # binds and renders app widgets
+│   ├── SwipeLinearLayout.kt         # page-turning container for the drawer
+│   ├── AnalogClockView.kt           # the analog face
 │   ├── AppDrawerActivity.kt         # app grid: search, frequent, hide
 │   ├── AppPickerActivity.kt         # "choose an app for this role"
+│   ├── AppAdapter.kt                # app grid cells
 │   ├── SetupActivity.kt             # first-run onboarding
 │   ├── SettingsActivity.kt          # settings
+│   ├── TabAction.kt                 # the six tabs and what they launch
+│   ├── TabOrderActivity.kt          # reorder / hide tabs
 │   ├── GradientPickerActivity.kt    # colour scheme picker
 │   ├── GradientThemes.kt            # the 7 colour schemes
 │   ├── ThemeManager.kt              # light / dark / auto
@@ -226,12 +283,16 @@ app/src/main/
 │   ├── MediaMonitor.kt              # reads the active MediaSession
 │   ├── WeatherRepository.kt         # Open-Meteo client
 │   ├── AppRepository.kt             # query + launch installed apps
+│   ├── DefaultLauncher.kt           # "make this the home app" helper
 │   ├── Prefs.kt                     # all persisted settings
 │   ├── Permissions.kt               # runtime permission helpers
 │   └── Usage.kt                     # launch-count tracking
 └── res/
+    ├── layout/                      # landscape dashboard and all other screens
+    ├── layout-port/                 # portrait dashboard (same ids as landscape)
     ├── values/                      # strings, light palette, styles
     ├── values-night/                # dark palette
+    ├── values-h600dp/               # roomier sizes on taller screens
     ├── values-v21/                  # API 21+ theme attributes
     └── values-{ar,de,es,fr,it,pt,ru,tr,zh}/   # translations
 ```
@@ -250,12 +311,17 @@ things:
   render as app icons before Android 5.0. Adaptive icons in `mipmap-anydpi-v26`
   are used only on API 26+.
 - **API 21+ theme attributes** live in `values-v21/` so they don't affect KitKat.
-- **Fullscreen** uses the legacy `systemUiVisibility` flags rather than
-  `WindowInsetsController`, which doesn't exist below API 30.
+- **Fullscreen** goes through `WindowInsetsControllerCompat` rather than the
+  raw `systemUiVisibility` flags: from targetSdk 35 Android enforces
+  edge-to-edge and those flags stop behaving predictably. The compat layer
+  maps to them on old devices, so KitKat still works.
 - **The language override** wraps each activity's context instead of using
   `AppCompatDelegate.setApplicationLocales`, which needs appcompat 1.6+.
-- **The media widget requires Android 5.0+** (`MediaSessionManager`). On KitKat it
+- **The media panel requires Android 5.0+** (`MediaSessionManager`). On KitKat it
   falls back to acting as a launch button.
+- **Widgets are bound through `ACTION_APPWIDGET_BIND`**, not the system's
+  widget picker: that picker binds on the caller's behalf, which needs the
+  signature-level `BIND_APPWIDGET` permission no normal app can hold.
 
 ---
 
@@ -277,8 +343,7 @@ are pinned deliberately to keep Android 4.4 support.
 
 - Reorderable favourites dock (drag and drop)
 - Hourly forecast in the weather panel
-- Signed release builds with R8 shrinking
-- Optional analog clock face
+- Quick-dial contacts on the phone card
 
 ---
 
