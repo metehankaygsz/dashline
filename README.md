@@ -372,6 +372,3 @@ GNU General Public License v3.0 — see [LICENSE](LICENSE).
 You may use, study, share and modify Dashline. If you distribute a modified
 version, it has to stay under the GPL and ship its source, so the people running
 it keep the same freedoms.
-
-Releases up to and including v0.3.0 were published under the MIT licence; that
-grant stands for those versions.
