@@ -146,4 +146,11 @@
     <string name="widget_change">Cambiar</string>
     <string name="widget_remove">Quitar</string>
     <string name="widget_full">Una tarjeta admite hasta %1$d widgets</string>
+    <string name="customize_favorites">Favoritos</string>
+    <string name="favorites_slots">Espacios</string>
+    <string name="favorites_size">Tamaño de icono</string>
+    <string name="size_small">Pequeño</string>
+    <string name="size_medium">Mediano</string>
+    <string name="size_large">Grande</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>

@@ -146,4 +146,11 @@
     <string name="widget_change">Заменить</string>
     <string name="widget_remove">Удалить</string>
     <string name="widget_full">На карточке помещается до %1$d виджетов</string>
+    <string name="customize_favorites">Избранное</string>
+    <string name="favorites_slots">Ячейки</string>
+    <string name="favorites_size">Размер значков</string>
+    <string name="size_small">Мелкие</string>
+    <string name="size_medium">Средние</string>
+    <string name="size_large">Крупные</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>

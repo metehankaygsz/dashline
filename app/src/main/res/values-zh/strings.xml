@@ -146,4 +146,11 @@
     <string name="widget_change">更换</string>
     <string name="widget_remove">移除</string>
     <string name="widget_full">一张卡片最多可放 %1$d 个小部件</string>
+    <string name="customize_favorites">收藏</string>
+    <string name="favorites_slots">格数</string>
+    <string name="favorites_size">图标大小</string>
+    <string name="size_small">小</string>
+    <string name="size_medium">中</string>
+    <string name="size_large">大</string>
+    <string name="favorites_option">%1$s：%2$s</string>
 </resources>

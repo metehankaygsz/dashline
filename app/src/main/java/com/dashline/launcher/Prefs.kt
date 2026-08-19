@@ -231,6 +231,22 @@ class Prefs(context: Context) {
 
     // ---- favorite-apps dock ------------------------------------------------
 
+    /** How many quick-launch slots the top bar shows. */
+    var favoriteCount: Int
+        get() = sp.getInt(KEY_FAV_COUNT, FAVORITE_COUNT)
+            .coerceIn(FavoriteDock.MIN_SLOTS, FavoriteDock.MAX_SLOTS)
+        set(v) = sp.edit()
+            .putInt(KEY_FAV_COUNT, v.coerceIn(FavoriteDock.MIN_SLOTS, FavoriteDock.MAX_SLOTS))
+            .apply()
+
+    /**
+     * Preferred icon size. A ceiling rather than a demand — the dock drops to a
+     * smaller one when the chosen count wouldn't fit; see [FavoriteDock].
+     */
+    var favoriteSize: String
+        get() = sp.getString(KEY_FAV_SIZE, FavoriteDock.SIZE_MEDIUM) ?: FavoriteDock.SIZE_MEDIUM
+        set(v) = sp.edit().putString(KEY_FAV_SIZE, v).apply()
+
     fun getFavorite(index: Int): String? = sp.getString(favKey(index), null)
 
     fun setFavorite(index: Int, pkg: String) =
@@ -348,8 +364,10 @@ class Prefs(context: Context) {
         const val ROLE_CARPLAY = "carplay"
         const val ROLE_FAVORITE = "favorite"
 
-        /** Number of quick-launch slots in the top-bar dock. */
+        /** Default number of quick-launch slots in the top-bar dock. */
         const val FAVORITE_COUNT = 5
+        private const val KEY_FAV_COUNT = "favorite_count"
+        private const val KEY_FAV_SIZE = "favorite_size"
     }
 }
 

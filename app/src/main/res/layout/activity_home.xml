@@ -8,6 +8,7 @@
 
     <!-- ===== Top status bar: home | favorites dock | wifi ===== -->
     <LinearLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height"
         android:background="@color/bar"
@@ -34,11 +35,6 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot0" style="@style/FavSlot" />
-            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot1" style="@style/FavSlot" />
-            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot2" style="@style/FavSlot" />
-            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot3" style="@style/FavSlot" />
-            <androidx.appcompat.widget.AppCompatImageView android:id="@+id/favSlot4" style="@style/FavSlot" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -53,6 +53,11 @@
             android:text="@string/customize_second_card" />
 
         <TextView
+            android:id="@+id/btnFavorites"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_favorites" />
+
+        <TextView
             android:id="@+id/btnReset"
             style="@style/CustomizeButton"
             android:text="@string/customize_reset" />

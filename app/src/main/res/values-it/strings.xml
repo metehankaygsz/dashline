@@ -146,4 +146,11 @@
     <string name="widget_change">Cambia</string>
     <string name="widget_remove">Rimuovi</string>
     <string name="widget_full">Una scheda contiene fino a %1$d widget</string>
+    <string name="customize_favorites">Preferiti</string>
+    <string name="favorites_slots">Posti</string>
+    <string name="favorites_size">Dimensione icone</string>
+    <string name="size_small">Piccola</string>
+    <string name="size_medium">Media</string>
+    <string name="size_large">Grande</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>

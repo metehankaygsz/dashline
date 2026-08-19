@@ -49,7 +49,6 @@ class HomeActivity : BaseActivity() {
     private var drawerPage = 0
     private var drawerRows = 0
 
-    private lateinit var favSlots: List<AppCompatImageView>
 
     // Built from the current locale in onCreate, so they follow the chosen language.
     private lateinit var timeFormat: SimpleDateFormat
@@ -920,7 +919,8 @@ class HomeActivity : BaseActivity() {
         when {
             requestCode == REQ_PICK_PHONE ->
                 AppRepository.launch(this, pkg)  // pref already saved by the picker
-            requestCode >= REQ_FAV_BASE && requestCode < REQ_FAV_BASE + Prefs.FAVORITE_COUNT -> {
+            requestCode >= REQ_FAV_BASE &&
+                requestCode < REQ_FAV_BASE + FavoriteDock.MAX_SLOTS -> {
                 prefs.setFavorite(requestCode - REQ_FAV_BASE, pkg)
                 bindFavorites()
             }
@@ -946,17 +946,25 @@ class HomeActivity : BaseActivity() {
 
     // ---- Favorite-apps dock ------------------------------------------------
 
-    private fun setupFavorites() {
-        favSlots = listOf(
-            binding.favSlot0, binding.favSlot1, binding.favSlot2,
-            binding.favSlot3, binding.favSlot4
-        )
-        bindFavorites()
-    }
+    private fun setupFavorites() = bindFavorites()
 
+    /**
+     * Builds the dock from the saved slot count and icon size, then fills it.
+     *
+     * Rebuilt rather than updated in place because both the number of slots and
+     * their size are user settings, and this is where changes from the Customize
+     * screen land on the way back to the dashboard.
+     */
     private fun bindFavorites() {
-        favSlots.forEachIndexed { index, slot ->
+        val dock = binding.favoritesDock
+        val spec = FavoriteDock.specFor(this, prefs.favoriteSize, prefs.favoriteCount)
+        FavoriteDock.applyBarHeight(binding.topBar, spec)
+
+        dock.removeAllViews()
+        for (index in 0 until prefs.favoriteCount) {
+            val slot = FavoriteDock.slotView(this, spec)
             val pkg = prefs.getFavorite(index)
+
             if (pkg != null && AppRepository.isInstalled(this, pkg)) {
                 slot.setImageDrawable(AppRepository.iconFor(this, pkg))
                 // A real app icon keeps its own colours.
@@ -970,6 +978,7 @@ class HomeActivity : BaseActivity() {
                 slot.setOnClickListener { pickFavorite(index) }
                 slot.setOnLongClickListener { false }
             }
+            dock.addView(slot)
         }
     }
 

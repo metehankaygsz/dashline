@@ -146,4 +146,11 @@
     <string name="widget_change">Ändern</string>
     <string name="widget_remove">Entfernen</string>
     <string name="widget_full">Eine Karte fasst bis zu %1$d Widgets</string>
+    <string name="customize_favorites">Favoriten</string>
+    <string name="favorites_slots">Plätze</string>
+    <string name="favorites_size">Symbolgröße</string>
+    <string name="size_small">Klein</string>
+    <string name="size_medium">Mittel</string>
+    <string name="size_large">Groß</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>

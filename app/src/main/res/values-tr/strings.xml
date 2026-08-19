@@ -155,4 +155,11 @@
     <string name="widget_change">Değiştir</string>
     <string name="widget_remove">Kaldır</string>
     <string name="widget_full">Bir karta en fazla %1$d widget sığar</string>
+    <string name="customize_favorites">Favoriler</string>
+    <string name="favorites_slots">Yuva sayısı</string>
+    <string name="favorites_size">Simge boyutu</string>
+    <string name="size_small">Küçük</string>
+    <string name="size_medium">Orta</string>
+    <string name="size_large">Büyük</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>

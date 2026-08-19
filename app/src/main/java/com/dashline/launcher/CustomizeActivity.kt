@@ -58,6 +58,7 @@ class CustomizeActivity : BaseActivity() {
                 else Prefs.PANEL_PHONE_FIRST
             applyToPreview()
         }
+        binding.btnFavorites.setOnClickListener { chooseFavorites() }
         binding.btnMediaCard.setOnClickListener { chooseCard(Prefs.SLOT_MEDIA) }
         binding.btnSecondCard.setOnClickListener { chooseCard(Prefs.SLOT_SECOND) }
         binding.btnReset.setOnClickListener {
@@ -65,6 +66,8 @@ class CustomizeActivity : BaseActivity() {
             prefs.panelOrder = Prefs.PANEL_MEDIA_FIRST
             prefs.setCardMode(Prefs.SLOT_MEDIA, Prefs.CARD_MEDIA)
             prefs.setCardMode(Prefs.SLOT_SECOND, Prefs.CARD_PHONE)
+            prefs.favoriteCount = Prefs.FAVORITE_COUNT
+            prefs.favoriteSize = FavoriteDock.SIZE_MEDIUM
             applyToPreview()
         }
 
@@ -85,6 +88,8 @@ class CustomizeActivity : BaseActivity() {
         preview.mediaSeekRow.visibility = View.VISIBLE
         preview.phoneLabel.setText(R.string.tab_phone)
 
+        renderFavoritesPreview()
+
         // Bottom bar mirrors the user's real tab choices.
         preview.tabBar.removeAllViews()
         prefs.visibleTabs().forEach { tab ->
@@ -96,6 +101,33 @@ class CustomizeActivity : BaseActivity() {
                 item.root,
                 LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
             )
+        }
+    }
+
+    /**
+     * The dock, drawn at the size and count the user has chosen. Slots aren't
+     * tappable here — this screen is about how it looks, and the apps themselves
+     * are assigned from the dashboard.
+     */
+    private fun renderFavoritesPreview() {
+        val spec = FavoriteDock.specFor(this, prefs.favoriteSize, prefs.favoriteCount)
+        FavoriteDock.applyBarHeight(preview.topBar, spec)
+
+        val dock = preview.favoritesDock
+        dock.removeAllViews()
+        for (index in 0 until prefs.favoriteCount) {
+            val slot = FavoriteDock.slotView(this, spec)
+            val pkg = prefs.getFavorite(index)
+            if (pkg != null && AppRepository.isInstalled(this, pkg)) {
+                slot.setImageDrawable(AppRepository.iconFor(this, pkg))
+                slot.clearColorFilter()
+            } else {
+                slot.setImageResource(R.drawable.ic_add)
+                slot.setColorFilter(accentColor(), android.graphics.PorterDuff.Mode.SRC_IN)
+            }
+            slot.isClickable = false
+            slot.isFocusable = false
+            dock.addView(slot)
         }
     }
 
@@ -239,6 +271,7 @@ class CustomizeActivity : BaseActivity() {
             binding.customizeHint.setText(R.string.customize_hint_portrait)
         }
 
+        renderFavoritesPreview()
         applyCardPreviews()
         // The preview inflates its own views, so it needs the icon tinting too.
         tintIcons(preview.root)
@@ -366,6 +399,59 @@ class CustomizeActivity : BaseActivity() {
     }
 
     // ---- card content -------------------------------------------------------
+
+    /**
+     * Slot count and icon size for the top-bar dock.
+     *
+     * They're offered separately because they aren't really the trade-off they
+     * look like: the dock has width to spare, so more slots doesn't have to mean
+     * smaller icons. Where they genuinely collide — many large icons on a narrow
+     * unit — [FavoriteDock] resolves it by using a smaller size rather than
+     * refusing the count.
+     */
+    private fun chooseFavorites() {
+        val options = arrayOf(
+            getString(
+                R.string.favorites_option,
+                getString(R.string.favorites_slots),
+                prefs.favoriteCount.toString()
+            ),
+            getString(
+                R.string.favorites_option,
+                getString(R.string.favorites_size),
+                getString(FavoriteDock.labelFor(prefs.favoriteSize))
+            )
+        )
+        AlertDialog.Builder(this)
+            .setTitle(R.string.customize_favorites)
+            .setItems(options) { _, which ->
+                if (which == 0) chooseFavoriteCount() else chooseFavoriteSize()
+            }
+            .show()
+    }
+
+    private fun chooseFavoriteCount() {
+        // Only offer counts that fit even at the smallest icon size.
+        val counts = (FavoriteDock.MIN_SLOTS..FavoriteDock.maxSlots(this)).toList()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.favorites_slots)
+            .setItems(counts.map { it.toString() }.toTypedArray()) { _, which ->
+                prefs.favoriteCount = counts[which]
+                applyToPreview()
+            }
+            .show()
+    }
+
+    private fun chooseFavoriteSize() {
+        val sizes = FavoriteDock.SIZES
+        AlertDialog.Builder(this)
+            .setTitle(R.string.favorites_size)
+            .setItems(sizes.map { getString(FavoriteDock.labelFor(it.id)) }.toTypedArray()) { _, which ->
+                prefs.favoriteSize = sizes[which].id
+                applyToPreview()
+            }
+            .show()
+    }
 
     /** What this card should show. The media card can also stay a player. */
     private fun chooseCard(slot: String) {

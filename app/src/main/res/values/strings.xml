@@ -163,4 +163,11 @@
     <string name="widget_change">Change</string>
     <string name="widget_remove">Remove</string>
     <string name="widget_full">A card holds up to %1$d widgets</string>
+    <string name="customize_favorites">Favourites</string>
+    <string name="favorites_slots">Slots</string>
+    <string name="favorites_size">Icon size</string>
+    <string name="size_small">Small</string>
+    <string name="size_medium">Medium</string>
+    <string name="size_large">Large</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>

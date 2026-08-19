@@ -146,4 +146,11 @@
     <string name="widget_change">تغيير</string>
     <string name="widget_remove">إزالة</string>
     <string name="widget_full">تتسع البطاقة لعدد %1$d أدوات كحد أقصى</string>
+    <string name="customize_favorites">المفضلة</string>
+    <string name="favorites_slots">الخانات</string>
+    <string name="favorites_size">حجم الأيقونات</string>
+    <string name="size_small">صغير</string>
+    <string name="size_medium">متوسط</string>
+    <string name="size_large">كبير</string>
+    <string name="favorites_option">%1$s: %2$s</string>
 </resources>
