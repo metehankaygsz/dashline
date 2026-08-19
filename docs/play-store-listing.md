@@ -79,7 +79,7 @@ PERMISSIONS, EXPLAINED
 • Query all packages — required for any launcher, so it can list and open the
   apps installed on your device.
 
-Dashline is free and open source under the MIT licence. You can read every line
+Dashline is free and open source under the GNU GPL v3. You can read every line
 of it at https://github.com/metehankaygsz/dashline
 ```
 

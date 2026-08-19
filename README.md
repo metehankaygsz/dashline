@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/metehankaygsz/dashline/actions/workflows/build.yml"><img src="https://github.com/metehankaygsz/dashline/actions/workflows/build.yml/badge.svg" alt="Build"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
   <a href="https://developer.android.com/about/versions/android-4.4"><img src="https://img.shields.io/badge/API-19%2B-brightgreen.svg" alt="Min API 19+"></a>
 </p>
 
@@ -367,4 +367,11 @@ are pinned deliberately to keep Android 4.4 support.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+GNU General Public License v3.0 — see [LICENSE](LICENSE).
+
+You may use, study, share and modify Dashline. If you distribute a modified
+version, it has to stay under the GPL and ship its source, so the people running
+it keep the same freedoms.
+
+Releases up to and including v0.3.0 were published under the MIT licence; that
+grant stands for those versions.
