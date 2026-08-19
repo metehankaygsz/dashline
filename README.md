@@ -367,8 +367,14 @@ are pinned deliberately to keep Android 4.4 support.
 
 ## License
 
-GNU General Public License v3.0 — see [LICENSE](LICENSE).
+GNU General Public License v3.0 **only** — see [LICENSE](LICENSE). There is no
+"or any later version" clause, so v3 is the licence, not a floor.
+
+Copyright © 2026 Metehan Kaygısız.
 
 You may use, study, share and modify Dashline. If you distribute a modified
 version, it has to stay under the GPL and ship its source, so the people running
 it keep the same freedoms.
+
+Source files carry `SPDX-License-Identifier: GPL-3.0-only`, so the terms travel
+with the code rather than only with the repository.

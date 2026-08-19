@@ -1,3 +1,6 @@
+// Copyright (C) 2026 Metehan Kaygısız
+// SPDX-License-Identifier: GPL-3.0-only
+
 package com.dashline.launcher
 
 import android.content.BroadcastReceiver
