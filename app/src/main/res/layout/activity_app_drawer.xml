@@ -4,12 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg">
+    android:background="@color/bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <include
         android:id="@+id/header"
         layout="@layout/view_page_header" />
 
+    <!--
+      The root above is focusable so it, not this field, takes focus when the
+      screen opens; otherwise the keyboard appears before the user has asked to
+      search. Tapping the field still focuses it normally.
+    -->
     <EditText
         android:id="@+id/searchBox"
         android:layout_width="match_parent"

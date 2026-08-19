@@ -43,10 +43,16 @@
             </intent-filter>
         </activity>
 
+        <!--
+          stateAlwaysHidden: the drawer opens on a grid of apps, not on the search
+          field. Without it the search box takes first focus and the on-screen
+          keyboard covers half the grid the moment the Apps tab is tapped.
+        -->
         <activity
             android:name=".AppDrawerActivity"
             android:exported="false"
             android:configChanges="keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:parentActivityName=".HomeActivity" />
 
         <activity
