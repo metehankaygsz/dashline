@@ -123,9 +123,13 @@ Reaching for a scrollbar while driving is worse than a swipe.
 
 - The sideloaded build checks GitHub Releases for a newer version, at most once
   a day, and offers it with its release notes — *Update now*, *Later*, or *Skip
-  this version*
+  this version*. Skipping is remembered per version, so it never hides a later
+  one
 - It downloads the APK and hands it to the system installer, so there's no
   hunting for a browser on a unit that may not have one
+- **Settings → About** shows the version and build number, and checks on demand:
+  it answers either way, rather than leaving "no prompt" to mean both *you're
+  current* and *the check never ran*
 - Only in the sideloaded build. The Play version updates through Play, and the
   two are signed with different keys, so neither could install the other
 
