@@ -162,4 +162,8 @@
     <string name="size_medium">Orta</string>
     <string name="size_large">Büyük</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">Saat paneli</string>
+    <string name="card_clock">Saat</string>
+    <string name="card_weather">Hava durumu</string>
+    <string name="customize_panel_landscape">Widget\'ler saat veya hava durumunun yerini yalnızca dikey modda alır.</string>
 </resources>

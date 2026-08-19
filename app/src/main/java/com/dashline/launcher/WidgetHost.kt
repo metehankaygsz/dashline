@@ -108,6 +108,28 @@ object WidgetHost {
         }
     }
 
+    /**
+     * Give a widget row a height.
+     *
+     * A widget asks for as much room as its provider's minHeight wants, so in any
+     * container that wraps its content — the portrait cards, and the clock panel
+     * in both orientations — it has to be told, or one widget swallows the whole
+     * screen. Only a card that already has a fixed height can let it fill.
+     */
+    fun sizeContainer(container: android.view.View, fill: Boolean) {
+        val density = container.resources.displayMetrics.density
+        container.layoutParams = container.layoutParams?.apply {
+            height = if (fill) {
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            } else {
+                (PANEL_HEIGHT_DP * density).toInt()
+            }
+        } ?: return
+    }
+
+    /** Room a widget gets where the container would otherwise wrap it. */
+    const val PANEL_HEIGHT_DP = 180f
+
     /** Tell the widget how much room it has, so it can pick a layout. */
     fun resize(view: AppWidgetHostView, widthDp: Int, heightDp: Int) {
         if (widthDp <= 0 || heightDp <= 0) return

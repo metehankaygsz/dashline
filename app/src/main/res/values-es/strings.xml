@@ -153,4 +153,8 @@
     <string name="size_medium">Mediano</string>
     <string name="size_large">Grande</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">Panel del reloj</string>
+    <string name="card_clock">Reloj</string>
+    <string name="card_weather">Tiempo</string>
+    <string name="customize_panel_landscape">Los widgets sustituyen al reloj o al tiempo solo en vertical.</string>
 </resources>

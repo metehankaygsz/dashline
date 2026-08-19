@@ -153,4 +153,8 @@
     <string name="size_medium">Media</string>
     <string name="size_large">Grande</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">Pannello orologio</string>
+    <string name="card_clock">Orologio</string>
+    <string name="card_weather">Meteo</string>
+    <string name="customize_panel_landscape">I widget sostituiscono orologio o meteo solo in verticale.</string>
 </resources>

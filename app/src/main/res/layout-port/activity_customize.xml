@@ -35,22 +35,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="12dp">
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
 
         <TextView
             android:id="@+id/btnSwap"
             style="@style/CustomizeButton"
             android:text="@string/customize_swap" />
-
-        <TextView
-            android:id="@+id/btnMediaCard"
-            style="@style/CustomizeButton"
-            android:text="@string/customize_media_card" />
-
-        <TextView
-            android:id="@+id/btnSecondCard"
-            style="@style/CustomizeButton"
-            android:text="@string/customize_second_card" />
 
         <TextView
             android:id="@+id/btnFavorites"
@@ -61,6 +54,27 @@
             android:id="@+id/btnClockPanel"
             style="@style/CustomizeButton"
             android:text="@string/customize_clock_panel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/btnMediaCard"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_media_card" />
+
+        <TextView
+            android:id="@+id/btnSecondCard"
+            style="@style/CustomizeButton"
+            android:text="@string/customize_second_card" />
 
         <TextView
             android:id="@+id/btnReset"

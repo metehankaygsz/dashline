@@ -153,4 +153,8 @@
     <string name="size_medium">متوسط</string>
     <string name="size_large">كبير</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">لوحة الساعة</string>
+    <string name="card_clock">الساعة</string>
+    <string name="card_weather">الطقس</string>
+    <string name="customize_panel_landscape">تحل الأدوات محل الساعة أو الطقس في الوضع الرأسي فقط.</string>
 </resources>

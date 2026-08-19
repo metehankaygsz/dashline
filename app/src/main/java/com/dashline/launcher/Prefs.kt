@@ -103,8 +103,15 @@ class Prefs(context: Context) {
     fun setCardMode(slot: String, mode: String) =
         sp.edit().putString(modeKey(slot), mode).apply()
 
-    private fun defaultMode(slot: String) =
-        if (slot == SLOT_MEDIA) CARD_MEDIA else CARD_PHONE
+    /** What a slot shows before the user changes anything. */
+    fun defaultCardMode(slot: String): String = when (slot) {
+        SLOT_MEDIA -> CARD_MEDIA
+        SLOT_CLOCK -> CARD_CLOCK
+        SLOT_WEATHER -> CARD_WEATHER
+        else -> CARD_PHONE
+    }
+
+    private fun defaultMode(slot: String) = defaultCardMode(slot)
 
     /** Hosted widget ids for a slot, in display order. */
     fun cardWidgets(slot: String): List<Int> =
@@ -318,9 +325,16 @@ class Prefs(context: Context) {
         const val PANEL_MEDIA_FIRST = "media_first"
         const val PANEL_PHONE_FIRST = "phone_first"
 
-        /** The two configurable cards in the right-hand column. */
+        /** The configurable cards in the right-hand column. */
         const val SLOT_MEDIA = "media"
         const val SLOT_SECOND = "second"
+
+        /**
+         * The clock panel's two halves. Portrait only: landscape needs them both
+         * to fill the left column, and there's no drawer below to take up slack.
+         */
+        const val SLOT_CLOCK = "clock"
+        const val SLOT_WEATHER = "weather"
 
         /**
          * What a card shows. CARD_MEDIA is only meaningful for the media slot and
@@ -328,6 +342,8 @@ class Prefs(context: Context) {
          */
         const val CARD_MEDIA = "media"
         const val CARD_PHONE = "phone"
+        const val CARD_CLOCK = "clock"
+        const val CARD_WEATHER = "weather"
         const val CARD_SHORTCUTS = "shortcuts"
         const val CARD_WIDGET = "widget"
 

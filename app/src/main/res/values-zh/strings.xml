@@ -153,4 +153,8 @@
     <string name="size_medium">中</string>
     <string name="size_large">大</string>
     <string name="favorites_option">%1$s：%2$s</string>
+    <string name="customize_clock_panel">时钟面板</string>
+    <string name="card_clock">时钟</string>
+    <string name="card_weather">天气</string>
+    <string name="customize_panel_landscape">仅竖屏时可用小部件替换时钟或天气。</string>
 </resources>

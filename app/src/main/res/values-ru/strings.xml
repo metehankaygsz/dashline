@@ -153,4 +153,8 @@
     <string name="size_medium">Средние</string>
     <string name="size_large">Крупные</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">Панель часов</string>
+    <string name="card_clock">Часы</string>
+    <string name="card_weather">Погода</string>
+    <string name="customize_panel_landscape">Виджеты заменяют часы или погоду только в портретном режиме.</string>
 </resources>

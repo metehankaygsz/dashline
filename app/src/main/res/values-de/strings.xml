@@ -153,4 +153,8 @@
     <string name="size_medium">Mittel</string>
     <string name="size_large">Groß</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">Uhr-Bereich</string>
+    <string name="card_clock">Uhr</string>
+    <string name="card_weather">Wetter</string>
+    <string name="customize_panel_landscape">Widgets ersetzen Uhr oder Wetter nur im Hochformat.</string>
 </resources>

@@ -170,4 +170,8 @@
     <string name="size_medium">Medium</string>
     <string name="size_large">Large</string>
     <string name="favorites_option">%1$s: %2$s</string>
+    <string name="customize_clock_panel">Clock panel</string>
+    <string name="card_clock">Clock</string>
+    <string name="card_weather">Weather</string>
+    <string name="customize_panel_landscape">Widgets replace the clock or weather in portrait only.</string>
 </resources>

@@ -59,6 +59,7 @@ class CustomizeActivity : BaseActivity() {
             applyToPreview()
         }
         binding.btnFavorites.setOnClickListener { chooseFavorites() }
+        binding.btnClockPanel.setOnClickListener { chooseClockPanel() }
         binding.btnMediaCard.setOnClickListener { chooseCard(Prefs.SLOT_MEDIA) }
         binding.btnSecondCard.setOnClickListener { chooseCard(Prefs.SLOT_SECOND) }
         binding.btnReset.setOnClickListener {
@@ -68,6 +69,8 @@ class CustomizeActivity : BaseActivity() {
             prefs.setCardMode(Prefs.SLOT_SECOND, Prefs.CARD_PHONE)
             prefs.favoriteCount = Prefs.FAVORITE_COUNT
             prefs.favoriteSize = FavoriteDock.SIZE_MEDIUM
+            prefs.setCardMode(Prefs.SLOT_CLOCK, Prefs.CARD_CLOCK)
+            prefs.setCardMode(Prefs.SLOT_WEATHER, Prefs.CARD_WEATHER)
             applyToPreview()
         }
 
@@ -307,6 +310,21 @@ class CustomizeActivity : BaseActivity() {
     private fun applyCardPreviews() {
         applyCardPreview(Prefs.SLOT_MEDIA)
         applyCardPreview(Prefs.SLOT_SECOND)
+        applyPanelSlotPreview(Prefs.SLOT_CLOCK)
+        applyPanelSlotPreview(Prefs.SLOT_WEATHER)
+    }
+
+    /** Mirrors HomeActivity.applyPanelSlot — portrait only, widgets or not. */
+    private fun applyPanelSlotPreview(slot: String) {
+        val clock = slot == Prefs.SLOT_CLOCK
+        val content = if (clock) preview.clockSlot else preview.weatherSlot
+        val widgets = if (clock) preview.clockWidget else preview.weatherWidget
+
+        val asWidget = !isLandscape() && prefs.cardMode(slot) == Prefs.CARD_WIDGET
+        content.visibility = if (asWidget) View.GONE else View.VISIBLE
+        widgets.visibility = if (asWidget) View.VISIBLE else View.GONE
+
+        if (asWidget) renderWidgetPreview(slot, widgets)
     }
 
     /** Same three states as the dashboard, drawn into the live preview. */
@@ -386,6 +404,10 @@ class CustomizeActivity : BaseActivity() {
             return
         }
 
+        // Same rule as the dashboard, or the preview lies about the height.
+        val panelSlot = slot == Prefs.SLOT_CLOCK || slot == Prefs.SLOT_WEATHER
+        WidgetHost.sizeContainer(container, fill = isLandscape() && !panelSlot)
+
         views.forEach { view ->
             runCatching {
                 container.addView(
@@ -399,6 +421,63 @@ class CustomizeActivity : BaseActivity() {
     }
 
     // ---- card content -------------------------------------------------------
+
+    /**
+     * Put widgets where the clock or the weather normally sits.
+     *
+     * Portrait only. In landscape those two fill the left column between them,
+     * so swapping one for a widget leaves a gap with nothing to close it — the
+     * button says so rather than offering a choice that wouldn't be honoured.
+     */
+    private fun chooseClockPanel() {
+        if (isLandscape()) {
+            toast(getString(R.string.customize_panel_landscape))
+            return
+        }
+        val slots = listOf(
+            Prefs.SLOT_CLOCK to R.string.card_clock,
+            Prefs.SLOT_WEATHER to R.string.card_weather
+        )
+        val labels = slots.map { (slot, nameRes) ->
+            getString(
+                R.string.favorites_option,
+                getString(nameRes),
+                getString(
+                    if (prefs.cardMode(slot) == Prefs.CARD_WIDGET) R.string.second_widget
+                    else nameRes
+                )
+            )
+        }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.customize_clock_panel)
+            .setItems(labels.toTypedArray()) { _, which -> choosePanelMode(slots[which].first) }
+            .show()
+    }
+
+    /** Either the panel's own content, or widgets in its place. */
+    private fun choosePanelMode(slot: String) {
+        val default = prefs.defaultCardMode(slot)
+        val options = listOf(
+            default to if (slot == Prefs.SLOT_CLOCK) R.string.card_clock else R.string.card_weather,
+            Prefs.CARD_WIDGET to R.string.second_widget
+        )
+        AlertDialog.Builder(this)
+            .setTitle(if (slot == Prefs.SLOT_CLOCK) R.string.card_clock else R.string.card_weather)
+            .setItems(options.map { getString(it.second) }.toTypedArray()) { _, which ->
+                val mode = options[which].first
+                prefs.setCardMode(slot, mode)
+                when {
+                    mode == Prefs.CARD_WIDGET && prefs.cardWidgets(slot).isEmpty() ->
+                        pickWidget(slot)
+                    mode == Prefs.CARD_WIDGET -> {
+                        applyToPreview()
+                        manageWidgets(slot)
+                    }
+                    else -> applyToPreview()
+                }
+            }
+            .show()
+    }
 
     /**
      * Slot count and icon size for the top-bar dock.
@@ -674,9 +753,8 @@ class CustomizeActivity : BaseActivity() {
         pendingReplaced = WidgetHost.INVALID_ID
     }
 
-    private fun revertToDefault(slot: String) = prefs.setCardMode(
-        slot, if (slot == Prefs.SLOT_MEDIA) Prefs.CARD_MEDIA else Prefs.CARD_PHONE
-    )
+    private fun revertToDefault(slot: String) =
+        prefs.setCardMode(slot, prefs.defaultCardMode(slot))
 
     private fun toast(message: String) =
         android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()

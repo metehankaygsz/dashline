@@ -343,7 +343,30 @@ class HomeActivity : BaseActivity() {
     private fun applyCardModes() {
         applyCardMode(Prefs.SLOT_MEDIA)
         applyCardMode(Prefs.SLOT_SECOND)
+        applyPanelSlot(Prefs.SLOT_CLOCK)
+        applyPanelSlot(Prefs.SLOT_WEATHER)
     }
+
+    /**
+     * The clock and weather halves of the left panel, each replaceable by
+     * widgets — but only upright, where the panel is a stacked card with the
+     * drawer below to absorb the difference. In landscape the two of them fill
+     * the column, so a widget there would leave a hole; the saved choice is
+     * simply ignored rather than reset, so rotating back restores it.
+     */
+    private fun applyPanelSlot(slot: String) {
+        val clock = slot == Prefs.SLOT_CLOCK
+        val content = if (clock) binding.clockSlot else binding.weatherSlot
+        val widgets = if (clock) binding.clockWidget else binding.weatherWidget
+
+        val asWidget = isPortraitNow() && prefs.cardMode(slot) == Prefs.CARD_WIDGET
+        content.visibility = if (asWidget) android.view.View.GONE else android.view.View.VISIBLE
+        widgets.visibility = if (asWidget) android.view.View.VISIBLE else android.view.View.GONE
+
+        if (asWidget) bindCardWidgets(slot, widgets)
+    }
+
+    private fun isPortraitNow(): Boolean = !isLandscapeNow()
 
     private fun applyCardMode(slot: String) {
         val media = slot == Prefs.SLOT_MEDIA
@@ -394,15 +417,9 @@ class HomeActivity : BaseActivity() {
             return
         }
 
-        // Portrait cards wrap their content, so a MATCH_PARENT widget inside one
-        // measures to nothing. Give the row a real height there.
-        container.layoutParams = container.layoutParams.apply {
-            height = if (isLandscapeNow()) {
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT
-            } else {
-                (PORTRAIT_WIDGET_DP * resources.displayMetrics.density).toInt()
-            }
-        }
+        // The clock panel wraps in both orientations; the cards only in portrait.
+        val panelSlot = slot == Prefs.SLOT_CLOCK || slot == Prefs.SLOT_WEATHER
+        WidgetHost.sizeContainer(container, fill = isLandscapeNow() && !panelSlot)
 
         views.forEach { (_, view) ->
             container.addView(
@@ -423,8 +440,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun defaultModeFor(slot: String) =
-        if (slot == Prefs.SLOT_MEDIA) Prefs.CARD_MEDIA else Prefs.CARD_PHONE
+    private fun defaultModeFor(slot: String) = prefs.defaultCardMode(slot)
 
     // ---- portrait app drawer -----------------------------------------------
 
@@ -1159,8 +1175,6 @@ class HomeActivity : BaseActivity() {
         private const val DRAWER_DOT_TOUCH_DP = 32f
         /** Below this a fling is a mis-swipe, not a page turn. */
         private const val DRAWER_SWIPE_DP = 40f
-        /** Height a hosted widget gets in portrait, where cards wrap. */
-        private const val PORTRAIT_WIDGET_DP = 180f
         private const val WEATHER_INTERVAL_MS = 15 * 60 * 1000L
         /** ~30fps — smooth hundredths without burning CPU on a slow SoC. */
         private const val CHRONO_TICK_MS = 33L

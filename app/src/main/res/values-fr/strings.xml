@@ -153,4 +153,8 @@
     <string name="size_medium">Moyenne</string>
     <string name="size_large">Grande</string>
     <string name="favorites_option">%1$s : %2$s</string>
+    <string name="customize_clock_panel">Panneau horloge</string>
+    <string name="card_clock">Horloge</string>
+    <string name="card_weather">Météo</string>
+    <string name="customize_panel_landscape">Les widgets remplacent l\'horloge ou la météo en portrait uniquement.</string>
 </resources>
