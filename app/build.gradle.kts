@@ -57,10 +57,15 @@ android {
         create("legacy") {
             dimension = "distribution"
             minSdk = 19
+            // Only this flavour offers its own updates: it's the one distributed
+            // outside a store, and the Play build is signed with a different key
+            // so it could not install these APKs anyway.
+            buildConfigField("boolean", "UPDATE_CHECK", "true")
         }
         create("play") {
             dimension = "distribution"
             minSdk = 21
+            buildConfigField("boolean", "UPDATE_CHECK", "false")
         }
     }
 
@@ -101,6 +106,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 

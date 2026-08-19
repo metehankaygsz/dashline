@@ -157,4 +157,17 @@
     <string name="card_clock">时钟</string>
     <string name="card_weather">天气</string>
     <string name="customize_panel_landscape">仅竖屏时可用小部件替换时钟或天气。</string>
+    <string name="update_title">版本 %1$s 已发布</string>
+    <string name="update_install">立即更新</string>
+    <string name="update_later">稍后</string>
+    <string name="update_skip">跳过此版本</string>
+    <string name="update_no_notes">有更新的版本可用。</string>
+    <string name="update_downloading">正在下载更新…</string>
+    <string name="update_allow_title">一次性权限</string>
+    <string name="update_allow_body">Android 需要您授权后 Dashline 才能安装更新。请开启“允许来自此来源”，然后重新开始更新。</string>
+    <string name="update_allow_open">打开设置</string>
+    <string name="update_failed_title">无法安装更新</string>
+    <string name="update_failed_body">下载或安装程序未启动。您也可以从发布页面获取 APK。</string>
+    <string name="update_open_page">打开发布页面</string>
+    <string name="update_no_browser">此设备没有浏览器 — 请在手机或电脑上下载 APK。</string>
 </resources>

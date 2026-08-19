@@ -119,6 +119,16 @@ Reaching for a scrollbar while driving is worse than a swipe.
 - Runs fullscreen with the system bars hidden, using its own in-app Back/Home
   navigation on every screen
 
+**Staying up to date**
+
+- The sideloaded build checks GitHub Releases for a newer version, at most once
+  a day, and offers it with its release notes — *Update now*, *Later*, or *Skip
+  this version*
+- It downloads the APK and hands it to the system installer, so there's no
+  hunting for a browser on a unit that may not have one
+- Only in the sideloaded build. The Play version updates through Play, and the
+  two are signed with different keys, so neither could install the other
+
 **Setup and settings**
 
 - Guided first-run setup: language, default apps, permissions, and a prompt to
@@ -154,6 +164,10 @@ adb install -r dashline-v0.1.4.apk
 
 Or copy the APK to a USB stick, plug it into the head unit, and open it with the
 unit's file manager.
+
+After that first install, the app offers its own updates: it checks GitHub once
+a day and can download and install a new release for itself. Android asks you to
+allow it to install packages the first time.
 
 ## Build from source
 

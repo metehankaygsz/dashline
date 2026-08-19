@@ -174,4 +174,17 @@
     <string name="card_clock">Clock</string>
     <string name="card_weather">Weather</string>
     <string name="customize_panel_landscape">Widgets replace the clock or weather in portrait only.</string>
+    <string name="update_title">Version %1$s is available</string>
+    <string name="update_install">Update now</string>
+    <string name="update_later">Later</string>
+    <string name="update_skip">Skip this version</string>
+    <string name="update_no_notes">A newer version is available.</string>
+    <string name="update_downloading">Downloading the update…</string>
+    <string name="update_allow_title">One-time permission</string>
+    <string name="update_allow_body">Android needs your permission before Dashline can install an update. Turn on &quot;Allow from this source&quot;, then start the update again.</string>
+    <string name="update_allow_open">Open settings</string>
+    <string name="update_failed_title">Couldn\'t install the update</string>
+    <string name="update_failed_body">The download or the installer didn\'t start. You can get the APK from the release page instead.</string>
+    <string name="update_open_page">Open release page</string>
+    <string name="update_no_browser">No browser on this unit — download the APK on a phone or PC instead.</string>
 </resources>

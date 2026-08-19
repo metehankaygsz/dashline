@@ -157,4 +157,17 @@
     <string name="card_clock">Horloge</string>
     <string name="card_weather">Météo</string>
     <string name="customize_panel_landscape">Les widgets remplacent l\'horloge ou la météo en portrait uniquement.</string>
+    <string name="update_title">La version %1$s est disponible</string>
+    <string name="update_install">Mettre à jour</string>
+    <string name="update_later">Plus tard</string>
+    <string name="update_skip">Ignorer cette version</string>
+    <string name="update_no_notes">Une version plus récente est disponible.</string>
+    <string name="update_downloading">Téléchargement de la mise à jour…</string>
+    <string name="update_allow_title">Autorisation ponctuelle</string>
+    <string name="update_allow_body">Android demande votre autorisation pour que Dashline installe une mise à jour. Activez &quot;Autoriser cette source&quot;, puis relancez la mise à jour.</string>
+    <string name="update_allow_open">Ouvrir les réglages</string>
+    <string name="update_failed_title">Mise à jour impossible</string>
+    <string name="update_failed_body">Le téléchargement ou l\'installateur n\'a pas démarré. Vous pouvez récupérer l\'APK sur la page de la version.</string>
+    <string name="update_open_page">Ouvrir la page de la version</string>
+    <string name="update_no_browser">Aucun navigateur sur cet appareil — téléchargez l\'APK sur un téléphone ou un PC.</string>
 </resources>

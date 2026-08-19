@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sideload-only additions.
+
+  This manifest is merged into the `legacy` flavour alone, so the Play bundle
+  never contains either of these. That's deliberate: REQUEST_INSTALL_PACKAGES is
+  a sensitive permission on Google Play, needs its own declaration form and is
+  routinely rejected — and the Play build has no use for it, since it updates
+  through Play and is signed with a different key.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Hand a downloaded release APK to the system package installer. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application>
+        <!--
+          From Nougat the installer must be given a content:// URI; a file:// one
+          throws FileUriExposedException.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.updates"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_paths" />
+        </provider>
+    </application>
+</manifest>

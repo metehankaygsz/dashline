@@ -157,4 +157,17 @@
     <string name="card_clock">الساعة</string>
     <string name="card_weather">الطقس</string>
     <string name="customize_panel_landscape">تحل الأدوات محل الساعة أو الطقس في الوضع الرأسي فقط.</string>
+    <string name="update_title">الإصدار %1$s متاح الآن</string>
+    <string name="update_install">التحديث الآن</string>
+    <string name="update_later">لاحقًا</string>
+    <string name="update_skip">تخطي هذا الإصدار</string>
+    <string name="update_no_notes">يتوفر إصدار أحدث.</string>
+    <string name="update_downloading">جارٍ تنزيل التحديث…</string>
+    <string name="update_allow_title">إذن لمرة واحدة</string>
+    <string name="update_allow_body">يطلب Android إذنك حتى يتمكن Dashline من تثبيت التحديث. فعّل &quot;السماح من هذا المصدر&quot; ثم ابدأ التحديث مجددًا.</string>
+    <string name="update_allow_open">فتح الإعدادات</string>
+    <string name="update_failed_title">تعذّر تثبيت التحديث</string>
+    <string name="update_failed_body">لم يبدأ التنزيل أو المُثبّت. يمكنك الحصول على ملف APK من صفحة الإصدار.</string>
+    <string name="update_open_page">فتح صفحة الإصدار</string>
+    <string name="update_no_browser">لا يوجد متصفح على هذا الجهاز — نزّل ملف APK عبر هاتف أو حاسوب.</string>
 </resources>

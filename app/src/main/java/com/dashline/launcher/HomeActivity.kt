@@ -48,6 +48,8 @@ class HomeActivity : BaseActivity() {
     private var drawerPages: List<List<AppInfo>> = emptyList()
     private var drawerPage = 0
     private var drawerRows = 0
+    /** One update prompt per launch, however often the dashboard resumes. */
+    private var offeredUpdate = false
 
 
     // Built from the current locale in onCreate, so they follow the chosen language.
@@ -1135,6 +1137,25 @@ class HomeActivity : BaseActivity() {
         // Tabs and drawer tiles were just rebuilt, so they missed the tinting
         // BaseActivity did on the way in.
         tintIcons()
+        maybeOfferUpdate()
+    }
+
+    /**
+     * Sideloaded builds have no store to update them, so they look for a newer
+     * release themselves — at most once a day, in the background, and never at
+     * the cost of a slower start. Shown once per launch so a decline isn't
+     * re-asked every time the dashboard comes back into view.
+     */
+    private fun maybeOfferUpdate() {
+        // Coming back from the install-permission screen: carry on where we left off.
+        UpdatePrompt.resumeIfReady(this)
+        if (offeredUpdate || !prefs.setupDone) return
+        UpdateChecker.check(this) { update ->
+            if (!isFinishing && !offeredUpdate) {
+                offeredUpdate = true
+                UpdatePrompt.show(this, update)
+            }
+        }
     }
 
     private fun applyKeepScreenOn() {

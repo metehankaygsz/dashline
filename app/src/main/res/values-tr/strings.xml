@@ -166,4 +166,17 @@
     <string name="card_clock">Saat</string>
     <string name="card_weather">Hava durumu</string>
     <string name="customize_panel_landscape">Widget\'ler saat veya hava durumunun yerini yalnızca dikey modda alır.</string>
+    <string name="update_title">%1$s sürümü yayınlandı</string>
+    <string name="update_install">Şimdi güncelle</string>
+    <string name="update_later">Daha sonra</string>
+    <string name="update_skip">Bu sürümü atla</string>
+    <string name="update_no_notes">Daha yeni bir sürüm mevcut.</string>
+    <string name="update_downloading">Güncelleme indiriliyor…</string>
+    <string name="update_allow_title">Tek seferlik izin</string>
+    <string name="update_allow_body">Dashline\'ın güncellemeyi kurabilmesi için Android izin istiyor. &quot;Bu kaynağa izin ver&quot; seçeneğini açın, sonra güncellemeyi yeniden başlatın.</string>
+    <string name="update_allow_open">Ayarları aç</string>
+    <string name="update_failed_title">Güncelleme kurulamadı</string>
+    <string name="update_failed_body">İndirme veya kurulum başlamadı. APK\'yı sürüm sayfasından da indirebilirsiniz.</string>
+    <string name="update_open_page">Sürüm sayfasını aç</string>
+    <string name="update_no_browser">Bu cihazda tarayıcı yok — APK\'yı telefondan veya bilgisayardan indirin.</string>
 </resources>

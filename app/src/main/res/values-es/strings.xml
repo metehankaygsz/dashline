@@ -157,4 +157,17 @@
     <string name="card_clock">Reloj</string>
     <string name="card_weather">Tiempo</string>
     <string name="customize_panel_landscape">Los widgets sustituyen al reloj o al tiempo solo en vertical.</string>
+    <string name="update_title">La versión %1$s ya está disponible</string>
+    <string name="update_install">Actualizar ahora</string>
+    <string name="update_later">Más tarde</string>
+    <string name="update_skip">Omitir esta versión</string>
+    <string name="update_no_notes">Hay una versión más reciente disponible.</string>
+    <string name="update_downloading">Descargando la actualización…</string>
+    <string name="update_allow_title">Permiso único</string>
+    <string name="update_allow_body">Android necesita tu permiso para que Dashline instale una actualización. Activa &quot;Permitir desde esta fuente&quot; y vuelve a iniciar la actualización.</string>
+    <string name="update_allow_open">Abrir ajustes</string>
+    <string name="update_failed_title">No se pudo instalar la actualización</string>
+    <string name="update_failed_body">La descarga o el instalador no se iniciaron. Puedes obtener el APK en la página de la versión.</string>
+    <string name="update_open_page">Abrir página de la versión</string>
+    <string name="update_no_browser">No hay navegador en esta unidad: descarga el APK en un móvil o PC.</string>
 </resources>

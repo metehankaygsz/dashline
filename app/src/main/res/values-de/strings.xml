@@ -157,4 +157,17 @@
     <string name="card_clock">Uhr</string>
     <string name="card_weather">Wetter</string>
     <string name="customize_panel_landscape">Widgets ersetzen Uhr oder Wetter nur im Hochformat.</string>
+    <string name="update_title">Version %1$s ist verfügbar</string>
+    <string name="update_install">Jetzt aktualisieren</string>
+    <string name="update_later">Später</string>
+    <string name="update_skip">Diese Version überspringen</string>
+    <string name="update_no_notes">Eine neuere Version ist verfügbar.</string>
+    <string name="update_downloading">Update wird heruntergeladen…</string>
+    <string name="update_allow_title">Einmalige Berechtigung</string>
+    <string name="update_allow_body">Android benötigt deine Erlaubnis, damit Dashline ein Update installieren kann. Aktiviere &quot;Aus dieser Quelle zulassen&quot; und starte das Update erneut.</string>
+    <string name="update_allow_open">Einstellungen öffnen</string>
+    <string name="update_failed_title">Update konnte nicht installiert werden</string>
+    <string name="update_failed_body">Der Download oder das Installationsprogramm startete nicht. Du kannst die APK auch von der Release-Seite laden.</string>
+    <string name="update_open_page">Release-Seite öffnen</string>
+    <string name="update_no_browser">Kein Browser auf diesem Gerät — lade die APK auf Handy oder PC herunter.</string>
 </resources>

@@ -170,6 +170,21 @@ class Prefs(context: Context) {
         sp.edit().putBoolean(KEY_CARDS_MIGRATED, true).apply()
     }
 
+    // ---- update check (sideloaded builds only) ------------------------------
+
+    /** When the GitHub release check last ran, so it runs at most once a day. */
+    var lastUpdateCheck: Long
+        get() = sp.getLong(KEY_UPDATE_CHECKED, 0L)
+        set(v) = sp.edit().putLong(KEY_UPDATE_CHECKED, v).apply()
+
+    /**
+     * A version the user chose not to install. Stored per version rather than as
+     * an on/off switch, so declining one update doesn't hide every later one.
+     */
+    var skippedVersion: String
+        get() = sp.getString(KEY_UPDATE_SKIPPED, "") ?: ""
+        set(v) = sp.edit().putString(KEY_UPDATE_SKIPPED, v).apply()
+
     // ---- clock ------------------------------------------------------------
 
     /** CLOCK_DIGITAL (default), CLOCK_ANALOG or CLOCK_MINIMAL. */
@@ -354,6 +369,9 @@ class Prefs(context: Context) {
 
         /** Shortcut slots in a card when it's in shortcuts mode. */
         const val PANEL_SHORTCUT_COUNT = 4
+
+        private const val KEY_UPDATE_CHECKED = "update_last_checked"
+        private const val KEY_UPDATE_SKIPPED = "update_skipped_version"
 
         private const val KEY_CLOCK_STYLE = "clock_style"
         private const val KEY_CHRONO_ON = "chrono_enabled"

@@ -157,4 +157,17 @@
     <string name="card_clock">Orologio</string>
     <string name="card_weather">Meteo</string>
     <string name="customize_panel_landscape">I widget sostituiscono orologio o meteo solo in verticale.</string>
+    <string name="update_title">La versione %1$s è disponibile</string>
+    <string name="update_install">Aggiorna ora</string>
+    <string name="update_later">Più tardi</string>
+    <string name="update_skip">Salta questa versione</string>
+    <string name="update_no_notes">È disponibile una versione più recente.</string>
+    <string name="update_downloading">Download dell\'aggiornamento…</string>
+    <string name="update_allow_title">Autorizzazione una tantum</string>
+    <string name="update_allow_body">Android richiede il tuo permesso perché Dashline installi un aggiornamento. Attiva &quot;Consenti da questa origine&quot; e riavvia l\'aggiornamento.</string>
+    <string name="update_allow_open">Apri impostazioni</string>
+    <string name="update_failed_title">Impossibile installare l\'aggiornamento</string>
+    <string name="update_failed_body">Il download o il programma di installazione non è partito. Puoi scaricare l\'APK dalla pagina della versione.</string>
+    <string name="update_open_page">Apri pagina della versione</string>
+    <string name="update_no_browser">Nessun browser su questa unità: scarica l\'APK da telefono o PC.</string>
 </resources>

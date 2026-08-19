@@ -157,4 +157,17 @@
     <string name="card_clock">Часы</string>
     <string name="card_weather">Погода</string>
     <string name="customize_panel_landscape">Виджеты заменяют часы или погоду только в портретном режиме.</string>
+    <string name="update_title">Доступна версия %1$s</string>
+    <string name="update_install">Обновить</string>
+    <string name="update_later">Позже</string>
+    <string name="update_skip">Пропустить эту версию</string>
+    <string name="update_no_notes">Доступна более новая версия.</string>
+    <string name="update_downloading">Загрузка обновления…</string>
+    <string name="update_allow_title">Разовое разрешение</string>
+    <string name="update_allow_body">Android требует разрешения, чтобы Dashline мог установить обновление. Включите «Разрешить из этого источника» и запустите обновление снова.</string>
+    <string name="update_allow_open">Открыть настройки</string>
+    <string name="update_failed_title">Не удалось установить обновление</string>
+    <string name="update_failed_body">Загрузка или установщик не запустились. APK можно скачать со страницы релиза.</string>
+    <string name="update_open_page">Открыть страницу релиза</string>
+    <string name="update_no_browser">На устройстве нет браузера — скачайте APK на телефоне или компьютере.</string>
 </resources>
