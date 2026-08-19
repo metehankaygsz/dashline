@@ -170,4 +170,14 @@
     <string name="update_failed_body">Der Download oder das Installationsprogramm startete nicht. Du kannst die APK auch von der Release-Seite laden.</string>
     <string name="update_open_page">Release-Seite öffnen</string>
     <string name="update_no_browser">Kein Browser auf diesem Gerät — lade die APK auf Handy oder PC herunter.</string>
+    <string name="section_about">ÜBER</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_check_updates">Nach Updates suchen</string>
+    <string name="update_checking">Wird geprüft…</string>
+    <string name="update_up_to_date">Aktuell</string>
+    <string name="update_never_checked">Nie geprüft</string>
+    <string name="update_checked_recently">Gerade geprüft</string>
+    <string name="update_checked_hours">Vor %1$d Std. geprüft</string>
+    <string name="update_checked_days">Vor %1$d T. geprüft</string>
 </resources>

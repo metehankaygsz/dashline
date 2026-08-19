@@ -176,6 +176,26 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- ===== About ===== -->
+            <TextView style="@style/SettingsSection" android:text="@string/section_about" />
+
+            <LinearLayout style="@style/SettingsGroup">
+
+                <LinearLayout android:id="@+id/rowVersion" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_version" />
+                    <TextView android:id="@+id/versionValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
+
+                <View android:id="@+id/updateDivider" style="@style/SettingsDivider" />
+
+                <!-- Sideloaded builds only; hidden in the Play build, which updates
+                     through Play. -->
+                <LinearLayout android:id="@+id/rowCheckUpdates" style="@style/SettingsRow">
+                    <TextView style="@style/SettingsRowTitle" android:text="@string/settings_check_updates" />
+                    <TextView android:id="@+id/checkUpdatesValue" style="@style/SettingsRowValue" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

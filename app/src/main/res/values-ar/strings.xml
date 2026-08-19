@@ -170,4 +170,14 @@
     <string name="update_failed_body">لم يبدأ التنزيل أو المُثبّت. يمكنك الحصول على ملف APK من صفحة الإصدار.</string>
     <string name="update_open_page">فتح صفحة الإصدار</string>
     <string name="update_no_browser">لا يوجد متصفح على هذا الجهاز — نزّل ملف APK عبر هاتف أو حاسوب.</string>
+    <string name="section_about">حول التطبيق</string>
+    <string name="settings_version">الإصدار</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_check_updates">البحث عن تحديثات</string>
+    <string name="update_checking">جارٍ التحقق…</string>
+    <string name="update_up_to_date">محدَّث</string>
+    <string name="update_never_checked">لم يتم التحقق مطلقًا</string>
+    <string name="update_checked_recently">تم التحقق للتو</string>
+    <string name="update_checked_hours">تم التحقق قبل %1$d ساعة</string>
+    <string name="update_checked_days">تم التحقق قبل %1$d يوم</string>
 </resources>

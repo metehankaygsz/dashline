@@ -170,4 +170,14 @@
     <string name="update_failed_body">Загрузка или установщик не запустились. APK можно скачать со страницы релиза.</string>
     <string name="update_open_page">Открыть страницу релиза</string>
     <string name="update_no_browser">На устройстве нет браузера — скачайте APK на телефоне или компьютере.</string>
+    <string name="section_about">О ПРИЛОЖЕНИИ</string>
+    <string name="settings_version">Версия</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_check_updates">Проверить обновления</string>
+    <string name="update_checking">Проверка…</string>
+    <string name="update_up_to_date">Установлена последняя версия</string>
+    <string name="update_never_checked">Не проверялось</string>
+    <string name="update_checked_recently">Только что проверено</string>
+    <string name="update_checked_hours">Проверено %1$d ч назад</string>
+    <string name="update_checked_days">Проверено %1$d дн назад</string>
 </resources>

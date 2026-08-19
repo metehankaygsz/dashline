@@ -187,4 +187,14 @@
     <string name="update_failed_body">The download or the installer didn\'t start. You can get the APK from the release page instead.</string>
     <string name="update_open_page">Open release page</string>
     <string name="update_no_browser">No browser on this unit — download the APK on a phone or PC instead.</string>
+    <string name="section_about">ABOUT</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_check_updates">Check for updates</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_up_to_date">Up to date</string>
+    <string name="update_never_checked">Never checked</string>
+    <string name="update_checked_recently">Checked just now</string>
+    <string name="update_checked_hours">Checked %1$dh ago</string>
+    <string name="update_checked_days">Checked %1$dd ago</string>
 </resources>

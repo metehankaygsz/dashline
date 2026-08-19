@@ -170,4 +170,14 @@
     <string name="update_failed_body">A transferência ou o instalador não arrancou. Pode obter o APK na página da versão.</string>
     <string name="update_open_page">Abrir página da versão</string>
     <string name="update_no_browser">Sem navegador nesta unidade — transfira o APK num telemóvel ou PC.</string>
+    <string name="section_about">SOBRE</string>
+    <string name="settings_version">Versão</string>
+    <string name="settings_version_value">%1$s (%2$d)</string>
+    <string name="settings_check_updates">Procurar atualizações</string>
+    <string name="update_checking">A verificar…</string>
+    <string name="update_up_to_date">Atualizado</string>
+    <string name="update_never_checked">Nunca verificado</string>
+    <string name="update_checked_recently">Verificado agora mesmo</string>
+    <string name="update_checked_hours">Verificado há %1$d h</string>
+    <string name="update_checked_days">Verificado há %1$d d</string>
 </resources>

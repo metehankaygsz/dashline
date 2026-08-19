@@ -12,9 +12,14 @@ class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var prefs: Prefs
 
+    /** Guards the row's label while a manual check is in flight. */
+    private var checkingUpdates = false
+
     private companion object {
         const val REQ_DEFAULT_LAUNCHER = 10
         const val REQ_LOCATION = 11
+        /** Long enough for a slow unit to answer before we call it up to date. */
+        const val CHECK_FEEDBACK_MS = 12_000L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +86,7 @@ class SettingsActivity : BaseActivity() {
         binding.rowDefaultLauncher.setOnClickListener {
             DefaultLauncher.request(this, REQ_DEFAULT_LAUNCHER)
         }
+        binding.rowCheckUpdates.setOnClickListener { checkForUpdates() }
         binding.rowResetHidden.setOnClickListener {
             prefs.clearHiddenApps()
             refresh()
@@ -157,6 +163,34 @@ class SettingsActivity : BaseActivity() {
             .show()
     }
 
+    /**
+     * A manual check, so a user can confirm they're current rather than having to
+     * infer it from the absence of a prompt. Unlike the automatic one this
+     * ignores the once-a-day limit and says something either way.
+     */
+    private fun checkForUpdates() {
+        if (!UpdateChecker.isSupported(this)) return
+        if (checkingUpdates) return
+        checkingUpdates = true
+        binding.checkUpdatesValue.setText(R.string.update_checking)
+
+        var answered = false
+        UpdateChecker.check(this, force = true) { update ->
+            answered = true
+            checkingUpdates = false
+            refresh()
+            UpdatePrompt.show(this, update)
+        }
+        // The check is silent when there's nothing to report — including when it
+        // fails — so the row has to resolve itself either way.
+        binding.checkUpdatesValue.postDelayed({
+            if (!answered) {
+                checkingUpdates = false
+                binding.checkUpdatesValue.setText(R.string.update_up_to_date)
+            }
+        }, CHECK_FEEDBACK_MS)
+    }
+
     private fun refresh() {
         binding.languageValue.text = LocaleManager.displayName(this, prefs.language)
         binding.phoneValue.text = label(prefs.phoneApp)
@@ -200,6 +234,33 @@ class SettingsActivity : BaseActivity() {
             if (DefaultLauncher.isDefault(this)) R.string.yes else R.string.set_now
         )
         binding.resetHiddenValue.text = getString(R.string.hidden_count, prefs.hiddenApps.size)
+
+        binding.versionValue.text = getString(
+            R.string.settings_version_value,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE
+        )
+        // The Play build has no business offering its own updates.
+        val updatable = UpdateChecker.isSupported(this)
+        binding.rowCheckUpdates.visibility =
+            if (updatable) android.view.View.VISIBLE else android.view.View.GONE
+        binding.updateDivider.visibility =
+            if (updatable) android.view.View.VISIBLE else android.view.View.GONE
+        if (updatable && !checkingUpdates) {
+            binding.checkUpdatesValue.text = lastCheckedLabel()
+        }
+    }
+
+    /** "Never" until the first check, then how long ago it ran. */
+    private fun lastCheckedLabel(): String {
+        val last = prefs.lastUpdateCheck
+        if (last <= 0L) return getString(R.string.update_never_checked)
+        val hours = (System.currentTimeMillis() - last) / (60 * 60 * 1000L)
+        return when {
+            hours < 1 -> getString(R.string.update_checked_recently)
+            hours < 24 -> getString(R.string.update_checked_hours, hours.toInt())
+            else -> getString(R.string.update_checked_days, (hours / 24).toInt())
+        }
     }
 
     private fun themeLabel(mode: String): Int = when (mode) {
