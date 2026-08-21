@@ -25,8 +25,50 @@ object WidgetHost {
     /** Arbitrary but must stay stable, or previously bound widgets are orphaned. */
     private const val HOST_ID = 0x0DA5
 
-    fun host(context: Context): AppWidgetHost =
-        AppWidgetHost(context.applicationContext, HOST_ID)
+    /**
+     * One host for the whole process.
+     *
+     * This has to be a singleton. The framework keeps a single callback per host
+     * id, so a second AppWidgetHost with the same id takes delivery away from the
+     * first: the dashboard's widgets would then be waiting for RemoteViews that
+     * are being handed to the editor's host instead, and sit on their "Loading…"
+     * placeholder forever.
+     */
+    private var host: AppWidgetHost? = null
+
+    /** Screens currently showing widgets, so the last one out stops listening. */
+    private var screens = 0
+    private var listening = false
+
+    fun host(context: Context): AppWidgetHost = host ?: AppWidgetHost(
+        context.applicationContext, HOST_ID
+    ).also { host = it }
+
+    /** Call from onResume of any screen that shows widgets. */
+    fun attach(context: Context) {
+        screens++
+        startListening(context)
+    }
+
+    /** Call from onPause. Listening stops only once nothing is showing widgets. */
+    fun detach() {
+        screens = (screens - 1).coerceAtLeast(0)
+        if (screens == 0 && listening) {
+            runCatching { host?.stopListening() }
+            listening = false
+        }
+    }
+
+    /**
+     * Updates only arrive while the host is listening, and a repeated
+     * startListening re-registers the callback for no reason, so this is
+     * idempotent.
+     */
+    private fun startListening(context: Context) {
+        if (listening) return
+        runCatching { host(context).startListening() }
+        listening = true
+    }
 
     fun manager(context: Context): AppWidgetManager =
         AppWidgetManager.getInstance(context.applicationContext)
@@ -103,7 +145,7 @@ object WidgetHost {
         return try {
             val info: AppWidgetProviderInfo =
                 manager(context).getAppWidgetInfo(widgetId) ?: return null
-            runCatching { host.startListening() }
+            startListening(context)
             host.createView(context, widgetId, info)
         } catch (e: Throwable) {
             // Providers can throw anything at all from their RemoteViews.
@@ -139,6 +181,70 @@ object WidgetHost {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             runCatching { view.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp) }
         }
+    }
+
+    /** Last size handed to each widget, so a layout pass can't loop. */
+    private val sized = java.util.WeakHashMap<AppWidgetHostView, Long>()
+
+    /**
+     * Keep the provider told of the widget's real size, for as long as the view
+     * lives.
+     *
+     * This is not a nicety — for a large class of widgets it is the difference
+     * between content and a permanent "Loading…". Anything built with Glance
+     * (Google's Battery, Maps' Nearby Traffic, At a Glance, and most modern
+     * widgets) derives its layout from the size options and emits nothing at all
+     * until it has them. Classic RemoteViews widgets like the Clock render
+     * without, which is why those worked while the rest sat on their
+     * placeholder.
+     *
+     * A one-shot post() also isn't enough: it can run before the first layout
+     * pass, when the view is still 0x0 and there is no size to send.
+     */
+    fun sizeOnLayout(context: Context, view: AppWidgetHostView, widgetId: Int) {
+        applySize(context, view, widgetId)
+        view.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            applySize(context, v as? AppWidgetHostView ?: return@addOnLayoutChangeListener, widgetId)
+        }
+    }
+
+    private fun applySize(context: Context, view: AppWidgetHostView, widgetId: Int) {
+        val density = view.resources.displayMetrics.density
+        val width = (view.width / density).toInt()
+        val height = (view.height / density).toInt()
+        if (width <= 0 || height <= 0) return
+
+        val key = (width.toLong() shl 32) or height.toLong()
+        if (sized[view] == key) return
+        sized[view] = key
+
+        resize(view, width, height)
+        publishSize(context, widgetId, width, height)
+    }
+
+    /**
+     * Write the size into the widget's options ourselves rather than relying on
+     * the view helper alone. This is what wakes a Glance widget up: it delivers
+     * onAppWidgetOptionsChanged to the provider, which is its cue to produce
+     * content.
+     */
+    private fun publishSize(context: Context, widgetId: Int, widthDp: Int, heightDp: Int) {
+        if (widgetId == INVALID_ID) return
+        val options = android.os.Bundle().apply {
+            putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, widthDp)
+            putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, widthDp)
+            putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, heightDp)
+            putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, heightDp)
+            // From API 31 widgets are given a list of sizes they may be shown at;
+            // Glance reads this one in preference to the four above.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                putParcelableArrayList(
+                    AppWidgetManager.OPTION_APPWIDGET_SIZES,
+                    arrayListOf(android.util.SizeF(widthDp.toFloat(), heightDp.toFloat()))
+                )
+            }
+        }
+        runCatching { manager(context).updateAppWidgetOptions(widgetId, options) }
     }
 
     /** Provider name for a bound widget, for menus. Null if it's gone. */

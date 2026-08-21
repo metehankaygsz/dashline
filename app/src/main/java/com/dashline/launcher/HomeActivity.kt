@@ -45,7 +45,6 @@ class HomeActivity : BaseActivity() {
     private var draggingVolume = false
     private var mediaCompact = false
     private var showSeek = true
-    private var appWidgetHost: android.appwidget.AppWidgetHost? = null
     /** Packages currently drawn in the portrait drawer, to skip pointless rebuilds. */
     private var drawerSignature: String? = null
     private var drawerPages: List<List<AppInfo>> = emptyList()
@@ -408,11 +407,16 @@ class HomeActivity : BaseActivity() {
      * empty hole, and a card with nothing left falls back to its default.
      */
     private fun bindCardWidgets(slot: String, container: android.widget.LinearLayout) {
-        container.removeAllViews()
-
         val ids = prefs.cardWidgets(slot)
+
+        // Rebuilding on every resume throws away live widget views and starts
+        // them back at their placeholder, so only do it when the set changed.
+        val signature = ids.joinToString(",")
+        if (container.tag == signature && container.childCount == ids.size) return
+        container.tag = signature
+        container.removeAllViews()
         val views = ids.mapNotNull { id ->
-            val view = WidgetHost.createView(this, widgetHost(), id)
+            val view = WidgetHost.createView(this, WidgetHost.host(this), id)
             if (view == null) prefs.removeCardWidget(slot, id)
             view?.let { id to it }
         }
@@ -434,15 +438,7 @@ class HomeActivity : BaseActivity() {
                 )
             )
         }
-        // Tell each widget its real size once the card has been measured.
-        container.post {
-            val d = resources.displayMetrics.density
-            views.forEach { (_, view) ->
-                if (view.width > 0 && view.height > 0) {
-                    WidgetHost.resize(view, (view.width / d).toInt(), (view.height / d).toInt())
-                }
-            }
-        }
+        views.forEach { (id, view) -> WidgetHost.sizeOnLayout(this, view, id) }
     }
 
     private fun defaultModeFor(slot: String) = prefs.defaultCardMode(slot)
@@ -603,15 +599,6 @@ class HomeActivity : BaseActivity() {
     private fun isLandscapeNow(): Boolean =
         resources.configuration.orientation ==
             android.content.res.Configuration.ORIENTATION_LANDSCAPE
-
-    private fun widgetHost(): android.appwidget.AppWidgetHost {
-        var h = appWidgetHost
-        if (h == null) {
-            h = WidgetHost.host(this)
-            appWidgetHost = h
-        }
-        return h
-    }
 
     private fun bindCardShortcuts(slot: String, row: android.widget.LinearLayout) {
         row.removeAllViews()
@@ -1123,12 +1110,8 @@ class HomeActivity : BaseActivity() {
         handler.post(ticker)
         loadWeather()
         mediaMonitor?.start()
-        // A hosted widget only receives updates while the host is listening.
-        if (prefs.cardMode(Prefs.SLOT_MEDIA) == Prefs.CARD_WIDGET ||
-            prefs.cardMode(Prefs.SLOT_SECOND) == Prefs.CARD_WIDGET
-        ) {
-            runCatching { widgetHost().startListening() }
-        }
+        // Widgets only receive updates while the host is listening.
+        WidgetHost.attach(this)
         bindFavorites()
         // Settings changes land here: this is a singleTask HOME activity, so
         // onCreate does not run again when the user comes back from Settings.
@@ -1173,7 +1156,7 @@ class HomeActivity : BaseActivity() {
         super.onPause()
         handler.removeCallbacks(ticker)
         handler.removeCallbacks(chronoTicker)
-        runCatching { appWidgetHost?.stopListening() }
+        WidgetHost.detach()
         mediaMonitor?.stop()
     }
 

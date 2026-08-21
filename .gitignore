@@ -38,3 +38,8 @@ scratch/
 *.keystore
 keystore.properties
 signing.properties
+
+# Store paperwork and other drafts kept locally, not published with the repo.
+docs/play-store-listing.md
+docs/store/
+NOTES-*.md

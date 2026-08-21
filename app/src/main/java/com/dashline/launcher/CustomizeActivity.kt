@@ -31,7 +31,6 @@ class CustomizeActivity : BaseActivity() {
     private lateinit var preview: ActivityHomeBinding
     private lateinit var prefs: Prefs
 
-    private var widgetHost: AppWidgetHost? = null
     /** Id reserved for a widget that's mid-bind; the result may not carry it. */
     private var pendingWidgetId = WidgetHost.INVALID_ID
     /** Which card the pending widget is for, and the id it replaces (if any). */
@@ -391,7 +390,7 @@ class CustomizeActivity : BaseActivity() {
         val views = prefs.cardWidgets(slot).mapNotNull { id ->
             val view = WidgetHost.createView(this, host(), id)
             if (view == null) prefs.removeCardWidget(slot, id)
-            view
+            view?.let { id to it }
         }
 
         if (views.isEmpty()) {
@@ -411,12 +410,13 @@ class CustomizeActivity : BaseActivity() {
         val panelSlot = slot == Prefs.SLOT_CLOCK || slot == Prefs.SLOT_WEATHER
         WidgetHost.sizeContainer(container, fill = isLandscape() && !panelSlot)
 
-        views.forEach { view ->
+        views.forEach { (id, view) ->
             runCatching {
                 container.addView(
                     view,
                     LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
                 )
+                WidgetHost.sizeOnLayout(this, view, id)
             }
         }
         // Long-press the card to add, swap or remove widgets.
@@ -610,14 +610,8 @@ class CustomizeActivity : BaseActivity() {
             .show()
     }
 
-    private fun host(): AppWidgetHost {
-        var h = widgetHost
-        if (h == null) {
-            h = WidgetHost.host(this)
-            widgetHost = h
-        }
-        return h
-    }
+    /** The process-wide host; a second one would steal widget updates. */
+    private fun host(): AppWidgetHost = WidgetHost.host(this)
 
     /**
      * Choose a widget from our own list of installed providers.
@@ -764,12 +758,12 @@ class CustomizeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        runCatching { host().startListening() }
+        WidgetHost.attach(this)
     }
 
     override fun onPause() {
         super.onPause()
-        runCatching { widgetHost?.stopListening() }
+        WidgetHost.detach()
     }
 
     private companion object {
