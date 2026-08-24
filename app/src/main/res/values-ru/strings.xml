@@ -180,4 +180,5 @@
     <string name="update_checked_recently">Только что проверено</string>
     <string name="update_checked_hours">Проверено %1$d ч назад</string>
     <string name="update_checked_days">Проверено %1$d дн назад</string>
+    <string name="widget_unavailable">Виджет недоступен</string>
 </resources>

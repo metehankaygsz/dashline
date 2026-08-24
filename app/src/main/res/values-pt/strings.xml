@@ -180,4 +180,5 @@
     <string name="update_checked_recently">Verificado agora mesmo</string>
     <string name="update_checked_hours">Verificado há %1$d h</string>
     <string name="update_checked_days">Verificado há %1$d d</string>
+    <string name="widget_unavailable">Widget indisponível</string>
 </resources>

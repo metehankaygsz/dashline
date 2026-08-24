@@ -180,4 +180,5 @@
     <string name="update_checked_recently">تم التحقق للتو</string>
     <string name="update_checked_hours">تم التحقق قبل %1$d ساعة</string>
     <string name="update_checked_days">تم التحقق قبل %1$d يوم</string>
+    <string name="widget_unavailable">الأداة غير متاحة</string>
 </resources>

@@ -124,7 +124,22 @@ class Prefs(context: Context) {
             .filter { it != INVALID_WIDGET }
 
     fun setCardWidgets(slot: String, ids: List<Int>) =
-        sp.edit().putString(widgetsKey(slot), ids.joinToString(",")).apply()
+        // Capped here as well as in [addCardWidget]: replace and repair paths
+        // write straight through, and a card with more than this is unreadable.
+        sp.edit()
+            .putString(widgetsKey(slot), ids.distinct().take(MAX_CARD_WIDGETS).joinToString(","))
+            .apply()
+
+    /** Every widget id the dashboard refers to, across all four slots. */
+    fun widgetIdsInUse(): Set<Int> =
+        listOf(SLOT_MEDIA, SLOT_SECOND, SLOT_CLOCK, SLOT_WEATHER)
+            .flatMap { cardWidgets(it) }
+            .toSet()
+
+    /** Whether any card is set to show widgets at all. */
+    fun anyCardUsesWidgets(): Boolean =
+        listOf(SLOT_MEDIA, SLOT_SECOND, SLOT_CLOCK, SLOT_WEATHER)
+            .any { cardMode(it) == CARD_WIDGET }
 
     /** Returns false when the card is already full. */
     fun addCardWidget(slot: String, id: Int): Boolean {

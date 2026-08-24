@@ -180,4 +180,5 @@
     <string name="update_checked_recently">刚刚检查过</string>
     <string name="update_checked_hours">%1$d 小时前检查</string>
     <string name="update_checked_days">%1$d 天前检查</string>
+    <string name="widget_unavailable">小部件不可用</string>
 </resources>

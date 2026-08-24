@@ -180,4 +180,5 @@
     <string name="update_checked_recently">Controllato ora</string>
     <string name="update_checked_hours">Controllato %1$d h fa</string>
     <string name="update_checked_days">Controllato %1$d g fa</string>
+    <string name="widget_unavailable">Widget non disponibile</string>
 </resources>

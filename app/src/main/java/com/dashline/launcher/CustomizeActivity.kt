@@ -4,7 +4,6 @@
 package com.dashline.launcher
 
 import android.app.Activity
-import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Intent
@@ -49,6 +48,15 @@ class CustomizeActivity : BaseActivity() {
         binding.header.pageTitle.setText(R.string.settings_customize)
         bindPageNav(binding.header.navBack, binding.header.navHome)
 
+        // A bind can be interrupted by the process dying behind the system's
+        // consent dialog or a widget's own configuration activity, so the id we
+        // reserved has to survive that or it leaks and the bind is lost.
+        savedInstanceState?.let {
+            pendingWidgetId = it.getInt(STATE_PENDING_ID, WidgetHost.INVALID_ID)
+            pendingSlot = it.getString(STATE_PENDING_SLOT)
+            pendingReplaced = it.getInt(STATE_PENDING_REPLACED, WidgetHost.INVALID_ID)
+        }
+
         preview = ActivityHomeBinding.inflate(layoutInflater, binding.previewFrame, true)
         fillPlaceholders()
         makePreviewInert()
@@ -77,6 +85,13 @@ class CustomizeActivity : BaseActivity() {
         }
 
         applyToPreview()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(STATE_PENDING_ID, pendingWidgetId)
+        outState.putString(STATE_PENDING_SLOT, pendingSlot)
+        outState.putInt(STATE_PENDING_REPLACED, pendingReplaced)
     }
 
     // ---- preview -----------------------------------------------------------
@@ -383,17 +398,9 @@ class CustomizeActivity : BaseActivity() {
      */
     private fun renderWidgetPreview(slot: String, container: LinearLayout) {
         container.removeAllViews()
+        val ids = prefs.cardWidgets(slot)
 
-        // Build the views first: a provider uninstalled since it was bound is
-        // dropped here, and a card left with nothing shows the prompt instead of
-        // an empty rectangle.
-        val views = prefs.cardWidgets(slot).mapNotNull { id ->
-            val view = WidgetHost.createView(this, host(), id)
-            if (view == null) prefs.removeCardWidget(slot, id)
-            view?.let { id to it }
-        }
-
-        if (views.isEmpty()) {
+        if (ids.isEmpty()) {
             val prompt = layoutInflater.inflate(R.layout.view_widget_empty, container, false)
             prompt.setOnClickListener { pickWidget(slot) }
             container.addView(
@@ -410,13 +417,28 @@ class CustomizeActivity : BaseActivity() {
         val panelSlot = slot == Prefs.SLOT_CLOCK || slot == Prefs.SLOT_WEATHER
         WidgetHost.sizeContainer(container, fill = isLandscape() && !panelSlot)
 
-        views.forEach { (id, view) ->
+        ids.forEach { id ->
+            val cell = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
+            val view = WidgetHost.createView(this, id)
             runCatching {
-                container.addView(
-                    view,
-                    LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
-                )
-                WidgetHost.sizeOnLayout(this, view, id)
+                if (view != null) {
+                    container.addView(view, cell)
+                    WidgetHost.sizeOnLayout(this, view, id)
+                } else if (WidgetHost.isGoneForGood(this, id)) {
+                    // The framework has dropped this binding — the provider was
+                    // uninstalled or disabled, so the setting is dead weight.
+                    prefs.removeCardWidget(slot, id)
+                } else {
+                    // Unavailable is not the same as gone — a provider being
+                    // updated returns null for a few seconds. Leave the user's
+                    // settings alone and let them remove it if they want to.
+                    container.addView(
+                        layoutInflater.inflate(
+                            R.layout.view_widget_unavailable, container, false
+                        ),
+                        cell
+                    )
+                }
             }
         }
         // Long-press the card to add, swap or remove widgets.
@@ -602,16 +624,13 @@ class CustomizeActivity : BaseActivity() {
                     pickWidget(slot, replacing = widgetId)
                 } else {
                     prefs.removeCardWidget(slot, widgetId)
-                    WidgetHost.delete(host(), widgetId)
+                    WidgetHost.delete(this, widgetId)
                     if (prefs.cardWidgets(slot).isEmpty()) revertToDefault(slot)
                     applyToPreview()
                 }
             }
             .show()
     }
-
-    /** The process-wide host; a second one would steal widget updates. */
-    private fun host(): AppWidgetHost = WidgetHost.host(this)
 
     /**
      * Choose a widget from our own list of installed providers.
@@ -653,7 +672,7 @@ class CustomizeActivity : BaseActivity() {
 
     /** Reserve an id for the chosen provider and get it bound, asking if needed. */
     private fun beginBind(slot: String, provider: AppWidgetProviderInfo, replacing: Int) {
-        val id = WidgetHost.allocateId(host())
+        val id = WidgetHost.allocateId(this)
         if (id == WidgetHost.INVALID_ID) {
             revertToDefault(slot)
             applyToPreview()
@@ -719,7 +738,7 @@ class CustomizeActivity : BaseActivity() {
 
     /** Declined or cancelled — give the reserved id back and leave the card be. */
     private fun abandonPending() {
-        WidgetHost.delete(host(), pendingWidgetId)
+        WidgetHost.delete(this, pendingWidgetId)
         val slot = pendingSlot
         clearPending()
         if (slot != null && prefs.cardWidgets(slot).isEmpty()) revertToDefault(slot)
@@ -734,10 +753,10 @@ class CustomizeActivity : BaseActivity() {
         if (replaced != WidgetHost.INVALID_ID) {
             // Keep the swapped widget's position on the card.
             prefs.replaceCardWidget(slot, replaced, widgetId)
-            WidgetHost.delete(host(), replaced)
+            WidgetHost.delete(this, replaced)
         } else if (!prefs.addCardWidget(slot, widgetId)) {
             // Card filled up while the picker was open.
-            WidgetHost.delete(host(), widgetId)
+            WidgetHost.delete(this, widgetId)
             toast(getString(R.string.widget_full, Prefs.MAX_CARD_WIDGETS))
         }
         prefs.setCardMode(slot, Prefs.CARD_WIDGET)
@@ -745,6 +764,7 @@ class CustomizeActivity : BaseActivity() {
     }
 
     private fun clearPending() {
+        WidgetHost.settled(pendingWidgetId)
         pendingWidgetId = WidgetHost.INVALID_ID
         pendingSlot = null
         pendingReplaced = WidgetHost.INVALID_ID
@@ -772,5 +792,9 @@ class CustomizeActivity : BaseActivity() {
         // One block of request codes per card, so a result knows where it belongs.
         const val REQ_SHORTCUT_BASE = 910
         const val REQ_MEDIA_SHORTCUT_BASE = 920
+
+        const val STATE_PENDING_ID = "pending_widget_id"
+        const val STATE_PENDING_SLOT = "pending_widget_slot"
+        const val STATE_PENDING_REPLACED = "pending_widget_replaced"
     }
 }

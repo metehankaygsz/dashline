@@ -189,4 +189,5 @@
     <string name="update_checked_recently">Az önce denetlendi</string>
     <string name="update_checked_hours">%1$d saat önce denetlendi</string>
     <string name="update_checked_days">%1$d gün önce denetlendi</string>
+    <string name="widget_unavailable">Widget kullanılamıyor</string>
 </resources>

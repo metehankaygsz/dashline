@@ -180,4 +180,5 @@
     <string name="update_checked_recently">Gerade geprüft</string>
     <string name="update_checked_hours">Vor %1$d Std. geprüft</string>
     <string name="update_checked_days">Vor %1$d T. geprüft</string>
+    <string name="widget_unavailable">Widget nicht verfügbar</string>
 </resources>

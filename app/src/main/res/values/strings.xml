@@ -197,4 +197,5 @@
     <string name="update_checked_recently">Checked just now</string>
     <string name="update_checked_hours">Checked %1$dh ago</string>
     <string name="update_checked_days">Checked %1$dd ago</string>
+    <string name="widget_unavailable">Widget unavailable</string>
 </resources>

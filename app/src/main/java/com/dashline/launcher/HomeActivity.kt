@@ -52,6 +52,8 @@ class HomeActivity : BaseActivity() {
     private var drawerRows = 0
     /** One update prompt per launch, however often the dashboard resumes. */
     private var offeredUpdate = false
+    /** Whether this screen is currently counted as a widget host listener. */
+    private var attachedWidgets = false
 
 
     // Built from the current locale in onCreate, so they follow the chosen language.
@@ -408,6 +410,13 @@ class HomeActivity : BaseActivity() {
      */
     private fun bindCardWidgets(slot: String, container: android.widget.LinearLayout) {
         val ids = prefs.cardWidgets(slot)
+        if (ids.isEmpty()) {
+            // Nothing left on the card — that only happens when the user removed
+            // the last widget themselves, so fall back to the card's own content.
+            prefs.setCardMode(slot, defaultModeFor(slot))
+            applyCardMode(slot)
+            return
+        }
 
         // Rebuilding on every resume throws away live widget views and starts
         // them back at their placeholder, so only do it when the set changed.
@@ -415,31 +424,44 @@ class HomeActivity : BaseActivity() {
         if (container.tag == signature && container.childCount == ids.size) return
         container.tag = signature
         container.removeAllViews()
-        val views = ids.mapNotNull { id ->
-            val view = WidgetHost.createView(this, WidgetHost.host(this), id)
-            if (view == null) prefs.removeCardWidget(slot, id)
-            view?.let { id to it }
-        }
-        if (views.isEmpty()) {
-            prefs.setCardMode(slot, defaultModeFor(slot))
-            applyCardMode(slot)
-            return
-        }
 
         // The clock panel wraps in both orientations; the cards only in portrait.
         val panelSlot = slot == Prefs.SLOT_CLOCK || slot == Prefs.SLOT_WEATHER
         WidgetHost.sizeContainer(container, fill = isLandscapeNow() && !panelSlot)
 
-        views.forEach { (_, view) ->
-            container.addView(
-                view,
-                android.widget.LinearLayout.LayoutParams(
-                    0, android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1f
-                )
-            )
+        var dropped = false
+        ids.forEach { id ->
+            val view = WidgetHost.createView(this, id)
+            when {
+                view != null -> {
+                    container.addView(view, widgetCell())
+                    WidgetHost.sizeOnLayout(this, view, id)
+                }
+                // Only forget a widget the framework itself has let go of. A
+                // provider merely being updated returns null for a few seconds,
+                // and deleting on that meant a background app update could
+                // silently empty a card.
+                WidgetHost.isGoneForGood(this, id) -> {
+                    prefs.removeCardWidget(slot, id)
+                    dropped = true
+                }
+                else -> container.addView(unavailableWidget(container), widgetCell())
+            }
         }
-        views.forEach { (id, view) -> WidgetHost.sizeOnLayout(this, view, id) }
+        if (dropped) {
+            // The set changed underneath us; rebuild against what's left.
+            container.tag = null
+            applyCardMode(slot)
+        }
     }
+
+    private fun widgetCell() = android.widget.LinearLayout.LayoutParams(
+        0, android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1f
+    )
+
+    /** Stand-in for a widget whose provider isn't answering at the moment. */
+    private fun unavailableWidget(parent: android.view.ViewGroup): android.view.View =
+        layoutInflater.inflate(R.layout.view_widget_unavailable, parent, false)
 
     private fun defaultModeFor(slot: String) = prefs.defaultCardMode(slot)
 
@@ -1110,8 +1132,14 @@ class HomeActivity : BaseActivity() {
         handler.post(ticker)
         loadWeather()
         mediaMonitor?.start()
-        // Widgets only receive updates while the host is listening.
-        WidgetHost.attach(this)
+        // Widgets only receive updates while the host is listening, and there's
+        // no point listening for a dashboard that shows none.
+        if (prefs.anyCardUsesWidgets()) {
+            WidgetHost.attach(this)
+            attachedWidgets = true
+        }
+        // Reclaim ids left behind by a bind that never finished.
+        WidgetHost.sweepOrphans(this, prefs.widgetIdsInUse())
         bindFavorites()
         // Settings changes land here: this is a singleTask HOME activity, so
         // onCreate does not run again when the user comes back from Settings.
@@ -1156,7 +1184,10 @@ class HomeActivity : BaseActivity() {
         super.onPause()
         handler.removeCallbacks(ticker)
         handler.removeCallbacks(chronoTicker)
-        WidgetHost.detach()
+        if (attachedWidgets) {
+            WidgetHost.detach()
+            attachedWidgets = false
+        }
         mediaMonitor?.stop()
     }
 
