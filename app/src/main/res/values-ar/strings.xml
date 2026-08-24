@@ -181,4 +181,10 @@
     <string name="update_checked_hours">تم التحقق قبل %1$d ساعة</string>
     <string name="update_checked_days">تم التحقق قبل %1$d يوم</string>
     <string name="widget_unavailable">الأداة غير متاحة</string>
+    <string name="widget_add_failed_title">تعذّر إضافة الأداة</string>
+    <string name="widget_fail_permission">يطلب Android إذنًا لكل أداة، وقد تم رفضه. أعد المحاولة واختر «إنشاء».</string>
+    <string name="widget_fail_unsupported">إصدار Android في هذا الجهاز لا يحتوي على شاشة أذونات الأدوات، لذا لا يمكن إضافتها.</string>
+    <string name="widget_fail_slot">لم يحجز Android مكانًا للأداة. عادةً ما تُحل المشكلة بإعادة تشغيل الجهاز.</string>
+    <string name="widget_fail_setup">أغلق %1$s شاشة الإعداد الخاصة به قبل اكتمالها، لذا لم تتم إضافة شيء.</string>
+    <string name="widget_fail_bind">تعذّر إرفاق %1$s. قد يكون تطبيقه قيد التحديث — أعد المحاولة بعد قليل.</string>
 </resources>

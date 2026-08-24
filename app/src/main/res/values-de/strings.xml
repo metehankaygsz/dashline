@@ -181,4 +181,10 @@
     <string name="update_checked_hours">Vor %1$d Std. geprüft</string>
     <string name="update_checked_days">Vor %1$d T. geprüft</string>
     <string name="widget_unavailable">Widget nicht verfügbar</string>
+    <string name="widget_add_failed_title">Widget konnte nicht hinzugefügt werden</string>
+    <string name="widget_fail_permission">Android fragt für jedes Widget nach einer Berechtigung, und sie wurde abgelehnt. Versuche es erneut und wähle Erstellen.</string>
+    <string name="widget_fail_unsupported">Die Android-Version dieses Geräts hat keinen Berechtigungsdialog für Widgets, daher lassen sich hier keine hinzufügen.</string>
+    <string name="widget_fail_slot">Android hat keinen Platz für das Widget reserviert. Ein Neustart des Geräts hilft meist.</string>
+    <string name="widget_fail_setup">%1$s hat seinen eigenen Einrichtungsbildschirm vorzeitig geschlossen, es wurde nichts hinzugefügt.</string>
+    <string name="widget_fail_bind">%1$s konnte nicht eingebunden werden. Die App wird vielleicht gerade aktualisiert — versuche es gleich noch einmal.</string>
 </resources>

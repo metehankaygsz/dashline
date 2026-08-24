@@ -190,4 +190,10 @@
     <string name="update_checked_hours">%1$d saat önce denetlendi</string>
     <string name="update_checked_days">%1$d gün önce denetlendi</string>
     <string name="widget_unavailable">Widget kullanılamıyor</string>
+    <string name="widget_add_failed_title">Widget eklenemedi</string>
+    <string name="widget_fail_permission">Android her widget için izin ister ve izin verilmedi. Tekrar deneyin ve Oluştur\'u seçin.</string>
+    <string name="widget_fail_unsupported">Bu cihazın Android sürümünde widget izin ekranı yok, bu yüzden widget eklenemiyor.</string>
+    <string name="widget_fail_slot">Android widget için yer ayıramadı. Cihazı yeniden başlatmak genelde bunu çözer.</string>
+    <string name="widget_fail_setup">%1$s kendi kurulum ekranını tamamlamadan kapattı, bu yüzden hiçbir şey eklenmedi.</string>
+    <string name="widget_fail_bind">%1$s eklenemedi. Uygulaması güncelleniyor olabilir — birazdan tekrar deneyin.</string>
 </resources>

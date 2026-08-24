@@ -181,4 +181,10 @@
     <string name="update_checked_hours">Controllato %1$d h fa</string>
     <string name="update_checked_days">Controllato %1$d g fa</string>
     <string name="widget_unavailable">Widget non disponibile</string>
+    <string name="widget_add_failed_title">Impossibile aggiungere il widget</string>
+    <string name="widget_fail_permission">Android chiede un permesso per ogni widget ed è stato rifiutato. Riprova e scegli Crea.</string>
+    <string name="widget_fail_unsupported">La versione di Android di questa unità non ha la schermata dei permessi per i widget, quindi non se ne possono aggiungere.</string>
+    <string name="widget_fail_slot">Android non ha riservato uno spazio per il widget. Riavviare l\'unità di solito risolve.</string>
+    <string name="widget_fail_setup">%1$s ha chiuso la propria schermata di configurazione prima di finire: non è stato aggiunto nulla.</string>
+    <string name="widget_fail_bind">Impossibile collegare %1$s. La sua app potrebbe essere in aggiornamento: riprova tra poco.</string>
 </resources>

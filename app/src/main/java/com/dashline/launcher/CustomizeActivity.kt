@@ -35,6 +35,8 @@ class CustomizeActivity : BaseActivity() {
     /** Which card the pending widget is for, and the id it replaces (if any). */
     private var pendingSlot: String? = null
     private var pendingReplaced = WidgetHost.INVALID_ID
+    /** The widget's name, so a failure can say which one it was about. */
+    private var pendingLabel: String? = null
     private var dragHandle: View? = null
     private var dragFraction = 0.72f
     private var dragging = false
@@ -55,6 +57,7 @@ class CustomizeActivity : BaseActivity() {
             pendingWidgetId = it.getInt(STATE_PENDING_ID, WidgetHost.INVALID_ID)
             pendingSlot = it.getString(STATE_PENDING_SLOT)
             pendingReplaced = it.getInt(STATE_PENDING_REPLACED, WidgetHost.INVALID_ID)
+            pendingLabel = it.getString(STATE_PENDING_LABEL)
         }
 
         preview = ActivityHomeBinding.inflate(layoutInflater, binding.previewFrame, true)
@@ -92,6 +95,7 @@ class CustomizeActivity : BaseActivity() {
         outState.putInt(STATE_PENDING_ID, pendingWidgetId)
         outState.putString(STATE_PENDING_SLOT, pendingSlot)
         outState.putInt(STATE_PENDING_REPLACED, pendingReplaced)
+        outState.putString(STATE_PENDING_LABEL, pendingLabel)
     }
 
     // ---- preview -----------------------------------------------------------
@@ -672,22 +676,28 @@ class CustomizeActivity : BaseActivity() {
 
     /** Reserve an id for the chosen provider and get it bound, asking if needed. */
     private fun beginBind(slot: String, provider: AppWidgetProviderInfo, replacing: Int) {
+        val label = provider.loadLabel(packageManager)?.toString()
+            ?: getString(R.string.second_widget)
+
         val id = WidgetHost.allocateId(this)
         if (id == WidgetHost.INVALID_ID) {
             revertToDefault(slot)
             applyToPreview()
+            explainFailure(R.string.widget_fail_slot)
             return
         }
         pendingWidgetId = id
         pendingSlot = slot
         pendingReplaced = replacing
+        pendingLabel = label
 
         when {
             // Already allowed to bind — no dialog needed.
             WidgetHost.bind(this, id, provider) -> afterBind(id)
             // Otherwise the system asks the user to allow this one widget.
             WidgetHost.requestBind(this, id, provider, REQ_BIND_WIDGET) -> Unit
-            else -> abandonPending()
+            // No bind screen at all: a stripped-down ROM, and nothing we can do.
+            else -> abandonPending(R.string.widget_fail_unsupported)
         }
     }
 
@@ -713,8 +723,11 @@ class CustomizeActivity : BaseActivity() {
             requestCode == REQ_CONFIGURE_WIDGET && resultCode == Activity.RESULT_OK ->
                 commitWidget(widgetId)
 
-            requestCode == REQ_BIND_WIDGET || requestCode == REQ_CONFIGURE_WIDGET ->
-                abandonPending()
+            // The user declined the system's permission prompt.
+            requestCode == REQ_BIND_WIDGET -> abandonPending(R.string.widget_fail_permission)
+
+            // The widget's own setup screen was closed without finishing.
+            requestCode == REQ_CONFIGURE_WIDGET -> abandonPending(R.string.widget_fail_setup)
 
             requestCode >= REQ_MEDIA_SHORTCUT_BASE -> {
                 data?.getStringExtra(AppPickerActivity.EXTRA_PACKAGE)?.let { pkg ->
@@ -736,13 +749,29 @@ class CustomizeActivity : BaseActivity() {
         }
     }
 
-    /** Declined or cancelled — give the reserved id back and leave the card be. */
-    private fun abandonPending() {
+    /**
+     * Give the reserved id back, leave the card be, and say what went wrong.
+     *
+     * Every one of these used to revert in silence, which left the user with a
+     * card that had quietly gone back to its old contents and no idea why.
+     */
+    private fun abandonPending(reason: Int) {
         WidgetHost.delete(this, pendingWidgetId)
         val slot = pendingSlot
         clearPending()
         if (slot != null && prefs.cardWidgets(slot).isEmpty()) revertToDefault(slot)
         applyToPreview()
+        explainFailure(reason)
+    }
+
+    /** Names the widget where the message has room for it. */
+    private fun explainFailure(reason: Int) {
+        val label = pendingLabel ?: getString(R.string.second_widget)
+        AlertDialog.Builder(this)
+            .setTitle(R.string.widget_add_failed_title)
+            .setMessage(getString(reason, label))
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 
     private fun commitWidget(widgetId: Int) {
@@ -757,12 +786,28 @@ class CustomizeActivity : BaseActivity() {
         } else if (!prefs.addCardWidget(slot, widgetId)) {
             // Card filled up while the picker was open.
             WidgetHost.delete(this, widgetId)
-            toast(getString(R.string.widget_full, Prefs.MAX_CARD_WIDGETS))
+            prefs.setCardMode(slot, Prefs.CARD_WIDGET)
+            applyToPreview()
+            AlertDialog.Builder(this)
+                .setTitle(R.string.widget_add_failed_title)
+                .setMessage(getString(R.string.widget_full, Prefs.MAX_CARD_WIDGETS))
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+            pendingLabel = null
+            return
         }
         prefs.setCardMode(slot, Prefs.CARD_WIDGET)
         applyToPreview()
+
+        // Bound as far as the system was concerned, but nothing is actually
+        // attached — usually the provider's app updating underneath us.
+        if (WidgetHost.manager(this).getAppWidgetInfo(widgetId) == null) {
+            explainFailure(R.string.widget_fail_bind)
+        }
+        pendingLabel = null
     }
 
+    /** Keeps [pendingLabel] — the failure message that follows still needs it. */
     private fun clearPending() {
         WidgetHost.settled(pendingWidgetId)
         pendingWidgetId = WidgetHost.INVALID_ID
@@ -796,5 +841,6 @@ class CustomizeActivity : BaseActivity() {
         const val STATE_PENDING_ID = "pending_widget_id"
         const val STATE_PENDING_SLOT = "pending_widget_slot"
         const val STATE_PENDING_REPLACED = "pending_widget_replaced"
+        const val STATE_PENDING_LABEL = "pending_widget_label"
     }
 }

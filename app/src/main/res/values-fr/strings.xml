@@ -181,4 +181,10 @@
     <string name="update_checked_hours">Vérifié il y a %1$d h</string>
     <string name="update_checked_days">Vérifié il y a %1$d j</string>
     <string name="widget_unavailable">Widget indisponible</string>
+    <string name="widget_add_failed_title">Impossible d\'ajouter le widget</string>
+    <string name="widget_fail_permission">Android demande une autorisation pour chaque widget, et elle a été refusée. Réessayez et choisissez Créer.</string>
+    <string name="widget_fail_unsupported">La version d\'Android de cet appareil n\'a pas d\'écran d\'autorisation des widgets ; impossible d\'en ajouter.</string>
+    <string name="widget_fail_slot">Android n\'a pas réservé d\'emplacement pour le widget. Redémarrer l\'appareil règle généralement le problème.</string>
+    <string name="widget_fail_setup">%1$s a fermé son écran de configuration avant la fin ; rien n\'a été ajouté.</string>
+    <string name="widget_fail_bind">Impossible d\'attacher %1$s. Son application est peut-être en cours de mise à jour — réessayez dans un instant.</string>
 </resources>

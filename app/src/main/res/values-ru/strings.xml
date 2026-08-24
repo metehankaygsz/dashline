@@ -181,4 +181,10 @@
     <string name="update_checked_hours">Проверено %1$d ч назад</string>
     <string name="update_checked_days">Проверено %1$d дн назад</string>
     <string name="widget_unavailable">Виджет недоступен</string>
+    <string name="widget_add_failed_title">Не удалось добавить виджет</string>
+    <string name="widget_fail_permission">Android запрашивает разрешение для каждого виджета, и в нём отказано. Повторите и выберите «Создать».</string>
+    <string name="widget_fail_unsupported">В этой версии Android нет экрана разрешений для виджетов, поэтому добавить их нельзя.</string>
+    <string name="widget_fail_slot">Android не выделил место для виджета. Обычно помогает перезапуск устройства.</string>
+    <string name="widget_fail_setup">%1$s закрыл свой экран настройки до завершения, поэтому ничего не добавлено.</string>
+    <string name="widget_fail_bind">Не удалось подключить %1$s. Возможно, приложение обновляется — попробуйте чуть позже.</string>
 </resources>

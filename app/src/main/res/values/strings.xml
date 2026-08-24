@@ -198,4 +198,10 @@
     <string name="update_checked_hours">Checked %1$dh ago</string>
     <string name="update_checked_days">Checked %1$dd ago</string>
     <string name="widget_unavailable">Widget unavailable</string>
+    <string name="widget_add_failed_title">Couldn\'t add the widget</string>
+    <string name="widget_fail_permission">Android asks permission for each widget, and it was declined. Try again and choose Create.</string>
+    <string name="widget_fail_unsupported">This unit\'s Android build has no widget permission screen, so widgets can\'t be added on it.</string>
+    <string name="widget_fail_slot">Android wouldn\'t reserve a slot for the widget. Restarting the unit usually clears this.</string>
+    <string name="widget_fail_setup">%1$s closed its own setup screen before finishing, so nothing was added.</string>
+    <string name="widget_fail_bind">%1$s couldn\'t be attached. Its app may have been updating — try again in a moment.</string>
 </resources>

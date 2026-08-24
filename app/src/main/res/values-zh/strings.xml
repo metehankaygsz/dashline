@@ -181,4 +181,10 @@
     <string name="update_checked_hours">%1$d 小时前检查</string>
     <string name="update_checked_days">%1$d 天前检查</string>
     <string name="widget_unavailable">小部件不可用</string>
+    <string name="widget_add_failed_title">无法添加小部件</string>
+    <string name="widget_fail_permission">Android 会为每个小部件请求权限，但权限被拒绝。请重试并选择“创建”。</string>
+    <string name="widget_fail_unsupported">此设备的 Android 版本没有小部件权限界面，因此无法添加小部件。</string>
+    <string name="widget_fail_slot">Android 未能为小部件分配位置。重启设备通常可以解决。</string>
+    <string name="widget_fail_setup">%1$s 在完成前关闭了自己的设置界面，因此未添加任何内容。</string>
+    <string name="widget_fail_bind">无法附加 %1$s。其应用可能正在更新，请稍后重试。</string>
 </resources>
