@@ -370,14 +370,6 @@ are pinned deliberately to keep Android 4.4 support.
 
 ---
 
-## Roadmap
-
-- Reorderable favourites dock (drag and drop)
-- Hourly forecast in the weather panel
-- Quick-dial contacts on the phone card
-
----
-
 ## License
 
 GNU General Public License v3.0 **only** — see [LICENSE](LICENSE). There is no
