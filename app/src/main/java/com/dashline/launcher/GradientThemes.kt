@@ -24,48 +24,55 @@ data class GradientPreset(
 
 object GradientThemes {
 
-    /** First entry is the default (the original SYNC-style navy). */
+    /**
+     * First entry is the default (the original SYNC-style navy).
+     *
+     * The light stops are deliberately pastel rather than near-white: a dash in
+     * daylight is already glare, and a white screen adds to it. They carry the
+     * same hue as their dark counterparts, a few shades up, so switching modes
+     * changes the brightness of a theme rather than its identity.
+     */
     val PRESETS = listOf(
         GradientPreset(
             "midnight", R.string.gradient_midnight,
             darkStart = "#061726", darkEnd = "#0D3A5E",
-            lightStart = "#EDF2F7", lightEnd = "#D3E6F7",
+            lightStart = "#C9DAEC", lightEnd = "#9DBAD8",
             accentHex = "#3B9EE5"
         ),
         GradientPreset(
             "ocean", R.string.gradient_ocean,
             darkStart = "#041E26", darkEnd = "#0B4552",
-            lightStart = "#E8F5F8", lightEnd = "#C7E6EE",
+            lightStart = "#C4E2E8", lightEnd = "#93C6D2",
             accentHex = "#1FB6CC"
         ),
         GradientPreset(
             "sunset", R.string.gradient_sunset,
             darkStart = "#2B0F1C", darkEnd = "#5A2233",
-            lightStart = "#FDEFE8", lightEnd = "#F8D6C7",
+            lightStart = "#F4D6C4", lightEnd = "#E5AC90",
             accentHex = "#F07A3C"
         ),
         GradientPreset(
             "forest", R.string.gradient_forest,
             darkStart = "#08201A", darkEnd = "#134534",
-            lightStart = "#EAF4EE", lightEnd = "#CDE7D8",
+            lightStart = "#CBE6D4", lightEnd = "#9BCBAE",
             accentHex = "#31A56B"
         ),
         GradientPreset(
             "violet", R.string.gradient_violet,
             darkStart = "#170F2E", darkEnd = "#341E5C",
-            lightStart = "#F1ECFB", lightEnd = "#DCD1F6",
+            lightStart = "#DAD0F1", lightEnd = "#B6A5E1",
             accentHex = "#8B6DF0"
         ),
         GradientPreset(
             "crimson", R.string.gradient_crimson,
             darkStart = "#280B12", darkEnd = "#521825",
-            lightStart = "#FCECEF", lightEnd = "#F6D0D9",
+            lightStart = "#F2CFD6", lightEnd = "#E2A5B3",
             accentHex = "#E4455E"
         ),
         GradientPreset(
             "graphite", R.string.gradient_graphite,
             darkStart = "#101215", darkEnd = "#282D34",
-            lightStart = "#F1F2F4", lightEnd = "#DCDFE4",
+            lightStart = "#D8DCE3", lightEnd = "#B3BAC5",
             accentHex = "#7C8794"
         )
     )

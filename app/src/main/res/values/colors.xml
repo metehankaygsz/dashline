@@ -3,23 +3,25 @@
     <!-- LIGHT theme (default). Dark variant lives in values-night/colors.xml.
          Color names are shared so layouts adapt automatically. -->
     <!-- bg is only the pre-draw fallback; the real background is the gradient
-         applied at runtime. Bars/surfaces are translucent so it shows through. -->
-    <color name="bg">#E9EEF3</color>
-    <color name="bar">#C4FFFFFF</color>
-    <color name="surface">#D6FFFFFF</color>
-    <color name="surface_light">#D6E8F7</color>
-    <color name="divider">#1F000000</color>
+         applied at runtime. Bars/surfaces are translucent so it shows through —
+         and deliberately not opaque white, so the pastel gradient tints them
+         instead of the UI turning into a sheet of paper in daylight. -->
+    <color name="bg">#C9DAEC</color>
+    <color name="bar">#59FFFFFF</color>
+    <color name="surface">#6BFFFFFF</color>
+    <color name="surface_light">#B4CDE6</color>
+    <color name="divider">#22000000</color>
 
     <color name="text_primary">#10151B</color>
     <color name="text_secondary">#55657A</color>
     <color name="icon_tint">#1E5C8A</color>
     <color name="accent">#2F7FCB</color>
 
-    <color name="tile">#D6FFFFFF</color>
+    <color name="tile">#6BFFFFFF</color>
 
     <!-- media widget -->
     <color name="on_accent">#FFFFFF</color>
-    <color name="art_bg">#FFFFFF</color>
-    <color name="seek_track">#A8C8E2</color>
+    <color name="art_bg">#59FFFFFF</color>
+    <color name="seek_track">#9CBCD8</color>
     <color name="seek_fill">#1E5C8A</color>
 </resources>
