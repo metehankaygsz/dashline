@@ -157,6 +157,9 @@
     <string name="card_clock">الساعة</string>
     <string name="card_weather">الطقس</string>
     <string name="customize_panel_landscape">تحل الأدوات محل الساعة أو الطقس في الوضع الرأسي فقط.</string>
+    <string name="card_hidden">مخفي</string>
+    <string name="customize_projection">صف الاختصارات</string>
+    <string name="customize_hint_no_split">إحدى البطاقتين مخفية، لذا تملأ الأخرى العمود.</string>
     <string name="update_title">الإصدار %1$s متاح الآن</string>
     <string name="update_install">التحديث الآن</string>
     <string name="update_later">لاحقًا</string>

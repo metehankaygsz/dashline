@@ -48,6 +48,13 @@ object FavoriteDock {
 
     fun specById(id: String): Spec = SIZES.firstOrNull { it.id == id } ?: SIZES[1]
 
+    /**
+     * The bar with no dock in it. Height is the home button plus its touch
+     * padding — the smallest size's bar happens to be exactly that, so the bar
+     * keeps the same proportions whether or not the dock is showing.
+     */
+    fun collapsed(): Spec = SIZES[0]
+
     fun labelFor(id: String): Int = when (id) {
         SIZE_SMALL -> R.string.size_small
         SIZE_LARGE -> R.string.size_large

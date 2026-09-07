@@ -66,6 +66,7 @@
 
             <!-- Clock + weather -->
             <LinearLayout
+                android:id="@+id/clockPanel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -257,6 +258,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/projectionRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/shortcut_margin_top"

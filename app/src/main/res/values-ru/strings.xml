@@ -157,6 +157,9 @@
     <string name="card_clock">Часы</string>
     <string name="card_weather">Погода</string>
     <string name="customize_panel_landscape">Виджеты заменяют часы или погоду только в портретном режиме.</string>
+    <string name="card_hidden">Скрыто</string>
+    <string name="customize_projection">Строка ярлыков</string>
+    <string name="customize_hint_no_split">Одна карточка скрыта, поэтому вторая занимает весь столбец.</string>
     <string name="update_title">Доступна версия %1$s</string>
     <string name="update_install">Обновить</string>
     <string name="update_later">Позже</string>

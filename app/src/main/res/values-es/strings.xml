@@ -157,6 +157,9 @@
     <string name="card_clock">Reloj</string>
     <string name="card_weather">Tiempo</string>
     <string name="customize_panel_landscape">Los widgets sustituyen al reloj o al tiempo solo en vertical.</string>
+    <string name="card_hidden">Oculto</string>
+    <string name="customize_projection">Fila de accesos directos</string>
+    <string name="customize_hint_no_split">Una tarjeta está oculta, así que la otra ocupa la columna.</string>
     <string name="update_title">La versión %1$s ya está disponible</string>
     <string name="update_install">Actualizar ahora</string>
     <string name="update_later">Más tarde</string>

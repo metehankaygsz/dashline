@@ -166,6 +166,9 @@
     <string name="card_clock">Saat</string>
     <string name="card_weather">Hava durumu</string>
     <string name="customize_panel_landscape">Widget\'ler saat veya hava durumunun yerini yalnızca dikey modda alır.</string>
+    <string name="card_hidden">Gizli</string>
+    <string name="customize_projection">Kısayol satırı</string>
+    <string name="customize_hint_no_split">Bir kart gizli olduğundan diğeri sütunu tamamen kaplar.</string>
     <string name="update_title">%1$s sürümü yayınlandı</string>
     <string name="update_install">Şimdi güncelle</string>
     <string name="update_later">Daha sonra</string>

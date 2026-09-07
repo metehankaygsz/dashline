@@ -157,6 +157,9 @@
     <string name="card_clock">Uhr</string>
     <string name="card_weather">Wetter</string>
     <string name="customize_panel_landscape">Widgets ersetzen Uhr oder Wetter nur im Hochformat.</string>
+    <string name="card_hidden">Ausgeblendet</string>
+    <string name="customize_projection">Verknüpfungsleiste</string>
+    <string name="customize_hint_no_split">Eine Karte ist ausgeblendet, die andere füllt die Spalte.</string>
     <string name="update_title">Version %1$s ist verfügbar</string>
     <string name="update_install">Jetzt aktualisieren</string>
     <string name="update_later">Später</string>

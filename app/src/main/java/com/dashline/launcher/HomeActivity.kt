@@ -267,8 +267,10 @@ class HomeActivity : BaseActivity() {
             }
 
             if (landscape) {
-                // Weights only mean something in the fixed-height column.
-                val fraction = prefs.mediaFraction
+                // Weights only mean something in the fixed-height column. A
+                // hidden card gives all of it to the other one rather than
+                // leaving its share of the column empty.
+                val fraction = splitFraction()
                 setCardWeight(binding.mediaCard, fraction)
                 setCardWeight(binding.phoneCard, 1f - fraction)
                 applyMediaDensity(fraction)
@@ -281,6 +283,21 @@ class HomeActivity : BaseActivity() {
         }
 
         applyCardModes()
+    }
+
+    /**
+     * The media card's share of the right column. The saved split only applies
+     * while both cards are actually there; once one is hidden the other has the
+     * column to itself.
+     */
+    private fun splitFraction(): Float {
+        val mediaOff = prefs.cardMode(Prefs.SLOT_MEDIA) == Prefs.CARD_NONE
+        val secondOff = prefs.cardMode(Prefs.SLOT_SECOND) == Prefs.CARD_NONE
+        return when {
+            mediaOff && !secondOff -> 0f
+            secondOff && !mediaOff -> 1f
+            else -> prefs.mediaFraction
+        }
     }
 
     private fun setCardWeight(card: android.view.View, weight: Float) {
@@ -351,6 +368,36 @@ class HomeActivity : BaseActivity() {
         applyCardMode(Prefs.SLOT_SECOND)
         applyPanelSlot(Prefs.SLOT_CLOCK)
         applyPanelSlot(Prefs.SLOT_WEATHER)
+        applySectionVisibility()
+    }
+
+    /**
+     * Hides the containers that have nothing left in them.
+     *
+     * Turning a section off is only half the job: the panel that held it, and
+     * the column that held those, would otherwise stay behind as empty padding.
+     * Each one is dropped when every child it can show is off, so a stripped
+     * dashboard closes up instead of leaving holes.
+     */
+    private fun applySectionVisibility() {
+        val projection = prefs.projectionVisible
+        binding.projectionRow.visibility =
+            if (projection) android.view.View.VISIBLE else android.view.View.GONE
+
+        val clockOff = prefs.cardMode(Prefs.SLOT_CLOCK) == Prefs.CARD_NONE
+        val weatherOff = prefs.cardMode(Prefs.SLOT_WEATHER) == Prefs.CARD_NONE
+        binding.clockPanel.visibility =
+            if (clockOff && weatherOff && !projection) android.view.View.GONE
+            else android.view.View.VISIBLE
+
+        // In landscape the two cards have a column of their own; in portrait
+        // they're siblings in the scrolling stack, and hiding that stack would
+        // take the clock panel and the drawer with it.
+        if (!isLandscapeNow()) return
+        val cardsOff = prefs.cardMode(Prefs.SLOT_MEDIA) == Prefs.CARD_NONE &&
+            prefs.cardMode(Prefs.SLOT_SECOND) == Prefs.CARD_NONE
+        (binding.mediaCard.parent as? android.view.View)?.visibility =
+            if (cardsOff) android.view.View.GONE else android.view.View.VISIBLE
     }
 
     /**
@@ -365,8 +412,11 @@ class HomeActivity : BaseActivity() {
         val content = if (clock) binding.clockSlot else binding.weatherSlot
         val widgets = if (clock) binding.clockWidget else binding.weatherWidget
 
-        val asWidget = isPortraitNow() && prefs.cardMode(slot) == Prefs.CARD_WIDGET
-        content.visibility = if (asWidget) android.view.View.GONE else android.view.View.VISIBLE
+        val mode = prefs.cardMode(slot)
+        val off = mode == Prefs.CARD_NONE
+        val asWidget = !off && isPortraitNow() && mode == Prefs.CARD_WIDGET
+        content.visibility =
+            if (off || asWidget) android.view.View.GONE else android.view.View.VISIBLE
         widgets.visibility = if (asWidget) android.view.View.VISIBLE else android.view.View.GONE
 
         if (asWidget) bindCardWidgets(slot, widgets)
@@ -384,7 +434,10 @@ class HomeActivity : BaseActivity() {
 
         val isShortcuts = mode == Prefs.CARD_SHORTCUTS
         val isWidget = mode == Prefs.CARD_WIDGET
-        val isDefault = !isShortcuts && !isWidget
+        val isOff = mode == Prefs.CARD_NONE
+        val isDefault = !isShortcuts && !isWidget && !isOff
+
+        card.visibility = if (isOff) android.view.View.GONE else android.view.View.VISIBLE
 
         default.visibility = if (isDefault) android.view.View.VISIBLE else android.view.View.GONE
         shortcuts.visibility = if (isShortcuts) android.view.View.VISIBLE else android.view.View.GONE
@@ -898,6 +951,7 @@ class HomeActivity : BaseActivity() {
         val rounded = RoundedBitmapDrawableFactory.create(resources, square)
         rounded.cornerRadius = 8f * resources.displayMetrics.density
         binding.mediaArt.setPadding(0, 0, 0, 0)
+        binding.mediaArt.clearColorFilter()
         binding.mediaArt.setImageDrawable(rounded)
     }
 
@@ -906,6 +960,9 @@ class HomeActivity : BaseActivity() {
         val pad = (12f * resources.displayMetrics.density).toInt()
         binding.mediaArt.setPadding(pad, pad, pad, pad)
         binding.mediaArt.setImageResource(R.drawable.ic_audio)
+        // The tile opts out of the global icon tinting so real artwork keeps its
+        // own colours — which leaves this stand-in glyph to tint itself.
+        binding.mediaArt.setColorFilter(accentColor(), android.graphics.PorterDuff.Mode.SRC_IN)
     }
 
     /** Tapping the media card: enable access, else open the playing / chosen app. */
@@ -987,6 +1044,15 @@ class HomeActivity : BaseActivity() {
      */
     private fun bindFavorites() {
         val dock = binding.favoritesDock
+        if (!prefs.favoritesEnabled) {
+            // Nothing in the bar but the home button now, so let it shrink back
+            // rather than leaving a tall empty strip across the top.
+            dock.removeAllViews()
+            dock.visibility = android.view.View.GONE
+            FavoriteDock.applyBarHeight(binding.topBar, FavoriteDock.collapsed())
+            return
+        }
+        dock.visibility = android.view.View.VISIBLE
         val spec = FavoriteDock.specFor(this, prefs.favoriteSize, prefs.favoriteCount)
         FavoriteDock.applyBarHeight(binding.topBar, spec)
 

@@ -157,6 +157,9 @@
     <string name="card_clock">时钟</string>
     <string name="card_weather">天气</string>
     <string name="customize_panel_landscape">仅竖屏时可用小部件替换时钟或天气。</string>
+    <string name="card_hidden">隐藏</string>
+    <string name="customize_projection">快捷方式行</string>
+    <string name="customize_hint_no_split">其中一张卡片已隐藏，另一张将占满整列。</string>
     <string name="update_title">版本 %1$s 已发布</string>
     <string name="update_install">立即更新</string>
     <string name="update_later">稍后</string>

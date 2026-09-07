@@ -157,6 +157,9 @@
     <string name="card_clock">Orologio</string>
     <string name="card_weather">Meteo</string>
     <string name="customize_panel_landscape">I widget sostituiscono orologio o meteo solo in verticale.</string>
+    <string name="card_hidden">Nascosto</string>
+    <string name="customize_projection">Riga scorciatoie</string>
+    <string name="customize_hint_no_split">Una scheda è nascosta, quindi l\'altra riempie la colonna.</string>
     <string name="update_title">La versione %1$s è disponibile</string>
     <string name="update_install">Aggiorna ora</string>
     <string name="update_later">Più tardi</string>

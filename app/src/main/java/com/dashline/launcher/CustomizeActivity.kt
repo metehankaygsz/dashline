@@ -80,8 +80,10 @@ class CustomizeActivity : BaseActivity() {
             prefs.panelOrder = Prefs.PANEL_MEDIA_FIRST
             prefs.setCardMode(Prefs.SLOT_MEDIA, Prefs.CARD_MEDIA)
             prefs.setCardMode(Prefs.SLOT_SECOND, Prefs.CARD_PHONE)
+            prefs.favoritesEnabled = true
             prefs.favoriteCount = Prefs.FAVORITE_COUNT
             prefs.favoriteSize = FavoriteDock.SIZE_MEDIUM
+            prefs.projectionVisible = true
             prefs.setCardMode(Prefs.SLOT_CLOCK, Prefs.CARD_CLOCK)
             prefs.setCardMode(Prefs.SLOT_WEATHER, Prefs.CARD_WEATHER)
             applyToPreview()
@@ -111,6 +113,9 @@ class CustomizeActivity : BaseActivity() {
         preview.mediaControls.visibility = View.VISIBLE
         preview.mediaSeekRow.visibility = View.VISIBLE
         preview.phoneLabel.setText(R.string.tab_phone)
+        // Mirrors HomeActivity.showPlaceholderArt: the tile opts out of global
+        // tinting for real artwork's sake, so the stand-in glyph tints itself.
+        preview.mediaArt.setColorFilter(accentColor(), android.graphics.PorterDuff.Mode.SRC_IN)
 
         renderFavoritesPreview()
 
@@ -134,10 +139,18 @@ class CustomizeActivity : BaseActivity() {
      * are assigned from the dashboard.
      */
     private fun renderFavoritesPreview() {
+        val dock = preview.favoritesDock
+        if (!prefs.favoritesEnabled) {
+            dock.removeAllViews()
+            dock.visibility = View.GONE
+            FavoriteDock.applyBarHeight(preview.topBar, FavoriteDock.collapsed())
+            return
+        }
+        dock.visibility = View.VISIBLE
+
         val spec = FavoriteDock.specFor(this, prefs.favoriteSize, prefs.favoriteCount)
         FavoriteDock.applyBarHeight(preview.topBar, spec)
 
-        val dock = preview.favoritesDock
         dock.removeAllViews()
         for (index in 0 until prefs.favoriteCount) {
             val slot = FavoriteDock.slotView(this, spec)
@@ -251,6 +264,17 @@ class CustomizeActivity : BaseActivity() {
         applyMediaDensityPreview(fraction)
     }
 
+    /** Mirrors HomeActivity.splitFraction — a hidden card yields the column. */
+    private fun splitFraction(): Float {
+        val mediaOff = prefs.cardMode(Prefs.SLOT_MEDIA) == Prefs.CARD_NONE
+        val secondOff = prefs.cardMode(Prefs.SLOT_SECOND) == Prefs.CARD_NONE
+        return when {
+            mediaOff && !secondOff -> 0f
+            secondOff && !mediaOff -> 1f
+            else -> prefs.mediaFraction
+        }
+    }
+
     private fun showSplitHint(fraction: Float) {
         binding.customizeHint.text =
             getString(R.string.customize_hint_split, (fraction * 100).toInt())
@@ -286,10 +310,17 @@ class CustomizeActivity : BaseActivity() {
         handle?.let { column.addView(it, at++) }
         column.addView(second, at)
 
-        dragFraction = prefs.mediaFraction
+        // A card that's been turned off can't be resized against, so the split
+        // stops applying — and the handle goes with it.
+        val splittable = prefs.cardMode(Prefs.SLOT_MEDIA) != Prefs.CARD_NONE &&
+            prefs.cardMode(Prefs.SLOT_SECOND) != Prefs.CARD_NONE
+        handle?.visibility = if (splittable) View.VISIBLE else View.GONE
+
+        dragFraction = splitFraction()
         if (isLandscape()) {
             applyWeights(dragFraction)
-            showSplitHint(dragFraction)
+            if (splittable) showSplitHint(dragFraction)
+            else binding.customizeHint.setText(R.string.customize_hint_no_split)
         } else {
             // No weights in portrait — say so instead of showing a meaningless %.
             binding.customizeHint.setText(R.string.customize_hint_portrait)
@@ -333,6 +364,24 @@ class CustomizeActivity : BaseActivity() {
         applyCardPreview(Prefs.SLOT_SECOND)
         applyPanelSlotPreview(Prefs.SLOT_CLOCK)
         applyPanelSlotPreview(Prefs.SLOT_WEATHER)
+        applySectionVisibilityPreview()
+    }
+
+    /** Mirrors HomeActivity.applySectionVisibility. */
+    private fun applySectionVisibilityPreview() {
+        val projection = prefs.projectionVisible
+        preview.projectionRow.visibility = if (projection) View.VISIBLE else View.GONE
+
+        val clockOff = prefs.cardMode(Prefs.SLOT_CLOCK) == Prefs.CARD_NONE
+        val weatherOff = prefs.cardMode(Prefs.SLOT_WEATHER) == Prefs.CARD_NONE
+        preview.clockPanel.visibility =
+            if (clockOff && weatherOff && !projection) View.GONE else View.VISIBLE
+
+        if (!isLandscape()) return
+        val cardsOff = prefs.cardMode(Prefs.SLOT_MEDIA) == Prefs.CARD_NONE &&
+            prefs.cardMode(Prefs.SLOT_SECOND) == Prefs.CARD_NONE
+        (preview.mediaCard.parent as? View)?.visibility =
+            if (cardsOff) View.GONE else View.VISIBLE
     }
 
     /** Mirrors HomeActivity.applyPanelSlot — portrait only, widgets or not. */
@@ -341,8 +390,10 @@ class CustomizeActivity : BaseActivity() {
         val content = if (clock) preview.clockSlot else preview.weatherSlot
         val widgets = if (clock) preview.clockWidget else preview.weatherWidget
 
-        val asWidget = !isLandscape() && prefs.cardMode(slot) == Prefs.CARD_WIDGET
-        content.visibility = if (asWidget) View.GONE else View.VISIBLE
+        val mode = prefs.cardMode(slot)
+        val off = mode == Prefs.CARD_NONE
+        val asWidget = !off && !isLandscape() && mode == Prefs.CARD_WIDGET
+        content.visibility = if (off || asWidget) View.GONE else View.VISIBLE
         widgets.visibility = if (asWidget) View.VISIBLE else View.GONE
 
         if (asWidget) renderWidgetPreview(slot, widgets)
@@ -358,8 +409,12 @@ class CustomizeActivity : BaseActivity() {
 
         val isShortcuts = mode == Prefs.CARD_SHORTCUTS
         val isWidget = mode == Prefs.CARD_WIDGET
+        val isOff = mode == Prefs.CARD_NONE
 
-        default.visibility = if (!isShortcuts && !isWidget) View.VISIBLE else View.GONE
+        (if (media) preview.mediaCard else preview.phoneCard).visibility =
+            if (isOff) View.GONE else View.VISIBLE
+        default.visibility =
+            if (!isShortcuts && !isWidget && !isOff) View.VISIBLE else View.GONE
         shortcuts.visibility = if (isShortcuts) View.VISIBLE else View.GONE
         widgets.visibility = if (isWidget) View.VISIBLE else View.GONE
 
@@ -459,10 +514,6 @@ class CustomizeActivity : BaseActivity() {
      * button says so rather than offering a choice that wouldn't be honoured.
      */
     private fun chooseClockPanel() {
-        if (isLandscape()) {
-            toast(getString(R.string.customize_panel_landscape))
-            return
-        }
         val slots = listOf(
             Prefs.SLOT_CLOCK to R.string.card_clock,
             Prefs.SLOT_WEATHER to R.string.card_weather
@@ -472,14 +523,35 @@ class CustomizeActivity : BaseActivity() {
                 R.string.favorites_option,
                 getString(nameRes),
                 getString(
-                    if (prefs.cardMode(slot) == Prefs.CARD_WIDGET) R.string.second_widget
-                    else nameRes
+                    when (prefs.cardMode(slot)) {
+                        Prefs.CARD_WIDGET -> R.string.second_widget
+                        Prefs.CARD_NONE -> R.string.card_hidden
+                        else -> nameRes
+                    }
                 )
             )
-        }
+        }.toMutableList()
+
+        // The projection tiles sit in the same panel, so they're managed here
+        // rather than getting a button of their own on an already busy screen.
+        labels.add(
+            getString(
+                R.string.favorites_option,
+                getString(R.string.customize_projection),
+                getString(if (prefs.projectionVisible) R.string.on else R.string.off)
+            )
+        )
+
         AlertDialog.Builder(this)
             .setTitle(R.string.customize_clock_panel)
-            .setItems(labels.toTypedArray()) { _, which -> choosePanelMode(slots[which].first) }
+            .setItems(labels.toTypedArray()) { _, which ->
+                if (which >= slots.size) {
+                    prefs.projectionVisible = !prefs.projectionVisible
+                    applyToPreview()
+                } else {
+                    choosePanelMode(slots[which].first)
+                }
+            }
             .show()
     }
 
@@ -488,12 +560,20 @@ class CustomizeActivity : BaseActivity() {
         val default = prefs.defaultCardMode(slot)
         val options = listOf(
             default to if (slot == Prefs.SLOT_CLOCK) R.string.card_clock else R.string.card_weather,
-            Prefs.CARD_WIDGET to R.string.second_widget
+            Prefs.CARD_WIDGET to R.string.second_widget,
+            Prefs.CARD_NONE to R.string.card_hidden
         )
         AlertDialog.Builder(this)
             .setTitle(if (slot == Prefs.SLOT_CLOCK) R.string.card_clock else R.string.card_weather)
             .setItems(options.map { getString(it.second) }.toTypedArray()) { _, which ->
                 val mode = options[which].first
+                // Hiding a half works either way up, but a widget in its place
+                // only fits in portrait — landscape needs both halves to fill
+                // the column. Say so rather than saving a choice we'd ignore.
+                if (mode == Prefs.CARD_WIDGET && isLandscape()) {
+                    toast(getString(R.string.customize_panel_landscape))
+                    return@setItems
+                }
                 prefs.setCardMode(slot, mode)
                 when {
                     mode == Prefs.CARD_WIDGET && prefs.cardWidgets(slot).isEmpty() ->
@@ -522,7 +602,8 @@ class CustomizeActivity : BaseActivity() {
             getString(
                 R.string.favorites_option,
                 getString(R.string.favorites_slots),
-                prefs.favoriteCount.toString()
+                if (prefs.favoritesEnabled) prefs.favoriteCount.toString()
+                else getString(R.string.off)
             ),
             getString(
                 R.string.favorites_option,
@@ -538,13 +619,24 @@ class CustomizeActivity : BaseActivity() {
             .show()
     }
 
+    /**
+     * How many slots — or none at all. Off is first because it's a choice about
+     * whether to have the dock, not a smaller amount of it: someone who pins
+     * their apps to a card doesn't want a second copy of them in the bar.
+     */
     private fun chooseFavoriteCount() {
         // Only offer counts that fit even at the smallest icon size.
         val counts = (FavoriteDock.MIN_SLOTS..FavoriteDock.maxSlots(this)).toList()
+        val labels = listOf(getString(R.string.off)) + counts.map { it.toString() }
         AlertDialog.Builder(this)
             .setTitle(R.string.favorites_slots)
-            .setItems(counts.map { it.toString() }.toTypedArray()) { _, which ->
-                prefs.favoriteCount = counts[which]
+            .setItems(labels.toTypedArray()) { _, which ->
+                if (which == 0) {
+                    prefs.favoritesEnabled = false
+                } else {
+                    prefs.favoritesEnabled = true
+                    prefs.favoriteCount = counts[which - 1]
+                }
                 applyToPreview()
             }
             .show()
@@ -571,6 +663,7 @@ class CustomizeActivity : BaseActivity() {
             }
             add(Prefs.CARD_SHORTCUTS to R.string.second_shortcuts)
             add(Prefs.CARD_WIDGET to R.string.second_widget)
+            add(Prefs.CARD_NONE to R.string.card_hidden)
         }
         AlertDialog.Builder(this)
             .setTitle(

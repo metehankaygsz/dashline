@@ -57,6 +57,7 @@
 
         <!-- Clock + weather dashboard -->
         <LinearLayout
+            android:id="@+id/clockPanel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.35"
@@ -254,6 +255,7 @@
 
             <!-- Phone-projection shortcuts -->
             <LinearLayout
+                android:id="@+id/projectionRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/shortcut_margin_top"

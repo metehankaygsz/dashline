@@ -203,6 +203,14 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_UPDATE_SKIPPED, "") ?: ""
         set(v) = sp.edit().putString(KEY_UPDATE_SKIPPED, v).apply()
 
+    /**
+     * The Android Auto / CarPlay tiles under the clock panel. Plenty of units
+     * have no projection app at all, and the row is dead space there.
+     */
+    var projectionVisible: Boolean
+        get() = sp.getBoolean(KEY_PROJECTION_ON, true)
+        set(v) = sp.edit().putBoolean(KEY_PROJECTION_ON, v).apply()
+
     // ---- clock ------------------------------------------------------------
 
     /** CLOCK_DIGITAL (default), CLOCK_ANALOG or CLOCK_MINIMAL. */
@@ -270,6 +278,15 @@ class Prefs(context: Context) {
         set(v) = sp.edit().putBoolean(KEY_KEEP_ON, v).apply()
 
     // ---- favorite-apps dock ------------------------------------------------
+
+    /**
+     * Whether the top-bar dock is shown at all. Off is a real setup, not a
+     * degenerate one: with favourites pinned to a card the dock is a second copy
+     * of the same apps, and the bar looks better without it.
+     */
+    var favoritesEnabled: Boolean
+        get() = sp.getBoolean(KEY_FAV_ON, true)
+        set(v) = sp.edit().putBoolean(KEY_FAV_ON, v).apply()
 
     /** How many quick-launch slots the top bar shows. */
     var favoriteCount: Int
@@ -380,6 +397,13 @@ class Prefs(context: Context) {
         const val CARD_SHORTCUTS = "shortcuts"
         const val CARD_WIDGET = "widget"
 
+        /**
+         * The slot is hidden entirely. Its neighbours take the space back, so a
+         * dashboard with fewer sections still fills the screen rather than
+         * leaving a gap where the card used to be.
+         */
+        const val CARD_NONE = "none"
+
         /** Widgets get unreadably narrow past this, even on a 10" unit. */
         const val MAX_CARD_WIDGETS = 3
         private const val INVALID_WIDGET = -1
@@ -419,6 +443,8 @@ class Prefs(context: Context) {
         /** Default number of quick-launch slots in the top-bar dock. */
         const val FAVORITE_COUNT = 5
         private const val KEY_FAV_COUNT = "favorite_count"
+        private const val KEY_FAV_ON = "favorites_enabled"
+        private const val KEY_PROJECTION_ON = "projection_row"
         private const val KEY_FAV_SIZE = "favorite_size"
     }
 }

@@ -43,7 +43,6 @@
                 <View style="@style/SettingsDivider" />
                 <LinearLayout android:id="@+id/rowCustomize" style="@style/SettingsRow">
                     <TextView style="@style/SettingsRowTitle" android:text="@string/settings_customize" />
-                    <TextView android:id="@+id/customizeValue" style="@style/SettingsRowValue" />
                 </LinearLayout>
 
                 <View style="@style/SettingsDivider" />

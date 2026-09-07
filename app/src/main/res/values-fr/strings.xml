@@ -157,6 +157,9 @@
     <string name="card_clock">Horloge</string>
     <string name="card_weather">Météo</string>
     <string name="customize_panel_landscape">Les widgets remplacent l\'horloge ou la météo en portrait uniquement.</string>
+    <string name="card_hidden">Masqué</string>
+    <string name="customize_projection">Rangée de raccourcis</string>
+    <string name="customize_hint_no_split">Une carte est masquée, l\'autre occupe donc la colonne.</string>
     <string name="update_title">La version %1$s est disponible</string>
     <string name="update_install">Mettre à jour</string>
     <string name="update_later">Plus tard</string>
