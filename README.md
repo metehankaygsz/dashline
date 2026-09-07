@@ -30,9 +30,11 @@ it, and a tab bar along the bottom.
 
 ![Home dashboard](docs/screenshots/dashboard.png)
 
-**The top bar** holds a Home button, five quick-launch favourites, and a Wi-Fi
-indicator that only appears when the unit is connected. Tap an empty favourite
-slot to assign an app, long-press one to change or clear it.
+**The top bar** holds a Home button, a row of quick-launch favourites, and a
+Wi-Fi indicator that only appears when the unit is connected. Tap an empty
+favourite slot to assign an app, long-press one to change or clear it. The row
+takes three to ten apps at three icon sizes — or none at all, which shrinks the
+bar back down.
 
 **The left panel** is the clock and weather: a large clock and date, current
 conditions, and a three-day forecast. The clock face can be digital, analog or
@@ -47,21 +49,31 @@ minimal, and an optional stopwatch sits under it.
 - the **phone shortcut**;
 - a row of **app shortcuts** you choose;
 - up to three **Android home-screen widgets**, hosted for real — the same
-  widgets you'd put on a phone's home screen.
+  widgets you'd put on a phone's home screen;
+- **nothing**, if you'd rather have the space.
 
-![A calendar widget in one card, app shortcuts in the other](docs/screenshots/cards.png)
+![A clock widget in one card, app shortcuts in the other](docs/screenshots/cards.png)
 
 **The bottom tabs** are Audio, Radio, Phone, Nav, Apps and Settings, each mapped
 to an app you pick. They can be reordered, and any of them except Apps and
 Settings can be hidden — those two stay because they're the only way back into
 the launcher's own screens.
 
+### Taking things away
+
+Every section can be turned off: either card, the clock, the weather, the
+projection shortcuts, and the favourites row in the top bar. What's left grows
+into the space rather than leaving a hole — one card takes the whole column when
+the other goes, and a panel with nothing in it disappears entirely.
+
+![A stripped-down dashboard: no favourites row, no weather, apps pinned to a card](docs/screenshots/minimal.png)
+
 ### Laying it out
 
 **Settings → Customize home screen** is a live editor: it inflates the real
 dashboard, so what you're dragging is exactly what you'll get. Drag the bar
-between the cards to resize them, swap their order, and choose what each one
-holds.
+between the cards to resize them, swap their order, choose what each one holds,
+and switch off the parts you don't want.
 
 ![The customize screen](docs/screenshots/customize.png)
 
@@ -345,8 +357,9 @@ things:
 
 ## Contributing
 
-Screenshots in this README are captured from a real unit. To refresh them after a
-UI change, connect the head unit (or an emulator) with USB debugging on and run:
+Screenshots in this README come straight off a running unit. To refresh them
+after a UI change, connect the head unit (or an emulator) with USB debugging on
+and run:
 
 ```bash
 ./tools/capture-screenshots.sh

@@ -16,6 +16,7 @@ SCREENS=(
     "dashboard:Home dashboard — clock, weather and the media card"
     "dashboard-light:Home dashboard in a light theme, analog face on"
     "cards:Home dashboard with a widget and app shortcuts in the cards"
+    "minimal:Home dashboard with sections turned off (no favourites row, no weather)"
     "customize:Settings → Customize home screen"
     "themes:Settings → Colour theme"
     "tabs:Settings → Bottom tabs"
