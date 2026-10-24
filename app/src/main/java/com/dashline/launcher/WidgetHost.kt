@@ -121,8 +121,9 @@ object WidgetHost {
      */
     fun providers(context: Context): List<AppWidgetProviderInfo> =
         runCatching {
+            val collator = LocaleManager.collator(context)
             manager(context).installedProviders
-                .sortedBy { it.loadLabel(context.packageManager).orEmpty().lowercase() }
+                .sortedWith(compareBy(collator) { labelOf(context, it) })
         }.getOrDefault(emptyList())
 
     /** Reserve an id for a widget we're about to bind. */
@@ -346,9 +347,19 @@ object WidgetHost {
 
     /** Provider name for a bound widget, for menus. Null if it's gone. */
     fun label(context: Context, widgetId: Int): String? =
-        manager(context).getAppWidgetInfo(widgetId)
-            ?.loadLabel(context.packageManager)
-            ?.toString()
+        manager(context).getAppWidgetInfo(widgetId)?.let { labelOf(context, it) }
+
+    /**
+     * A provider's display name. loadLabel only exists from Android 5.0; on
+     * KitKat calling it throws, which [providers] swallowed — so the widget
+     * picker said there were no widgets at all.
+     */
+    fun labelOf(context: Context, info: AppWidgetProviderInfo): String =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            info.loadLabel(context.packageManager).orEmpty()
+        } else {
+            @Suppress("DEPRECATION") info.label.orEmpty()
+        }
 
     /**
      * Ask the system to bind on our behalf; it shows the user a consent dialog.

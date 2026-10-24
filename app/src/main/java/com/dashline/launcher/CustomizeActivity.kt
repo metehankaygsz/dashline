@@ -702,7 +702,7 @@ class CustomizeActivity : BaseActivity() {
     private fun manageWidgets(slot: String) {
         val ids = prefs.cardWidgets(slot)
         val entries = ids.map { id ->
-            id to (WidgetHost.label(this, id) ?: getString(R.string.second_widget))
+            id to (WidgetHost.label(this, id)?.ifEmpty { null } ?: getString(R.string.second_widget))
         }
         val labels = entries.map { it.second }.toMutableList()
         val canAdd = ids.size < Prefs.MAX_CARD_WIDGETS
@@ -760,7 +760,7 @@ class CustomizeActivity : BaseActivity() {
         }
 
         val labels = providers
-            .map { it.loadLabel(packageManager)?.toString().orEmpty() }
+            .map { WidgetHost.labelOf(this, it) }
             .toTypedArray()
 
         AlertDialog.Builder(this)
@@ -776,8 +776,8 @@ class CustomizeActivity : BaseActivity() {
 
     /** Reserve an id for the chosen provider and get it bound, asking if needed. */
     private fun beginBind(slot: String, provider: AppWidgetProviderInfo, replacing: Int) {
-        val label = provider.loadLabel(packageManager)?.toString()
-            ?: getString(R.string.second_widget)
+        val label = WidgetHost.labelOf(this, provider)
+            .ifEmpty { getString(R.string.second_widget) }
 
         val id = WidgetHost.allocateId(this)
         if (id == WidgetHost.INVALID_ID) {
