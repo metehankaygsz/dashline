@@ -16,7 +16,10 @@
     <string name="hide_app">Aus Übersicht ausblenden</string>
     <string name="settings_reset_hidden">Ausgeblendete Apps zurücksetzen</string>
     <string name="couldnt_launch">%1$s konnte nicht geöffnet werden</string>
-    <string name="hidden_count">%1$d ausgeblendet</string>
+    <plurals name="hidden_count">
+        <item quantity="one">%1$d ausgeblendet</item>
+        <item quantity="other">%1$d ausgeblendet</item>
+    </plurals>
 
     <string name="audio_radio">Radio</string>
 
@@ -25,6 +28,7 @@
     <string name="media_next">Weiter</string>
     <string name="media_nothing_playing">Keine Wiedergabe</string>
     <string name="media_tap_to_open">Zum Öffnen tippen</string>
+    <string name="media_tap_to_open_app">Tippen, um %1$s zu öffnen</string>
 
     <string name="setup_title">Willkommen</string>
     <string name="setup_subtitle">Richten wir deinen Launcher ein.</string>
@@ -111,7 +115,10 @@
     <string name="settings_tabs">Untere Tabs</string>
     <string name="section_tabs">TABS</string>
     <string name="tabs_hint">Ordne die untere Leiste neu oder blende nicht benötigte Tabs aus.</string>
-    <string name="tabs_count">%1$d sichtbar</string>
+    <plurals name="tabs_count">
+        <item quantity="one">%1$d sichtbar</item>
+        <item quantity="other">%1$d sichtbar</item>
+    </plurals>
     <string name="tabs_reset">Zurücksetzen</string>
     <string name="tab_move_up">Nach oben</string>
     <string name="tab_move_down">Nach unten</string>
@@ -133,7 +140,6 @@
     <string name="customize_second_card">Zweite Karte</string>
     <string name="customize_reset">Zurücksetzen</string>
     <string name="customize_pick_widget">Widget wählen</string>
-    <string name="customize_sample_date">Montag, 1. Januar</string>
     <string name="customize_sample_track">Beispieltitel</string>
     <string name="customize_sample_artist">Interpret</string>
     <string name="second_widget">Widget</string>
@@ -181,8 +187,14 @@
     <string name="update_up_to_date">Aktuell</string>
     <string name="update_never_checked">Nie geprüft</string>
     <string name="update_checked_recently">Gerade geprüft</string>
-    <string name="update_checked_hours">Vor %1$d Std. geprüft</string>
-    <string name="update_checked_days">Vor %1$d T. geprüft</string>
+    <plurals name="update_checked_hours">
+        <item quantity="one">Vor %1$d Std. geprüft</item>
+        <item quantity="other">Vor %1$d Std. geprüft</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="one">Vor %1$d Tag geprüft</item>
+        <item quantity="other">Vor %1$d Tagen geprüft</item>
+    </plurals>
     <string name="widget_unavailable">Widget nicht verfügbar</string>
     <string name="widget_add_failed_title">Widget konnte nicht hinzugefügt werden</string>
     <string name="widget_fail_permission">Android fragt für jedes Widget nach einer Berechtigung, und sie wurde abgelehnt. Versuche es erneut und wähle Erstellen.</string>

@@ -72,9 +72,9 @@ class AppDrawerActivity : BaseActivity() {
     }
 
     private fun applyFilter(query: String) {
-        val q = query.trim().lowercase()
+        val q = LocaleManager.searchKey(query.trim())
         val filtered = if (q.isEmpty()) allApps
-        else allApps.filter { it.label.lowercase().contains(q) }
+        else allApps.filter { LocaleManager.searchKey(it.label).contains(q) }
         adapter.update(filtered)
 
         // Frequent strip only makes sense when not searching.

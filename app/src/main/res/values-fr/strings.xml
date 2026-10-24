@@ -16,7 +16,11 @@
     <string name="hide_app">Masquer du tiroir</string>
     <string name="settings_reset_hidden">Réinitialiser les applis masquées</string>
     <string name="couldnt_launch">Impossible d\'ouvrir %1$s</string>
-    <string name="hidden_count">%1$d masquée(s)</string>
+    <plurals name="hidden_count">
+        <item quantity="one">%1$d masquée</item>
+        <item quantity="many">%1$d masquées</item>
+        <item quantity="other">%1$d masquées</item>
+    </plurals>
 
     <string name="audio_radio">Radio</string>
 
@@ -25,6 +29,7 @@
     <string name="media_next">Suivant</string>
     <string name="media_nothing_playing">Aucune lecture</string>
     <string name="media_tap_to_open">Appuyez pour ouvrir</string>
+    <string name="media_tap_to_open_app">Appuyez pour ouvrir %1$s</string>
 
     <string name="setup_title">Bienvenue</string>
     <string name="setup_subtitle">Configurons votre launcher.</string>
@@ -111,7 +116,11 @@
     <string name="settings_tabs">Onglets du bas</string>
     <string name="section_tabs">ONGLETS</string>
     <string name="tabs_hint">Réorganisez la barre du bas ou masquez les onglets inutiles.</string>
-    <string name="tabs_count">%1$d affichés</string>
+    <plurals name="tabs_count">
+        <item quantity="one">%1$d affiché</item>
+        <item quantity="many">%1$d affichés</item>
+        <item quantity="other">%1$d affichés</item>
+    </plurals>
     <string name="tabs_reset">Réinitialiser</string>
     <string name="tab_move_up">Monter</string>
     <string name="tab_move_down">Descendre</string>
@@ -133,7 +142,6 @@
     <string name="customize_second_card">Seconde carte</string>
     <string name="customize_reset">Réinitialiser</string>
     <string name="customize_pick_widget">Choisir un widget</string>
-    <string name="customize_sample_date">Lundi 1 janvier</string>
     <string name="customize_sample_track">Morceau d\'exemple</string>
     <string name="customize_sample_artist">Artiste</string>
     <string name="second_widget">Widget</string>
@@ -181,8 +189,16 @@
     <string name="update_up_to_date">À jour</string>
     <string name="update_never_checked">Jamais vérifié</string>
     <string name="update_checked_recently">Vérifié à l\'instant</string>
-    <string name="update_checked_hours">Vérifié il y a %1$d h</string>
-    <string name="update_checked_days">Vérifié il y a %1$d j</string>
+    <plurals name="update_checked_hours">
+        <item quantity="one">Vérifié il y a %1$d h</item>
+        <item quantity="many">Vérifié il y a %1$d h</item>
+        <item quantity="other">Vérifié il y a %1$d h</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="one">Vérifié il y a %1$d j</item>
+        <item quantity="many">Vérifié il y a %1$d j</item>
+        <item quantity="other">Vérifié il y a %1$d j</item>
+    </plurals>
     <string name="widget_unavailable">Widget indisponible</string>
     <string name="widget_add_failed_title">Impossible d\'ajouter le widget</string>
     <string name="widget_fail_permission">Android demande une autorisation pour chaque widget, et elle a été refusée. Réessayez et choisissez Créer.</string>

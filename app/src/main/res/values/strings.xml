@@ -18,7 +18,11 @@
     <string name="hide_app">Hide from drawer</string>
     <string name="settings_reset_hidden">Reset hidden apps</string>
     <string name="couldnt_launch">Couldn\'t launch %1$s</string>
-    <string name="hidden_count">%1$d hidden</string>
+    <!-- A count of hidden apps. Plural forms, so each language can agree with the number. -->
+    <plurals name="hidden_count">
+        <item quantity="one">%1$d hidden</item>
+        <item quantity="other">%1$d hidden</item>
+    </plurals>
 
     <!-- audio chooser -->
     <string name="audio_radio">Radio</string>
@@ -29,6 +33,8 @@
     <string name="media_next">Next</string>
     <string name="media_nothing_playing">Nothing playing</string>
     <string name="media_tap_to_open">Tap to open</string>
+    <!-- %1$s is the media app's name, e.g. "Tap to open Spotify". -->
+    <string name="media_tap_to_open_app">Tap to open %1$s</string>
     <string name="media_enable_access">Tap to enable media info</string>
 
     <!-- phone projection shortcuts (brand names, not translated) -->
@@ -82,7 +88,6 @@
     <string name="customize_second_card">Second card</string>
     <string name="customize_reset">Reset</string>
     <string name="customize_pick_widget">Choose a widget</string>
-    <string name="customize_sample_date">Monday, 1 January</string>
     <string name="customize_sample_track">Sample Track</string>
     <string name="customize_sample_artist">Artist</string>
     <string name="second_widget">Widget</string>
@@ -99,7 +104,11 @@
     <string name="settings_tabs">Bottom tabs</string>
     <string name="section_tabs">TABS</string>
     <string name="tabs_hint">Reorder the bottom bar, or hide tabs your unit doesn\'t need.</string>
-    <string name="tabs_count">%1$d shown</string>
+    <!-- How many bottom tabs are visible (always 2 to 6). -->
+    <plurals name="tabs_count">
+        <item quantity="one">%1$d shown</item>
+        <item quantity="other">%1$d shown</item>
+    </plurals>
     <string name="tabs_reset">Reset to default</string>
     <string name="tab_move_up">Move up</string>
     <string name="tab_move_down">Move down</string>
@@ -198,8 +207,16 @@
     <string name="update_up_to_date">Up to date</string>
     <string name="update_never_checked">Never checked</string>
     <string name="update_checked_recently">Checked just now</string>
-    <string name="update_checked_hours">Checked %1$dh ago</string>
-    <string name="update_checked_days">Checked %1$dd ago</string>
+    <!-- Time since the last update check: 1 to 23 hours. -->
+    <plurals name="update_checked_hours">
+        <item quantity="one">Checked %1$dh ago</item>
+        <item quantity="other">Checked %1$dh ago</item>
+    </plurals>
+    <!-- Time since the last update check: 1 day or more. -->
+    <plurals name="update_checked_days">
+        <item quantity="one">Checked %1$dd ago</item>
+        <item quantity="other">Checked %1$dd ago</item>
+    </plurals>
     <string name="widget_unavailable">Widget unavailable</string>
     <string name="widget_add_failed_title">Couldn\'t add the widget</string>
     <string name="widget_fail_permission">Android asks permission for each widget, and it was declined. Try again and choose Create.</string>

@@ -175,7 +175,7 @@
                             android:layout_width="@dimen/weather_icon"
                             android:layout_height="@dimen/weather_icon"
                             android:layout_marginEnd="14dp"
-                            android:contentDescription="@string/settings_temp_unit"
+                            android:contentDescription="@null"
                             app:srcCompat="@drawable/ic_wx_cloudy" />
 
                         <TextView
@@ -324,7 +324,7 @@
                             android:background="@drawable/art_bg"
                             android:padding="@dimen/album_art_padding"
                             android:scaleType="centerCrop"
-                            android:contentDescription="@string/tab_audio"
+                            android:contentDescription="@null"
                             app:srcCompat="@drawable/ic_audio" />
 
                         <LinearLayout

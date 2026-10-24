@@ -16,7 +16,11 @@
     <string name="hide_app">Ocultar da gaveta</string>
     <string name="settings_reset_hidden">Repor apps ocultas</string>
     <string name="couldnt_launch">Não foi possível abrir %1$s</string>
-    <string name="hidden_count">%1$d ocultas</string>
+    <plurals name="hidden_count">
+        <item quantity="one">Ocultas: %1$d</item>
+        <item quantity="many">Ocultas: %1$d</item>
+        <item quantity="other">Ocultas: %1$d</item>
+    </plurals>
 
     <string name="audio_radio">Rádio</string>
 
@@ -25,6 +29,7 @@
     <string name="media_next">Seguinte</string>
     <string name="media_nothing_playing">Nada em reprodução</string>
     <string name="media_tap_to_open">Toque para abrir</string>
+    <string name="media_tap_to_open_app">Toque para abrir %1$s</string>
 
     <string name="setup_title">Bem-vindo</string>
     <string name="setup_subtitle">Vamos configurar o seu launcher.</string>
@@ -111,7 +116,11 @@
     <string name="settings_tabs">Separadores inferiores</string>
     <string name="section_tabs">SEPARADORES</string>
     <string name="tabs_hint">Reordene a barra inferior ou oculte separadores desnecessários.</string>
-    <string name="tabs_count">%1$d visíveis</string>
+    <plurals name="tabs_count">
+        <item quantity="one">%1$d visível</item>
+        <item quantity="many">%1$d visíveis</item>
+        <item quantity="other">%1$d visíveis</item>
+    </plurals>
     <string name="tabs_reset">Repor</string>
     <string name="tab_move_up">Mover para cima</string>
     <string name="tab_move_down">Mover para baixo</string>
@@ -133,7 +142,6 @@
     <string name="customize_second_card">Segundo cartão</string>
     <string name="customize_reset">Repor</string>
     <string name="customize_pick_widget">Escolher widget</string>
-    <string name="customize_sample_date">Segunda-feira, 1 de janeiro</string>
     <string name="customize_sample_track">Faixa de exemplo</string>
     <string name="customize_sample_artist">Artista</string>
     <string name="second_widget">Widget</string>
@@ -181,8 +189,16 @@
     <string name="update_up_to_date">Atualizado</string>
     <string name="update_never_checked">Nunca verificado</string>
     <string name="update_checked_recently">Verificado agora mesmo</string>
-    <string name="update_checked_hours">Verificado há %1$d h</string>
-    <string name="update_checked_days">Verificado há %1$d d</string>
+    <plurals name="update_checked_hours">
+        <item quantity="one">Verificado há %1$d h</item>
+        <item quantity="many">Verificado há %1$d h</item>
+        <item quantity="other">Verificado há %1$d h</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="one">Verificado há %1$d d</item>
+        <item quantity="many">Verificado há %1$d d</item>
+        <item quantity="other">Verificado há %1$d d</item>
+    </plurals>
     <string name="widget_unavailable">Widget indisponível</string>
     <string name="widget_add_failed_title">Não foi possível adicionar o widget</string>
     <string name="widget_fail_permission">O Android pede permissão para cada widget e foi recusada. Tente de novo e escolha Criar.</string>

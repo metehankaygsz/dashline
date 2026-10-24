@@ -16,7 +16,9 @@
     <string name="hide_app">从抽屉隐藏</string>
     <string name="settings_reset_hidden">重置隐藏的应用</string>
     <string name="couldnt_launch">无法打开 %1$s</string>
-    <string name="hidden_count">已隐藏 %1$d 个</string>
+    <plurals name="hidden_count">
+        <item quantity="other">已隐藏 %1$d 个</item>
+    </plurals>
 
     <string name="audio_radio">收音机</string>
 
@@ -25,6 +27,7 @@
     <string name="media_next">下一首</string>
     <string name="media_nothing_playing">没有正在播放的内容</string>
     <string name="media_tap_to_open">点按打开</string>
+    <string name="media_tap_to_open_app">点按打开 %1$s</string>
 
     <string name="setup_title">欢迎</string>
     <string name="setup_subtitle">让我们来设置您的启动器。</string>
@@ -111,7 +114,9 @@
     <string name="settings_tabs">底部标签</string>
     <string name="section_tabs">标签</string>
     <string name="tabs_hint">重新排列底部栏，或隐藏不需要的标签。</string>
-    <string name="tabs_count">显示 %1$d 个</string>
+    <plurals name="tabs_count">
+        <item quantity="other">显示 %1$d 个</item>
+    </plurals>
     <string name="tabs_reset">恢复默认</string>
     <string name="tab_move_up">上移</string>
     <string name="tab_move_down">下移</string>
@@ -133,7 +138,6 @@
     <string name="customize_second_card">第二张卡片</string>
     <string name="customize_reset">重置</string>
     <string name="customize_pick_widget">选择微件</string>
-    <string name="customize_sample_date">1月1日 星期一</string>
     <string name="customize_sample_track">示例曲目</string>
     <string name="customize_sample_artist">艺术家</string>
     <string name="second_widget">微件</string>
@@ -181,8 +185,12 @@
     <string name="update_up_to_date">已是最新版本</string>
     <string name="update_never_checked">从未检查</string>
     <string name="update_checked_recently">刚刚检查过</string>
-    <string name="update_checked_hours">%1$d 小时前检查</string>
-    <string name="update_checked_days">%1$d 天前检查</string>
+    <plurals name="update_checked_hours">
+        <item quantity="other">%1$d 小时前检查</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="other">%1$d 天前检查</item>
+    </plurals>
     <string name="widget_unavailable">小部件不可用</string>
     <string name="widget_add_failed_title">无法添加小部件</string>
     <string name="widget_fail_permission">Android 会为每个小部件请求权限，但权限被拒绝。请重试并选择“创建”。</string>

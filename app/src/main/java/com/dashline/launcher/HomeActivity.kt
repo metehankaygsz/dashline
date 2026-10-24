@@ -56,11 +56,31 @@ class HomeActivity : BaseActivity() {
     private var attachedWidgets = false
 
 
-    // Built from the current locale in onCreate, so they follow the chosen language.
+    // Built from the current locale and the system clock setting; see buildFormats.
     private lateinit var timeFormat: SimpleDateFormat
     private lateinit var dateFormat: SimpleDateFormat
     private lateinit var dayFormat: SimpleDateFormat
-    private val isoDate = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+
+    /** The in-app language this instance was inflated in; see onResume. */
+    private var builtLanguage: String? = null
+
+    /**
+     * Time-zone changes (the car crossing a border) and the 12/24-hour switch,
+     * while the dashboard stays in front. Each format captures its zone and
+     * pattern when it's built, so it has to be rebuilt rather than reused.
+     */
+    private val clockReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            buildFormats()
+            updateClock()
+        }
+    }
+    private var clockReceiverRegistered = false
+    // Forecast dates are plain calendar dates, so both ends of the weekday
+    // lookup work in UTC: a time-zone change can't then shift them by a day.
+    private val isoDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+        timeZone = java.util.TimeZone.getTimeZone("UTC")
+    }
 
     private val ticker = object : Runnable {
         override fun run() {
@@ -93,11 +113,8 @@ class HomeActivity : BaseActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         prefs = Prefs(this)
-
-        val loc = currentLocale()
-        timeFormat = SimpleDateFormat("HH:mm", loc)
-        dateFormat = SimpleDateFormat("EEEE, d MMMM", loc)
-        dayFormat = SimpleDateFormat("EEE", loc)
+        builtLanguage = prefs.language
+        buildFormats()
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
 
@@ -914,8 +931,10 @@ class HomeActivity : BaseActivity() {
             }
             val mediaLabel = AppRepository.labelFor(this, prefs.mediaApp)
             binding.mediaTitle.text = getString(R.string.media_nothing_playing)
+            // One sentence with the name inside it, so each language can put
+            // the name where its grammar wants it.
             binding.mediaArtist.text = mediaLabel?.let {
-                "${getString(R.string.media_tap_to_open)} $it"
+                getString(R.string.media_tap_to_open_app, it)
             } ?: getString(R.string.media_tap_to_open)
             return
         }
@@ -1097,6 +1116,16 @@ class HomeActivity : BaseActivity() {
 
     // ---- Clock + weather ---------------------------------------------------
 
+    /** Clock and date formats for the current language and 12/24-hour setting. */
+    private fun buildFormats() {
+        val loc = currentLocale()
+        timeFormat = ClockFormats.clock(this, loc)
+        dateFormat = ClockFormats.longDate(loc)
+        dayFormat = SimpleDateFormat("EEE", loc).apply {
+            timeZone = java.util.TimeZone.getTimeZone("UTC")  // pairs with isoDate
+        }
+    }
+
     private fun updateClock() {
         val now = Date()
         binding.bigClock.text = timeFormat.format(now)
@@ -1107,12 +1136,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun currentLocale(): Locale =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            resources.configuration.locales.get(0)
-        } else {
-            @Suppress("DEPRECATION") resources.configuration.locale
-        }
+    private fun currentLocale(): Locale = LocaleManager.locale(this)
 
     /** Refresh weather at most every 15 minutes (Open-Meteo is free but be polite). */
     private fun maybeRefreshWeather() {
@@ -1187,14 +1211,31 @@ class HomeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        // A language picked in first-run setup lands here: setup comes back to
+        // this existing instance, which was inflated in the old language. Settings
+        // restarts the task instead, so this only fires on that one path.
+        if (prefs.language != builtLanguage) {
+            recreate()
+            return
+        }
         // Setup isn't finished — bounce straight back to it.
         if (enforceSetup()) return
+        // The 12/24-hour setting may have changed while we were in the background.
+        buildFormats()
         // Re-apply in case "auto" theme crossed the day/night boundary while away.
         ThemeManager.apply(prefs)
         // This activity is singleTask, so onCreate won't re-run after the user
         // changes the colour scheme — repaint the accent pieces here.
         applyAccent()
         applyKeepScreenOn()
+        if (!clockReceiverRegistered) {
+            registerReceiver(clockReceiver, android.content.IntentFilter().apply {
+                addAction(Intent.ACTION_TIMEZONE_CHANGED)
+                // Also sent when the 12/24-hour setting is switched.
+                addAction(Intent.ACTION_TIME_CHANGED)
+            })
+            clockReceiverRegistered = true
+        }
         handler.post(ticker)
         loadWeather()
         mediaMonitor?.start()
@@ -1248,6 +1289,10 @@ class HomeActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
+        if (clockReceiverRegistered) {
+            unregisterReceiver(clockReceiver)
+            clockReceiverRegistered = false
+        }
         handler.removeCallbacks(ticker)
         handler.removeCallbacks(chronoTicker)
         if (attachedWidgets) {

@@ -104,8 +104,15 @@ class CustomizeActivity : BaseActivity() {
 
     /** The live sources aren't running here, so show representative content. */
     private fun fillPlaceholders() {
-        preview.bigClock.text = "12:34"
-        preview.bigDate.text = getString(R.string.customize_sample_date)
+        // A fixed moment, run through the dashboard's own formats so the preview
+        // shows this language's date order and the unit's 12/24-hour setting —
+        // an afternoon time, so 12- and 24-hour actually look different.
+        val sample = java.util.Calendar.getInstance().apply {
+            set(2024, java.util.Calendar.JANUARY, 1, 15, 34, 0)  // a Monday
+        }.time
+        val locale = LocaleManager.locale(this)
+        preview.bigClock.text = ClockFormats.clock(this, locale).format(sample)
+        preview.bigDate.text = ClockFormats.longDate(locale).format(sample)
         preview.weatherTemp.text = "21°"
         preview.weatherDesc.setText(R.string.wx_partly_cloudy)
         preview.mediaTitle.setText(R.string.customize_sample_track)

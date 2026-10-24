@@ -16,7 +16,14 @@
     <string name="hide_app">إخفاء من القائمة</string>
     <string name="settings_reset_hidden">إعادة تعيين التطبيقات المخفية</string>
     <string name="couldnt_launch">تعذّر فتح %1$s</string>
-    <string name="hidden_count">%1$d مخفية</string>
+    <plurals name="hidden_count">
+        <item quantity="zero">المخفية: %1$d</item>
+        <item quantity="one">المخفية: %1$d</item>
+        <item quantity="two">المخفية: %1$d</item>
+        <item quantity="few">المخفية: %1$d</item>
+        <item quantity="many">المخفية: %1$d</item>
+        <item quantity="other">المخفية: %1$d</item>
+    </plurals>
 
     <string name="audio_radio">الراديو</string>
 
@@ -25,6 +32,7 @@
     <string name="media_next">التالي</string>
     <string name="media_nothing_playing">لا يوجد تشغيل</string>
     <string name="media_tap_to_open">اضغط للفتح</string>
+    <string name="media_tap_to_open_app">اضغط لفتح %1$s</string>
 
     <string name="setup_title">مرحبًا</string>
     <string name="setup_subtitle">لنقم بإعداد المشغّل الخاص بك.</string>
@@ -111,7 +119,14 @@
     <string name="settings_tabs">علامات التبويب السفلية</string>
     <string name="section_tabs">علامات التبويب</string>
     <string name="tabs_hint">أعد ترتيب الشريط السفلي أو أخفِ علامات التبويب غير اللازمة.</string>
-    <string name="tabs_count">%1$d معروضة</string>
+    <plurals name="tabs_count">
+        <item quantity="zero">المعروضة: %1$d</item>
+        <item quantity="one">المعروضة: %1$d</item>
+        <item quantity="two">المعروضة: %1$d</item>
+        <item quantity="few">المعروضة: %1$d</item>
+        <item quantity="many">المعروضة: %1$d</item>
+        <item quantity="other">المعروضة: %1$d</item>
+    </plurals>
     <string name="tabs_reset">إعادة التعيين</string>
     <string name="tab_move_up">تحريك لأعلى</string>
     <string name="tab_move_down">تحريك لأسفل</string>
@@ -133,7 +148,6 @@
     <string name="customize_second_card">البطاقة الثانية</string>
     <string name="customize_reset">إعادة تعيين</string>
     <string name="customize_pick_widget">اختر أداة</string>
-    <string name="customize_sample_date">الاثنين 1 يناير</string>
     <string name="customize_sample_track">مقطع تجريبي</string>
     <string name="customize_sample_artist">الفنان</string>
     <string name="second_widget">أداة</string>
@@ -181,8 +195,22 @@
     <string name="update_up_to_date">محدَّث</string>
     <string name="update_never_checked">لم يتم التحقق مطلقًا</string>
     <string name="update_checked_recently">تم التحقق للتو</string>
-    <string name="update_checked_hours">تم التحقق قبل %1$d ساعة</string>
-    <string name="update_checked_days">تم التحقق قبل %1$d يوم</string>
+    <plurals name="update_checked_hours">
+        <item quantity="zero">تم التحقق قبل %1$d ساعة</item>
+        <item quantity="one">تم التحقق قبل ساعة (%1$d)</item>
+        <item quantity="two">تم التحقق قبل ساعتين (%1$d)</item>
+        <item quantity="few">تم التحقق قبل %1$d ساعات</item>
+        <item quantity="many">تم التحقق قبل %1$d ساعة</item>
+        <item quantity="other">تم التحقق قبل %1$d ساعة</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="zero">تم التحقق قبل %1$d يوم</item>
+        <item quantity="one">تم التحقق قبل يوم (%1$d)</item>
+        <item quantity="two">تم التحقق قبل يومين (%1$d)</item>
+        <item quantity="few">تم التحقق قبل %1$d أيام</item>
+        <item quantity="many">تم التحقق قبل %1$d يومًا</item>
+        <item quantity="other">تم التحقق قبل %1$d يوم</item>
+    </plurals>
     <string name="widget_unavailable">الأداة غير متاحة</string>
     <string name="widget_add_failed_title">تعذّر إضافة الأداة</string>
     <string name="widget_fail_permission">يطلب Android إذنًا لكل أداة، وقد تم رفضه. أعد المحاولة واختر «إنشاء».</string>

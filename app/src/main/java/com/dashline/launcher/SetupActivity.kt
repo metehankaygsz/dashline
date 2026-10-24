@@ -49,8 +49,11 @@ class SetupActivity : BaseActivity() {
         }
 
         // Ask for location up front — one dialog, rather than surprising the user
-        // on the dashboard later. The rest are opt-in taps below.
-        if (!Permissions.hasLocation(this)) {
+        // on the dashboard later. The rest are opt-in taps below. Only ever once:
+        // this screen is recreated by a language change and restarted by the
+        // Home button, and asking again after a refusal can make it permanent.
+        // The location row below stays as the way to try again.
+        if (savedInstanceState == null && !prefs.askedLocation && !Permissions.hasLocation(this)) {
             prefs.askedLocation = true
             Permissions.requestLocation(this, REQ_LOCATION)
         }

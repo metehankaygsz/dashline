@@ -214,7 +214,8 @@ class SettingsActivity : BaseActivity() {
             if (prefs.useFahrenheit) R.string.unit_fahrenheit else R.string.unit_celsius
         )
         binding.themeValue.text = getString(themeLabel(prefs.themeMode))
-        binding.tabsValue.text = getString(R.string.tabs_count, prefs.visibleTabs().size)
+        val tabs = prefs.visibleTabs().size
+        binding.tabsValue.text = resources.getQuantityString(R.plurals.tabs_count, tabs, tabs)
         binding.clockStyleValue.text = getString(when (prefs.clockStyle) {
             Prefs.CLOCK_ANALOG -> R.string.clock_analog
             Prefs.CLOCK_MINIMAL -> R.string.clock_minimal
@@ -231,7 +232,9 @@ class SettingsActivity : BaseActivity() {
         binding.defaultLauncherValue.text = getString(
             if (DefaultLauncher.isDefault(this)) R.string.yes else R.string.set_now
         )
-        binding.resetHiddenValue.text = getString(R.string.hidden_count, prefs.hiddenApps.size)
+        val hidden = prefs.hiddenApps.size
+        binding.resetHiddenValue.text =
+            resources.getQuantityString(R.plurals.hidden_count, hidden, hidden)
 
         binding.versionValue.text = getString(
             R.string.settings_version_value,
@@ -256,8 +259,12 @@ class SettingsActivity : BaseActivity() {
         val hours = (System.currentTimeMillis() - last) / (60 * 60 * 1000L)
         return when {
             hours < 1 -> getString(R.string.update_checked_recently)
-            hours < 24 -> getString(R.string.update_checked_hours, hours.toInt())
-            else -> getString(R.string.update_checked_days, (hours / 24).toInt())
+            hours < 24 -> hours.toInt().let {
+                resources.getQuantityString(R.plurals.update_checked_hours, it, it)
+            }
+            else -> (hours / 24).toInt().let {
+                resources.getQuantityString(R.plurals.update_checked_days, it, it)
+            }
         }
     }
 

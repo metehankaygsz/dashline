@@ -18,7 +18,10 @@
     <string name="hide_app">Çekmeceden gizle</string>
     <string name="settings_reset_hidden">Gizli uygulamaları sıfırla</string>
     <string name="couldnt_launch">%1$s açılamadı</string>
-    <string name="hidden_count">%1$d gizli</string>
+    <plurals name="hidden_count">
+        <item quantity="one">%1$d gizli</item>
+        <item quantity="other">%1$d gizli</item>
+    </plurals>
 
     <!-- ses kaynağı -->
     <string name="audio_radio">Radyo</string>
@@ -29,6 +32,7 @@
     <string name="media_next">Sonraki</string>
     <string name="media_nothing_playing">Çalan bir şey yok</string>
     <string name="media_tap_to_open">Açmak için dokunun</string>
+    <string name="media_tap_to_open_app">%1$s uygulamasını açmak için dokunun</string>
 
     <!-- kurulum -->
     <string name="setup_title">Hoş geldiniz</string>
@@ -120,7 +124,10 @@
     <string name="settings_tabs">Alt sekmeler</string>
     <string name="section_tabs">SEKMELER</string>
     <string name="tabs_hint">Alt çubuğu yeniden sıralayın veya teypinizde gerekmeyen sekmeleri gizleyin.</string>
-    <string name="tabs_count">%1$d gösteriliyor</string>
+    <plurals name="tabs_count">
+        <item quantity="one">%1$d gösteriliyor</item>
+        <item quantity="other">%1$d gösteriliyor</item>
+    </plurals>
     <string name="tabs_reset">Varsayılana sıfırla</string>
     <string name="tab_move_up">Yukarı taşı</string>
     <string name="tab_move_down">Aşağı taşı</string>
@@ -142,7 +149,6 @@
     <string name="customize_second_card">İkinci kart</string>
     <string name="customize_reset">Sıfırla</string>
     <string name="customize_pick_widget">Widget seçin</string>
-    <string name="customize_sample_date">1 Ocak Pazartesi</string>
     <string name="customize_sample_track">Örnek Parça</string>
     <string name="customize_sample_artist">Sanatçı</string>
     <string name="second_widget">Widget</string>
@@ -190,8 +196,14 @@
     <string name="update_up_to_date">Güncel</string>
     <string name="update_never_checked">Hiç denetlenmedi</string>
     <string name="update_checked_recently">Az önce denetlendi</string>
-    <string name="update_checked_hours">%1$d saat önce denetlendi</string>
-    <string name="update_checked_days">%1$d gün önce denetlendi</string>
+    <plurals name="update_checked_hours">
+        <item quantity="one">%1$d saat önce denetlendi</item>
+        <item quantity="other">%1$d saat önce denetlendi</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="one">%1$d gün önce denetlendi</item>
+        <item quantity="other">%1$d gün önce denetlendi</item>
+    </plurals>
     <string name="widget_unavailable">Widget kullanılamıyor</string>
     <string name="widget_add_failed_title">Widget eklenemedi</string>
     <string name="widget_fail_permission">Android her widget için izin ister ve izin verilmedi. Tekrar deneyin ve Oluştur\'u seçin.</string>

@@ -16,7 +16,12 @@
     <string name="hide_app">Скрыть из списка</string>
     <string name="settings_reset_hidden">Сбросить скрытые приложения</string>
     <string name="couldnt_launch">Не удалось открыть %1$s</string>
-    <string name="hidden_count">Скрыто: %1$d</string>
+    <plurals name="hidden_count">
+        <item quantity="one">Скрыто: %1$d</item>
+        <item quantity="few">Скрыто: %1$d</item>
+        <item quantity="many">Скрыто: %1$d</item>
+        <item quantity="other">Скрыто: %1$d</item>
+    </plurals>
 
     <string name="audio_radio">Радио</string>
 
@@ -25,6 +30,7 @@
     <string name="media_next">Вперёд</string>
     <string name="media_nothing_playing">Ничего не воспроизводится</string>
     <string name="media_tap_to_open">Нажмите, чтобы открыть</string>
+    <string name="media_tap_to_open_app">%1$s — нажмите, чтобы открыть</string>
 
     <string name="setup_title">Добро пожаловать</string>
     <string name="setup_subtitle">Давайте настроим ваш лаунчер.</string>
@@ -111,7 +117,12 @@
     <string name="settings_tabs">Нижние вкладки</string>
     <string name="section_tabs">ВКЛАДКИ</string>
     <string name="tabs_hint">Измените порядок нижней панели или скройте ненужные вкладки.</string>
-    <string name="tabs_count">Показано: %1$d</string>
+    <plurals name="tabs_count">
+        <item quantity="one">Показано: %1$d</item>
+        <item quantity="few">Показано: %1$d</item>
+        <item quantity="many">Показано: %1$d</item>
+        <item quantity="other">Показано: %1$d</item>
+    </plurals>
     <string name="tabs_reset">Сбросить</string>
     <string name="tab_move_up">Вверх</string>
     <string name="tab_move_down">Вниз</string>
@@ -133,7 +144,6 @@
     <string name="customize_second_card">Вторая карточка</string>
     <string name="customize_reset">Сбросить</string>
     <string name="customize_pick_widget">Выбрать виджет</string>
-    <string name="customize_sample_date">Понедельник, 1 января</string>
     <string name="customize_sample_track">Пример трека</string>
     <string name="customize_sample_artist">Исполнитель</string>
     <string name="second_widget">Виджет</string>
@@ -181,8 +191,18 @@
     <string name="update_up_to_date">Установлена последняя версия</string>
     <string name="update_never_checked">Не проверялось</string>
     <string name="update_checked_recently">Только что проверено</string>
-    <string name="update_checked_hours">Проверено %1$d ч назад</string>
-    <string name="update_checked_days">Проверено %1$d дн назад</string>
+    <plurals name="update_checked_hours">
+        <item quantity="one">Проверено %1$d час назад</item>
+        <item quantity="few">Проверено %1$d часа назад</item>
+        <item quantity="many">Проверено %1$d часов назад</item>
+        <item quantity="other">Проверено %1$d часа назад</item>
+    </plurals>
+    <plurals name="update_checked_days">
+        <item quantity="one">Проверено %1$d день назад</item>
+        <item quantity="few">Проверено %1$d дня назад</item>
+        <item quantity="many">Проверено %1$d дней назад</item>
+        <item quantity="other">Проверено %1$d дня назад</item>
+    </plurals>
     <string name="widget_unavailable">Виджет недоступен</string>
     <string name="widget_add_failed_title">Не удалось добавить виджет</string>
     <string name="widget_fail_permission">Android запрашивает разрешение для каждого виджета, и в нём отказано. Повторите и выберите «Создать».</string>
