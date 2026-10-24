@@ -64,9 +64,7 @@ class AppDrawerActivity : BaseActivity() {
     private fun reload() {
         allApps = AppRepository.loadLaunchableApps(this, prefs.hiddenApps)
 
-        val byPackage = allApps.associateBy { it.packageName }
-        val frequent = Usage.topApps(this, FREQUENT_COUNT).mapNotNull { byPackage[it] }
-        frequentAdapter.update(frequent)
+        frequentAdapter.update(Usage.frequentApps(this, allApps, FREQUENT_COUNT))
 
         applyFilter(binding.searchBox.text?.toString().orEmpty())
     }
@@ -85,7 +83,7 @@ class AppDrawerActivity : BaseActivity() {
     }
 
     private fun launch(app: AppInfo) {
-        if (!AppRepository.launch(this, app.packageName)) {
+        if (!AppRepository.launch(this, app.target)) {
             Toast.makeText(
                 this, getString(R.string.couldnt_launch, app.label), Toast.LENGTH_SHORT
             ).show()
@@ -96,7 +94,7 @@ class AppDrawerActivity : BaseActivity() {
         AlertDialog.Builder(this)
             .setTitle(app.label)
             .setItems(arrayOf(getString(R.string.hide_app))) { _, _ ->
-                prefs.hideApp(app.packageName)
+                prefs.hideApp(app.target)
                 reload()
             }
             .show()

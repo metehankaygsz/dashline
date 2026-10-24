@@ -13,7 +13,8 @@ import com.dashline.launcher.databinding.ActivityAppPickerBinding
 
 /**
  * Full-screen app chooser for a given "role" (phone / nav / radio / bluetooth).
- * Saves the selection to Prefs and returns the chosen package to the caller.
+ * Saves the selection to Prefs and returns it to the caller as a launch target
+ * (see [AppRepository]) — the specific icon, not just its app.
  */
 class AppPickerActivity : BaseActivity() {
 
@@ -31,9 +32,11 @@ class AppPickerActivity : BaseActivity() {
         val prefs = Prefs(this)
         val apps = AppRepository.loadLaunchableApps(this)
         val adapter = AppAdapter(apps, onClick = { app ->
-            prefs.setForRole(role, app.packageName)
+            // The icon, not just the app: picking a dialer's Phone icon must not
+            // open its Contacts icon later.
+            prefs.setForRole(role, app.target)
             setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(EXTRA_PACKAGE, app.packageName)
+                putExtra(EXTRA_PACKAGE, app.target)
                 putExtra(EXTRA_ROLE, role)
             })
             finish()
@@ -56,6 +59,7 @@ class AppPickerActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_ROLE = "extra_role"
+        /** The chosen launch target; see [AppRepository]. Key kept for compatibility. */
         const val EXTRA_PACKAGE = "extra_package"
 
         fun start(activity: Activity, role: String, requestCode: Int) {

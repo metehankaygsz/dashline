@@ -561,7 +561,7 @@ class HomeActivity : BaseActivity() {
         val apps = drawerApps()
         // Rebuilding every tile on resume is wasted work on a slow head unit, so
         // only do it when the app list or the space available actually changed.
-        val signature = apps.joinToString(",") { it.packageName }
+        val signature = apps.joinToString(",") { it.target }
         val grid = binding.portraitDrawerGrid
         val rows = rowsThatFit(grid)
         if (signature == drawerSignature && rows == drawerRows && grid.childCount > 0) return
@@ -607,7 +607,7 @@ class HomeActivity : BaseActivity() {
                     .inflate(layoutInflater, row, false)
                 item.appIcon.setImageDrawable(app.icon)
                 item.appLabel.text = app.label
-                item.root.setOnClickListener { AppRepository.launch(this, app.packageName) }
+                item.root.setOnClickListener { AppRepository.launch(this, app.target) }
                 row.addView(item.root, cellParams())
             }
             // Pad the last row so four apps and two apps are the same size.
@@ -681,11 +681,8 @@ class HomeActivity : BaseActivity() {
     /** Most-used apps first, then the rest alphabetically. */
     private fun drawerApps(): List<AppInfo> {
         val all = AppRepository.loadLaunchableApps(this, prefs.hiddenApps)
-        val top = Usage.topApps(this, DRAWER_COLUMNS * DRAWER_MAX_ROWS)
-        val byPackage = all.associateBy { it.packageName }
-        val frequent = top.mapNotNull { byPackage[it] }
-        val rest = all.filter { it.packageName !in top }
-        return frequent + rest
+        val frequent = Usage.frequentApps(this, all, DRAWER_COLUMNS * DRAWER_MAX_ROWS)
+        return frequent + (all - frequent.toSet())
     }
 
     private fun isLandscapeNow(): Boolean =
@@ -991,7 +988,15 @@ class HomeActivity : BaseActivity() {
             return
         }
         val playingPkg = currentMedia?.packageName
-        if (playingPkg != null && AppRepository.launch(this, playingPkg)) return
+        if (playingPkg != null) {
+            // The icon the user picked, if it belongs to the app that's playing —
+            // otherwise that app's default one.
+            val chosen = prefs.mediaApp
+            val target =
+                if (chosen != null && AppRepository.packageOf(chosen) == playingPkg) chosen
+                else playingPkg
+            if (AppRepository.launch(this, target)) return
+        }
         if (!AppRepository.launchFirstAvailable(this, prefs.candidatesFor(Prefs.ROLE_MEDIA))) {
             AppPickerActivity.start(this, Prefs.ROLE_MEDIA, REQ_PICK_GENERIC)
         }

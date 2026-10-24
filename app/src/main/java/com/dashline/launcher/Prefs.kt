@@ -8,6 +8,10 @@ import android.content.Context
 /**
  * Thin wrapper over SharedPreferences for launcher settings the user configures
  * (chosen phone / nav / radio / media apps) plus the first-run flag.
+ *
+ * Saved apps are launch targets — a package name or one specific icon. Pass them
+ * to AppRepository rather than treating them as package names; use
+ * AppRepository.packageOf when a package is genuinely what's needed.
  */
 class Prefs(context: Context) {
 
@@ -21,7 +25,7 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_SETUP_DONE, false)
         set(v) = sp.edit().putBoolean(KEY_SETUP_DONE, v).apply()
 
-    /** Package name of the user's chosen phone app, or null if not set yet. */
+    /** The user's chosen phone app as a launch target, or null if not set yet. */
     var phoneApp: String?
         get() = sp.getString(KEY_PHONE, null)
         set(v) = sp.edit().putString(KEY_PHONE, v).apply()
@@ -35,7 +39,11 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_RADIO, null)
         set(v) = sp.edit().putString(KEY_RADIO, v).apply()
 
-    /** App to launch from the media widget when nothing is playing. */
+    /**
+     * The media app, as a launch target: opened from the media card when nothing
+     * is playing, and preferred over the playing app's default icon when it's
+     * the same app.
+     */
     var mediaApp: String?
         get() = sp.getString(KEY_MEDIA, null)
         set(v) = sp.edit().putString(KEY_MEDIA, v).apply()
@@ -159,8 +167,8 @@ class Prefs(context: Context) {
     fun cardShortcut(slot: String, index: Int): String? =
         sp.getString(shortcutKey(slot, index), null)
 
-    fun setCardShortcut(slot: String, index: Int, pkg: String) =
-        sp.edit().putString(shortcutKey(slot, index), pkg).apply()
+    fun setCardShortcut(slot: String, index: Int, target: String) =
+        sp.edit().putString(shortcutKey(slot, index), target).apply()
 
     fun clearCardShortcut(slot: String, index: Int) =
         sp.edit().remove(shortcutKey(slot, index)).apply()
@@ -306,8 +314,8 @@ class Prefs(context: Context) {
 
     fun getFavorite(index: Int): String? = sp.getString(favKey(index), null)
 
-    fun setFavorite(index: Int, pkg: String) =
-        sp.edit().putString(favKey(index), pkg).apply()
+    fun setFavorite(index: Int, target: String) =
+        sp.edit().putString(favKey(index), target).apply()
 
     fun clearFavorite(index: Int) = sp.edit().remove(favKey(index)).apply()
 
@@ -315,12 +323,16 @@ class Prefs(context: Context) {
 
     // ---- hidden apps (from the drawer) -------------------------------------
 
-    /** Defensive copy — the Set returned by SharedPreferences must not be mutated. */
+    /**
+     * Hidden launch targets — one per icon; entries from older versions are
+     * whole packages. Defensive copy: the Set SharedPreferences returns must
+     * not be mutated.
+     */
     val hiddenApps: Set<String>
         get() = HashSet(sp.getStringSet(KEY_HIDDEN, emptySet()) ?: emptySet())
 
-    fun hideApp(pkg: String) =
-        sp.edit().putStringSet(KEY_HIDDEN, hiddenApps + pkg).apply()
+    fun hideApp(target: String) =
+        sp.edit().putStringSet(KEY_HIDDEN, hiddenApps + target).apply()
 
     fun clearHiddenApps() = sp.edit().remove(KEY_HIDDEN).apply()
 
@@ -335,14 +347,14 @@ class Prefs(context: Context) {
         else -> emptyList()
     }
 
-    fun setForRole(role: String, pkg: String) {
+    fun setForRole(role: String, target: String) {
         when (role) {
-            ROLE_PHONE -> phoneApp = pkg
-            ROLE_NAV -> navApp = pkg
-            ROLE_RADIO -> radioApp = pkg
-            ROLE_MEDIA -> mediaApp = pkg
-            ROLE_ANDROID_AUTO -> androidAutoApp = pkg
-            ROLE_CARPLAY -> carPlayApp = pkg
+            ROLE_PHONE -> phoneApp = target
+            ROLE_NAV -> navApp = target
+            ROLE_RADIO -> radioApp = target
+            ROLE_MEDIA -> mediaApp = target
+            ROLE_ANDROID_AUTO -> androidAutoApp = target
+            ROLE_CARPLAY -> carPlayApp = target
         }
     }
 
