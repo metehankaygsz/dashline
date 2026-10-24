@@ -1,0 +1,1365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.13.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.2)" variant="all" version="8.13.2">
+
+    <issue
+        id="GestureBackNavigation"
+        message="`onBackPressed` is no longer called for back gestures; migrate to AndroidX&apos;s backward compatible `OnBackPressedDispatcher`"
+        errorLine1="    override fun onBackPressed() {"
+        errorLine2="                 ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="1311"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="GestureBackNavigation"
+        message="`onBackPressed` is no longer called for back gestures; migrate to AndroidX&apos;s backward compatible `OnBackPressedDispatcher`"
+        errorLine1="    override fun onBackPressed() { /* no-op */ }"
+        errorLine2="                 ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/SetupActivity.kt"
+            line="123"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 21 (current min is 19): `android.provider.Settings#ACTION_HOME_SETTINGS`"
+        errorLine1="                Intent(Settings.ACTION_HOME_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/DefaultLauncher.kt"
+            line="44"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 22 (current min is 19): `android.provider.Settings#ACTION_NOTIFICATION_LISTENER_SETTINGS`"
+        errorLine1="        val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/NotificationAccess.kt"
+            line="23"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `playPause`"
+        errorLine1="        binding.btnPlayPause.setOnClickListener { mediaMonitor?.playPause() }"
+        errorLine2="                                                                ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="858"
+            column="65"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `next`"
+        errorLine1="        binding.btnNext.setOnClickListener { mediaMonitor?.next() }"
+        errorLine2="                                                           ~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="859"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `previous`"
+        errorLine1="        binding.btnPrev.setOnClickListener { mediaMonitor?.previous() }"
+        errorLine2="                                                           ~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="860"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `seekTo`"
+        errorLine1="                mediaMonitor?.seekTo(sb.progress.toLong())"
+        errorLine2="                              ~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="869"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `durationMs`"
+        errorLine1="        val duration = monitor.durationMs()"
+        errorLine2="                               ~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="884"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `positionMs`"
+        errorLine1="        val position = monitor.positionMs().coerceAtMost(duration)"
+        errorLine2="                               ~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="895"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `start`"
+        errorLine1="        mediaMonitor?.start()"
+        errorLine2="                      ~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="1246"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 19): `stop`"
+        errorLine1="        mediaMonitor?.stop()"
+        errorLine2="                      ~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="1307"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="127"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="133"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="136"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="142"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="417"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="438"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="443"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="456"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="464"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="                            android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="483"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_tab_edit.xml"
+            line="40"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_tab_edit.xml"
+            line="49"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_tab_edit.xml"
+            line="58"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/view_page_header.xml"
+            line="22"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`?android:attr/selectableItemBackgroundBorderless` requires API level 21 (current min is 19)"
+        errorLine1="        android:background=&quot;?android:attr/selectableItemBackgroundBorderless&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/view_page_header.xml"
+            line="45"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="OverrideAbstract"
+        message="Must override `android.service.notification.NotificationListenerService.onNotificationPosted(android.service.notification.StatusBarNotification)`: Method was abstract until 21, and your `minSdkVersion` is 19"
+        errorLine1="class MediaNotificationListener : NotificationListenerService()"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/MediaNotificationListener.kt"
+            line="13"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `android:foreground` has no effect on API levels lower than 23 (current min is 19)"
+        errorLine1="                android:foreground=&quot;?android:attr/selectableItemBackground&quot;>"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="304"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `android:foreground` has no effect on API levels lower than 23 (current min is 19)"
+        errorLine1="                android:foreground=&quot;?android:attr/selectableItemBackground&quot;>"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="327"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `android:foreground` has no effect on API levels lower than 23 (current min is 19)"
+        errorLine1="                android:foreground=&quot;?android:attr/selectableItemBackground&quot;>"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="506"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `android:foreground` has no effect on API levels lower than 23 (current min is 19)"
+        errorLine1="                android:foreground=&quot;?android:attr/selectableItemBackground&quot;>"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="534"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 8.13 is available: 8.14.6"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Documents/Random/Radio Launcher/gradle/wrapper/gradle-wrapper.properties"
+            line="3"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="EllipsizeMaxLines"
+        message="Combining `ellipsize=marquee` and `maxLines=1` can lead to crashes. Use `singleLine=true` instead."
+        errorLine1="                                android:maxLines=&quot;1&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="340"
+            column="33"/>
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="341"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="EllipsizeMaxLines"
+        message="Combining `ellipsize=marquee` and `maxLines=1` can lead to crashes. Use `singleLine=true` instead."
+        errorLine1="                                android:maxLines=&quot;1&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="364"
+            column="33"/>
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="365"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.9.0 is available: 1.19.1"
+        errorLine1="    implementation(&quot;androidx.core:core-ktx:1.9.0&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="152"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.4.2 is available: 1.8.0"
+        errorLine1="    implementation(&quot;androidx.appcompat:appcompat:1.4.2&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="153"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.recyclerview:recyclerview than 1.2.1 is available: 1.4.0"
+        errorLine1="    implementation(&quot;androidx.recyclerview:recyclerview:1.2.1&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="154"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.constraintlayout:constraintlayout than 2.1.4 is available: 2.2.2"
+        errorLine1="    implementation(&quot;androidx.constraintlayout:constraintlayout:2.1.4&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="155"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.vectordrawable:vectordrawable than 1.1.0 is available: 1.2.0"
+        errorLine1="    implementation(&quot;androidx.vectordrawable:vectordrawable:1.1.0&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="158"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UseRequiresApi"
+        message="Use `@RequiresApi(Build.VERSION_CODES.LOLLIPOP) instead of `@TargetApi` to propagate the requirement to callers of `emit`"
+        errorLine1="    @TargetApi(Build.VERSION_CODES.LOLLIPOP)"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/MediaMonitor.kt"
+            line="127"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;widgets&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;widget_full&quot;>A card holds up to %1$d widgets&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="174"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="SetWorldReadable"
+        message="Setting file permissions to world-readable can be risky, review carefully"
+        errorLine1="            file.setReadable(true, false)"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/UpdateInstaller.kt"
+            line="107"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="        notifyDataSetChanged()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/AppAdapter.kt"
+            line="28"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NestedWeights"
+        message="Nested weights are bad for performance"
+        errorLine1="            android:layout_weight=&quot;1.35&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="63"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NestedWeights"
+        message="Nested weights are bad for performance"
+        errorLine1="                    android:layout_weight=&quot;1&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="599"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NestedWeights"
+        message="Nested weights are bad for performance"
+        errorLine1="                    android:layout_weight=&quot;1&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="627"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_app_drawer.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_app_picker.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_customize.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_customize.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_gradient_picker.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="12"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_settings.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_setup.xml"
+            line="5"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bg` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bg&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_tab_order.xml"
+            line="6"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_app.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_gradient.xml"
+            line="14"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_tab.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/bar` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;@color/bar&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/view_page_header.xml"
+            line="13"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.RadioLauncher`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/view_widget_empty.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.tile` appears to be unused"
+        errorLine1="    &lt;color name=&quot;tile&quot;>#6BFFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="20"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.shortcut_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;shortcut_height&quot;>40dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="22"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.FavoriteTile` appears to be unused"
+        errorLine1="    &lt;style name=&quot;FavoriteTile&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="119"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.tile_bg` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/tile_bg.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="TooManyViews"
+        message="`activity_settings.xml` has more than 80 views, bad for performance"
+        errorLine1="            &lt;TextView style=&quot;@style/SettingsSection&quot; android:text=&quot;@string/section_drawer&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_settings.xml"
+            line="168"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="        val start = Color.parseColor(if (night) preset.darkStart else preset.lightStart)"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/GradientThemes.kt"
+            line="93"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="        val end = Color.parseColor(if (night) preset.darkEnd else preset.lightEnd)"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/GradientThemes.kt"
+            line="94"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="    fun accent(preset: GradientPreset): Int = Color.parseColor(preset.accentHex)"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/GradientThemes.kt"
+            line="100"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `ViewGroup.isNotEmpty` instead?"
+        errorLine1="        if (signature == drawerSignature &amp;&amp; rows == drawerRows &amp;&amp; grid.childCount > 0) return"
+        errorLine2="                                                                  ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="567"
+            column="67"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension property `View.isVisible` instead?"
+        errorLine1="        if (binding.analogClock.visibility == android.view.View.VISIBLE) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/HomeActivity.kt"
+            line="1139"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_SETUP_DONE, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="26"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_PHONE, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="31"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_NAV, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="36"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_RADIO, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="40"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_MEDIA, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="49"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_AUTO, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="54"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_CARPLAY, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="58"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_FAHRENHEIT, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="63"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_ASKED_LOCATION, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="72"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_LANGUAGE, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="77"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_THEME, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="86"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_PANEL_ORDER, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="93"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putFloat(KEY_MEDIA_FRACTION, v.coerceIn(MIN_FRACTION, MAX_FRACTION)).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="102"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().putString(modeKey(slot), mode).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="115"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="137"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().putString(shortcutKey(slot, index), target).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="171"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().remove(shortcutKey(slot, index)).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="174"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().putBoolean(KEY_CARDS_MIGRATED, true).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="196"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putLong(KEY_UPDATE_CHECKED, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="204"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_UPDATE_SKIPPED, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="212"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_PROJECTION_ON, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="220"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_CLOCK_STYLE, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="227"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_CHRONO_ON, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="232"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putLong(KEY_CHRONO_START, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="237"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putLong(KEY_CHRONO_ACC, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="242"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_TAB_ORDER, v.joinToString(&quot;,&quot;) { it.id }).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="262"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putStringSet(KEY_TABS_HIDDEN, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="266"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_GRADIENT, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="281"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_KEEP_ON, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="286"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putBoolean(KEY_FAV_ON, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="297"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="303"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        set(v) = sp.edit().putString(KEY_FAV_SIZE, v).apply()"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="313"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().putString(favKey(index), target).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="318"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="    fun clearFavorite(index: Int) = sp.edit().remove(favKey(index)).apply()"
+        errorLine2="                                    ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="320"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().putStringSet(KEY_HIDDEN, hiddenApps + target).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="335"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="    fun clearHiddenApps() = sp.edit().remove(KEY_HIDDEN).apply()"
+        errorLine2="                            ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Prefs.kt"
+            line="337"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            Uri.parse(&quot;package:${activity.packageName}&quot;)"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/UpdateInstaller.kt"
+            line="43"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        start(activity, Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {"
+        errorLine2="                                                   ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/UpdateInstaller.kt"
+            line="117"
+            column="52"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sp.edit().putInt(target, sp.getInt(target, 0) + 1).apply()"
+        errorLine2="        ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Usage.kt"
+            line="23"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        val editor = sp.edit()"
+        errorLine2="                     ~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/Usage.kt"
+            line="49"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` lambda should call `View#performClick` when a click is detected"
+        errorLine1="        handle.setOnTouchListener { view, event ->"
+        errorLine2="                                  ^">
+        <location
+            file="src/main/java/com/dashline/launcher/CustomizeActivity.kt"
+            line="234"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="Custom view `SwipeLinearLayout` overrides `onTouchEvent` but not `performClick`"
+        errorLine1="    override fun onTouchEvent(event: MotionEvent): Boolean {"
+        errorLine2="                 ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/SwipeLinearLayout.kt"
+            line="54"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        errorLine1="        preview.weatherTemp.text = &quot;21°&quot;"
+        errorLine2="                                    ~~~">
+        <location
+            file="src/main/java/com/dashline/launcher/CustomizeActivity.kt"
+            line="116"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;00:00&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;00:00&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="88"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;00:00&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;00:00&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="95"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0:00.00&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;0:00.00&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="117"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0:00.0&quot;, should use `@string` resource"
+        errorLine1="                            android:text=&quot;0:00.0&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="124"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0:00&quot;, should use `@string` resource"
+        errorLine1="                            android:text=&quot;0:00&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="376"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0:00&quot;, should use `@string` resource"
+        errorLine1="                            android:text=&quot;0:00&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-port/activity_home.xml"
+            line="397"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0:00&quot;, should use `@string` resource"
+        errorLine1="                            android:text=&quot;0:00&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="401"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0:00&quot;, should use `@string` resource"
+        errorLine1="                            android:text=&quot;0:00&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_home.xml"
+            line="422"
+            column="29"/>
+    </issue>
+
+</issues>

@@ -100,9 +100,34 @@ android {
     }
 
     lint {
-        // A broken build should fail CI; style warnings shouldn't.
-        abortOnError = false
-        checkReleaseBuilds = false
+        // A broken build should fail CI; style warnings shouldn't. Errors abort,
+        // warnings never do, and the issues that predate this are recorded in
+        // lint-baseline.xml so only new ones count.
+        //
+        // checkReleaseBuilds runs lint's fatal checks on every release build.
+        // Without it a translation whose keys don't exist in values/ — the
+        // classic machine-translated contribution — builds cleanly and ships
+        // with its strings silently dropped.
+        abortOnError = true
+        checkReleaseBuilds = true
+        // Regenerate with `gradle updateLintBaseline` (the legacyDebug variant,
+        // which covers both flavours' code) when an old issue is fixed.
+        baseline = file("lint-baseline.xml")
+        // A partly finished translation falls back to English at runtime, which
+        // is fine to ship; keys that don't exist in values/ (ExtraTranslation)
+        // stay fatal.
+        warning += "MissingTranslation"
+    }
+
+    // Every language goes in the base APK. Play otherwise installs only the
+    // languages the device's system uses, and Dashline switches language in-app
+    // rather than through the system — so on a Play install, picking anything
+    // but the system language found no strings to switch to and stayed English.
+    // The strings are a few kilobytes per language.
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
 
     buildFeatures {

@@ -31,6 +31,16 @@ jobs:
       - name: Build debug APK
         run: gradle assembleDebug --no-daemon --stacktrace
 
+      # assembleDebug builds every flavour, so both the KitKat (legacy) and Play
+      # (minSdk 21) APKs are here. Uploaded before the checks below, so a lint
+      # failure doesn't also cost testers the APK for that push.
+      - name: Upload debug APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apks
+          path: app/build/outputs/apk/*/debug/*.apk
+          if-no-files-found: error
+
       # Catches broken R8 / ProGuard rules here rather than at release time.
       # Unsigned is fine — this only needs to prove the build succeeds.
       - name: Build release APK (unsigned, verifies R8)
@@ -40,15 +50,6 @@ jobs:
       # are declared. Both variants are checked.
       - name: Lint
         run: gradle lintLegacyDebug lintPlayDebug --no-daemon
-
-      # assembleDebug/assembleRelease build every flavour, so both the KitKat
-      # (legacy) and Play (minSdk 21) variants are verified on each push.
-      - name: Upload debug APKs
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-apks
-          path: app/build/outputs/apk/*/debug/*.apk
-          if-no-files-found: error
 
       - name: Upload lint reports
         if: always()
